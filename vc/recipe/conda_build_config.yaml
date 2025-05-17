@@ -1,0 +1,30 @@
+vcver:
+ - 14.3
+vsyear:
+ - 2022
+vsver:
+ - 17
+# vc_repack.py checks the expected runtime version (which can be used to find out of course)
+runtime_version:
+ # the azure/github images only contain the latest minor version per vs-line;
+ # if there is a use-case for having older minor versions, they can be added when requested.
+ - 14.42.34438
+# the VS update version.  This is the middle digit in the version
+# reported in the VS help->about UI.  It is perhaps a more readily
+# referenceable number.
+update_version:
+ - 13
+# This is the version number reported by cl.exe; if you don't want to or cannot download,
+# candidates can be found with a github code search (adapt minor number as necessary):
+# https://github.com/search?q=%2F19%5C.40%5C.3%5Cd%5Cd%5Cd%5Cd%2F&type=code
+cl_version:
+ - 19.43.34604
+# This is the uuid in the URL; redirect can be resolved e.g. as follows
+# curl -ILSs https://aka.ms/vs/17/release/vc_redist.x64.exe | grep "Location:"
+# curl -ILSs https://aka.ms/vs/17/release/vc_redist.arm64.exe | grep "Location:"
+uuid:
+ - 285b28c7-3cf9-47fb-9be8-01cf5323a8df
+sha256:
+ - 8F9FB1B3CFE6E5092CF1225ECD6659DAB7CE50B8BF935CB79BFEDE1F3C895240
+cross_target_platform:
+ - win-64
