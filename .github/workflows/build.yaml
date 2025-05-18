@@ -1,0 +1,42 @@
+name: Accept External Input
+
+on:
+  workflow_dispatch:
+    inputs:
+      pkg_name:
+        description: "Input text to pass to the workflow"
+        required: true
+
+jobs:
+  print-input:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+            auto-activate-base: true
+            miniforge-version: latest
+
+      - name: Configure Anaconda
+        run: |
+          conda install -y anaconda-client
+          conda install -y conda-build
+          conda config --set anaconda_upload no
+          conda config --add channels paperchalice
+
+      - name: Build package with conda-build
+        run: |
+          conda-build "${{ github.event.inputs.pkg_name }}\\recipe"
+
+      - name: Upload to Anaconda
+        env:
+          ANACONDA_API_TOKEN: ${{ secrets.token }}
+        run: |
+          $BUILT_PACKAGE=$(conda-build "${{ github.event.inputs.pkg_name }}\\recipe" --output)
+          anaconda upload --force --user paperchalice "$BUILT_PACKAGE"
