@@ -137,14 +137,7 @@ IF "%USE_NEW_CMAKE_GEN_SYNTAX%" == "1" (
 )
 
 pushd %VSINSTALLDIR%
-if "%LATEST_VS:~0,5%" LSS "@{vcvars_ver}" (
-  :: Installed latest VS is older than the conda package version, which means the
-  :: lower bound of run_export is too high, but there's nothing we can do.
-  :: For eg we have a 14.42 package but sometimes CI has 14.41
-  CALL "VC\Auxiliary\Build\vcvars%VCVARSBAT%.bat" -vcvars_ver=%LATEST_VS:~0,5% %WindowsSDKVer%
-) else (
-  CALL "VC\Auxiliary\Build\vcvars%VCVARSBAT%.bat" -vcvars_ver=@{vcvars_ver} %WindowsSDKVer%
-)
+CALL "VC\Auxiliary\Build\vcvars64.bat"
 
 :: if this didn't work and CONDA_BUILD is not set, we're outside
 :: conda-forge CI so retry without vcvars_ver, which is going to
