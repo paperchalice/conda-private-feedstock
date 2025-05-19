@@ -21,15 +21,15 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
             auto-activate-base: true
+            environment-file: etc/environment.yml
             miniforge-version: latest
+            python-version: 3.13
 
       - name: Configure Anaconda
         run: |
-          conda config --add channels paperchalice
           conda config --set anaconda_upload no
           conda install -y anaconda-client
           conda install -y conda-build
-          conda install -y paperchalice::vs2022_win-64
 
       - name: Build package with conda-build
         run: |
