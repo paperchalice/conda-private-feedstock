@@ -25,10 +25,10 @@ jobs:
 
       - name: Configure Anaconda
         run: |
+          conda config --add channels paperchalice
+          conda config --set anaconda_upload no
           conda install -y anaconda-client
           conda install -y conda-build
-          conda config --set anaconda_upload no
-          conda config --add channels paperchalice
 
       - name: Build package with conda-build
         run: |
