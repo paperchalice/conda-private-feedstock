@@ -38,5 +38,5 @@ jobs:
         env:
           ANACONDA_API_TOKEN: ${{ secrets.token }}
         run: |
-          $BUILT_PACKAGE=$(conda-build "${{ github.event.inputs.pkg_name }}\\recipe" --output)
-          anaconda upload --force --user paperchalice "$BUILT_PACKAGE"
+          $BUILT_PACKAGE=$(conda-build "${{ github.event.inputs.pkg_name }}\\recipe" --output).split("`n")
+          anaconda upload --force --user paperchalice @BUILT_PACKAGE
