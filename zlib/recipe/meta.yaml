@@ -20,13 +20,11 @@ requirements:
 outputs:
   - name: zlib-dev
     files:
-      include:
-        - include
-        - lib
+      - Library/include
+      - Library/lib
   - name: zlib-runtime
     files:
-      include:
-        - bin/*.dll
+      - Library/bin
 
 test:
   commands:
