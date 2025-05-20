@@ -28,8 +28,6 @@ jobs:
       - name: Configure Anaconda
         run: |
           conda config --set anaconda_upload no
-          conda install -y anaconda-client
-          conda install -y conda-build
 
       - name: Build package with conda-build
         run: |
