@@ -6,3 +6,4 @@ channels:
 dependencies:
   - anaconda-client
   - conda-build
+anaconda_upload: False

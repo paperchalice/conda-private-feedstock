@@ -25,10 +25,6 @@ jobs:
             miniforge-version: latest
             python-version: 3.13
 
-      - name: Configure Anaconda
-        run: |
-          conda config --set anaconda_upload no
-
       - name: Build package with conda-build
         run: |
           conda-build "${{ github.event.inputs.pkg_name }}\\recipe"
