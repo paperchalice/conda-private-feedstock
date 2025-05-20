@@ -88,6 +88,7 @@ set "CMAKE_PLAT=@{cmake_plat}"
 set "VCVARSBAT=@{vcvarsbat}"
 
 set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=MinSizeRel"
+set "CMAKE_CONFIG_TYPE=MinSizeRel"
 IF "%CONDA_BUILD%" == "1" (
   set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DCMAKE_PROGRAM_PATH=%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin"
 )
@@ -137,7 +138,14 @@ IF "%USE_NEW_CMAKE_GEN_SYNTAX%" == "1" (
 )
 
 pushd %VSINSTALLDIR%
-CALL "VC\Auxiliary\Build\vcvars64.bat"
+if "%LATEST_VS:~0,5%" LSS "@{vcvars_ver}" (
+  :: Installed latest VS is older than the conda package version, which means the
+  :: lower bound of run_export is too high, but there's nothing we can do.
+  :: For eg we have a 14.42 package but sometimes CI has 14.41
+  CALL "VC\Auxiliary\Build\vcvars64.bat"
+) else (
+  CALL "VC\Auxiliary\Build\vcvars64.bat"
+)
 
 :: if this didn't work and CONDA_BUILD is not set, we're outside
 :: conda-forge CI so retry without vcvars_ver, which is going to
