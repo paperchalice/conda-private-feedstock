@@ -1,6 +1,5 @@
-cmake -S . -B build ^
-    -DCMAKE_BUILD_TYPE=MinSizeRel ^
-    -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
+cmake -S . -B build  ^
+    %CMAKE_ARGS%     ^
     -DWITH_GTEST=OFF ^
     -DZLIB_COMPAT=ON ^
     -DBUILD_SHARED_LIBS=ON
