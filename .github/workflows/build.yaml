@@ -20,10 +20,10 @@ jobs:
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v3
         with:
-            auto-activate-base: true
-            environment-file: etc/environment.yml
-            miniforge-version: latest
-            python-version: 3.13
+          auto-activate-base: true
+          environment-file: etc/environment.yml
+          miniforge-version: latest
+          python-version: 3.13
 
       - name: Build package with conda-build
         run: |
