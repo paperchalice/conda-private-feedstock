@@ -1,4 +1,4 @@
-cmake -G "NMake Makefiles" -S . -B build ^
+cmake -S . -B build ^
     -DCMAKE_BUILD_TYPE=MinSizeRel ^
     -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
     -DWITH_GTEST=OFF ^

@@ -17,6 +17,21 @@ requirements:
     - {{ compiler('c') }}
     - cmake
 
+outputs:
+  - name: zlib-dev
+    files:
+      include:
+        - include
+        - lib
+  - name: zlib-util
+    files:
+      include:
+        - bin/*.exe
+  - name: zlib-lib
+    files:
+      include:
+        - bin/*.dll
+
 test:
   commands:
     - echo "this is zlib-ng"
