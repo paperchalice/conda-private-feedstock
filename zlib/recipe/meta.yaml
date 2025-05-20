@@ -23,10 +23,6 @@ outputs:
       include:
         - include
         - lib
-  - name: zlib-util
-    files:
-      include:
-        - bin/*.exe
   - name: zlib-runtime
     files:
       include:
