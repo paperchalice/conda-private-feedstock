@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -1351,8 +1351,9 @@
+ if(WIN32)
+     # Shared library
+     if(NOT DEFINED BUILD_SHARED_LIBS OR BUILD_SHARED_LIBS)
+         set_target_properties(zlib PROPERTIES OUTPUT_NAME zlib${SUFFIX})
++        set_target_properties(zlib PROPERTIES ARCHIVE_OUTPUT_NAME z${SUFFIX})
+     endif()
+     # Static library
+     if(NOT DEFINED BUILD_SHARED_LIBS)
+         if(MSVC)

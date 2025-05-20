@@ -27,7 +27,7 @@ outputs:
     files:
       include:
         - bin/*.exe
-  - name: zlib-lib
+  - name: zlib-runtime
     files:
       include:
         - bin/*.dll
