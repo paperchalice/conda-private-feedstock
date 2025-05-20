@@ -24,7 +24,13 @@ outputs:
       - Library/lib
   - name: zlib-runtime
     files:
-      - Library/bin
+      - Library/bin/*.dll
+  - name: zlib-tool
+    requirements:
+      run:
+        - zlib-runtime
+    files:
+      Library/bin/*.exe
 
 test:
   commands:
