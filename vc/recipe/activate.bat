@@ -87,7 +87,7 @@ if errorlevel 1 (
 set "CMAKE_PLAT=@{cmake_plat}"
 set "VCVARSBAT=@{vcvarsbat}"
 
-set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release"
+set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=MinSizeRel"
 IF "%CONDA_BUILD%" == "1" (
   set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DCMAKE_PROGRAM_PATH=%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin"
 )
