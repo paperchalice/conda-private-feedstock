@@ -30,7 +30,7 @@ outputs:
       run:
         - zlib-runtime
     files:
-      Library/bin/*.exe
+      - Library/bin/*.exe
 
 test:
   commands:
