@@ -6,6 +6,8 @@ import subprocess
 import sys
 import tempfile
 import xml.dom.minidom
+import shutil
+from pathlib import Path
 from glob import glob
 
 # Requires m2-p7zip conda package on Windows
@@ -371,6 +373,9 @@ def main():
             ) as w:
                 for line in r:
                     w.write(subs(line, args))
+        tgt_dir = Path(f"{env.prefix}/etc/conda/Modules")
+        os.makedirs(tgt_dir)
+        shutil.copytree(f'{Path(f"{env.recipe_dir}/VsLatest")}', f'{tgt_dir}', dirs_exist_ok=True)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,19 @@
+$Env:DISTUTILS_USE_SDK = $true
+$Env:CC = "cl.exe"
+$Env:CXX = "cl.exe"
+
+$vs_instance_id = $(vswhere -latest -property instanceId)
+$vs_prefix = $(vswhere -latest -property installationPath)
+$vs_year = $(vswhere -latest -property catalog_productLineVersion)
+$vs_ver_major = $(vswhere -latest -property catalog_productLine) -replace 'Dev'
+
+Import-Module "$vs_prefix\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
+Enter-VsDevShell $vs_instance_id -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"
+
+# CMake environments
+if ($Env:CONDA_BUILD) {
+    $Env:CMAKE_BUILD_TYPE = 'MinSizeRel'
+    $Env:CMAKE_GENERATOR = "Visual Studio $vs_ver_major $vs_year"
+    $Env:CMAKE_GENERATOR_PLATFORM = 'x64'
+    $Env:CMAKE_INSTALL_PREFIX = $LIBRARY_PREFIX
+}
