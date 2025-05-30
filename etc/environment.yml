@@ -5,5 +5,5 @@ channels:
   - defaults
 dependencies:
   - anaconda-client
-  - conda-build
+  - conda-bld
 anaconda_upload: False
