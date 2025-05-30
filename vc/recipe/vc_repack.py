@@ -373,7 +373,7 @@ def main():
             ) as w:
                 for line in r:
                     w.write(subs(line, args))
-        tgt_dir = Path(f"{env.prefix}/etc/conda/Modules")
+        tgt_dir = Path(f"{env.prefix}/etc/conda/Modules/VsLatest")
         os.makedirs(tgt_dir)
         shutil.copytree(f'{Path(f"{env.recipe_dir}/VsLatest")}', f'{tgt_dir}', dirs_exist_ok=True)
 
