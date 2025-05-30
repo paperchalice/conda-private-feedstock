@@ -6,9 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/conda/{{ name }}/releases/download/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  patches:
-    - vs.patch
+  url: https://github.com/paperchalice/conda-build/archive/refs/heads/me.zip
 
 build:
   number: 0
