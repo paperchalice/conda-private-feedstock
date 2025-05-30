@@ -25,15 +25,15 @@ outputs:
       - Library/include
       - Library/lib
     requirements:
-    build:
-      run_exports:
-        strong:
-          - zlib-runtime
+      build:
+        run_exports:
+          strong:
+            - zlib-runtime
   - name: zlib-runtime
     requirements:
-    build:
-      run_exports:
-        - zlib-runtime
+      build:
+        run_exports:
+          - zlib-runtime
     files:
       - Library/bin/*.dll
   - name: zlib-tool
