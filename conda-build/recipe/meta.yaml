@@ -1,5 +1,5 @@
 {% set name = "conda-build" %}
-{% set version = "25.4.2" %}
+{% set version = "25.5.0" %}
 
 package:
   name: {{ name }}
