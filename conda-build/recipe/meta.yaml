@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/conda/conda-build/archive/refs/tags/25.5.0.tar.gz
+  url: https://github.com/paperchalice/conda-build/archive/refs/heads/main.zip
 
 build:
   number: 0
