@@ -1,0 +1,45 @@
+diff --git a/conda_build/jinja_context.py b/conda_build/jinja_context.py
+index 307a13ec..7a077ea8 100644
+--- a/conda_build/jinja_context.py
++++ b/conda_build/jinja_context.py
+@@ -462,7 +462,7 @@ def native_compiler(language, config):
+         except KeyError:
+             continue
+     if hasattr(compiler, "keys"):
+-        compiler = compiler.get(config.variant.get("python", "nope"), "vs2017")
++        compiler = compiler.get(config.variant.get("python", "nope"), "vs2022")
+     return compiler
+ 
+ 
+diff --git a/conda_build/variants.py b/conda_build/variants.py
+index a6a6ebf5..b882dff4 100644
+--- a/conda_build/variants.py
++++ b/conda_build/variants.py
+@@ -65,13 +65,13 @@ DEFAULT_COMPILERS = {
+             "2.7": "vs2008",
+             "3.3": "vs2010",
+             "3.4": "vs2010",
+-            "3.5": "vs2017",
++            "3.5": "vs2022",
+         },
+         "cxx": {
+             "2.7": "vs2008",
+             "3.3": "vs2010",
+             "3.4": "vs2010",
+-            "3.5": "vs2017",
++            "3.5": "vs2022",
+         },
+         "vc": {
+             "2.7": "9",
+diff --git a/conda_build/windows.py b/conda_build/windows.py
+index 7ae9e560..9e00ef24 100644
+--- a/conda_build/windows.py
++++ b/conda_build/windows.py
+@@ -35,6 +35,7 @@ VS_VERSION_STRING = {
+     "11.0": "Visual Studio 11 2012",
+     "12.0": "Visual Studio 12 2013",
+     "14.0": "Visual Studio 14 2015",
++    "17.0": "Visual Studio 17 2022",
+ }
+ 
+ 
