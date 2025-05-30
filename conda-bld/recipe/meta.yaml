@@ -1,0 +1,110 @@
+{% set name = "conda-bld" %}
+{% set version = "25.4.2" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/paperchalice/conda-build/archive/refs/heads/pwsh.zip
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  entry_points:
+    - conda-build = conda_build.cli.main_build:execute
+    - conda-convert = conda_build.cli.main_convert:execute
+    - conda-debug = conda_build.cli.main_debug:execute
+    - conda-develop = conda_build.cli.main_develop:execute
+    - conda-inspect = conda_build.cli.main_inspect:execute
+    - conda-metapackage = conda_build.cli.main_metapackage:execute
+    - conda-render = conda_build.cli.main_render:execute
+    - conda-skeleton = conda_build.cli.main_skeleton:execute
+
+requirements:
+  build:
+    - python                               # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}   # [build_platform != target_platform]
+  host:
+    - python
+    - pip
+    - hatchling >=1.12.2
+    - hatch-vcs >=0.2.0
+  run:
+    - beautifulsoup4
+    - cctools            # [osx]
+    - chardet
+    - conda >=23.7.0
+    - conda-index >=0.4.0
+    - conda-package-handling >=2.2.0
+    - evalidate >=2,<3.0a
+    - filelock
+    - frozendict >=2.4.2
+    - jinja2
+    - jsonschema >=4.19
+    - m2-patch >=2.6     # [win]
+    - menuinst >=2
+    - packaging
+    - patch >=2.6        # [not win]
+    # cap due to https://github.com/conda/conda-build/issues/4881; https://github.com/NixOS/patchelf/issues/492
+    - patchelf <0.18     # [linux]
+    - pkginfo
+    - psutil
+    - py-lief <0.17.0a0
+    - python
+    - python-libarchive-c
+    - pytz
+    - pyyaml
+    - requests
+    - ripgrep
+    - tomli         # [py<311]
+    - tqdm
+  run_constrained:
+    - conda-verify >=3.1.0
+
+test:
+  imports:
+    - conda_build
+    - conda_build.jinja_context
+
+  requires:
+    - pip
+
+  commands:
+    - python -m pip check
+    # subcommands
+    - conda --help
+    - conda build --help
+    - conda convert --help
+    - conda develop --help
+    - conda metapackage --help
+    - conda render --help
+    - conda skeleton --help
+    - conda debug --help
+    # entrypoints
+    - conda-build --help
+    - conda-convert --help
+    - conda-develop --help
+    - conda-inspect --help
+    - conda-inspect linkages --help  # [unix]
+    - conda-inspect objects --help  # [osx]
+    - conda-metapackage --help
+    - conda-render --help
+    - conda-skeleton --help
+    - conda-debug --help
+{% if (python or "").split("_")[-1] != "cp313" %}
+  downstreams:
+    - conda-smithy  # [py>=311 and not osx]
+{% endif %}
+
+about:
+  home: https://github.com/conda/conda-build
+  summary: tools for building conda packages
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE
+  description: |
+    Conda-build contains commands and tools to allow you to build your own
+    packages for conda.
+  doc_url: https://docs.conda.io/projects/conda-build/en/latest/
+  dev_url: https://github.com/conda/conda-build
