@@ -38,12 +38,6 @@ outputs:
         - zlib-runtime
     files:
       - Library/bin/*.exe
-  - name: zlib
-    requirements:
-      run:
-        - zlib-dev
-        - zlib-runtime
-        - zlib-tool
 
 test:
   commands:
