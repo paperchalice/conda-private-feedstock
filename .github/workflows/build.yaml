@@ -1,10 +1,11 @@
-name: Accept External Input
+name: Build package
+run-name: Build ${{ github.event.inputs.pkg_name }}
 
 on:
   workflow_dispatch:
     inputs:
       pkg_name:
-        description: "Input text to pass to the workflow"
+        description: "Package name"
         required: true
 
 jobs:
