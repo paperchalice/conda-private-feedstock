@@ -1,7 +1,7 @@
 {% set version = "2.2.4" %}
 
 package:
-  name: zlib
+  name: zlib-meta
   version: {{ version }}
 
 source:
@@ -38,6 +38,12 @@ outputs:
         - zlib-runtime
     files:
       - Library/bin/*.exe
+  - name: zlib
+    requirements:
+    run:
+      - zlib-tool
+      - zlib-dev
+      - zlib-runtime
 
 test:
   commands:
