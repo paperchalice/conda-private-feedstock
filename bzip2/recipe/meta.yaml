@@ -23,6 +23,7 @@ outputs:
     files:
       - Library/include
       - Library/lib
+      - Library/man
     build:
       run_exports:
         strong:
