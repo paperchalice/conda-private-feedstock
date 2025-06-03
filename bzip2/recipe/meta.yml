@@ -1,0 +1,41 @@
+{% set version = "1.0.9" %}
+
+package:
+  name: bzip2-split
+  version: {{ version }}
+
+source:
+  url: https://gitlab.com/paperchalice/bzip2/-/archive/master/bzip2-master.zip
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - cmake
+
+outputs:
+  - name: bzip2-runtime
+    files:
+      - Library/bin/*.dll
+  - name: bzip2-dev
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        strong:
+          - bzip2-runtime
+  - name: bzip2-tool
+    requirements:
+      run:
+        - bzip2-runtime
+    files:
+      - Library/bin/*.exe
+  - name: bzip2
+    requirements:
+      run:
+        - bzip2-tool
+        - bzip2-dev
+        - bzip2-runtime
