@@ -40,10 +40,10 @@ outputs:
       - Library/bin/*.exe
   - name: zlib
     requirements:
-    run:
-      - zlib-tool
-      - zlib-dev
-      - zlib-runtime
+      run:
+        - zlib-tool
+        - zlib-dev
+        - zlib-runtime
 
 test:
   commands:

@@ -1,1 +1,1 @@
-zlib-meta/recipe/*.patch text eol=lf
+zlib/recipe/*.patch text eol=lf
