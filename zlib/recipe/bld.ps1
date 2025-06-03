@@ -4,4 +4,4 @@ cmake -S . -B build `
     -DZLIB_COMPAT=ON `
     -DINSTALL_UTILS=ON
 cmake --build build --config $CMAKE_BUILD_TYPE
-cmake --build build --config $CMAKE_BUILD_TYPE
+cmake --install build --config $CMAKE_BUILD_TYPE
