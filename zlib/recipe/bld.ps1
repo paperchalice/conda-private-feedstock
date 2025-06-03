@@ -1,3 +1,6 @@
+Write-Output $CMAKE_BUILD_TYPE
+Get-ChildItem Env:
+
 cmake -S . -B build `
     -DBUILD_SHARED_LIBS=ON `
     -DWITH_GTEST=OFF `
