@@ -9,7 +9,7 @@ on:
         required: true
 
 jobs:
-  print-input:
+  build-package:
     runs-on: windows-latest
     defaults:
       run:
