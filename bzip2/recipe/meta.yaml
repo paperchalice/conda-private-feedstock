@@ -23,7 +23,6 @@ outputs:
     files:
       - Library/include
       - Library/lib
-      - Library/man
     build:
       run_exports:
         strong:
@@ -34,6 +33,9 @@ outputs:
         - bzip2-runtime
     files:
       - Library/bin/*.exe
+  - name: bzip2-doc
+    files:
+      - Library/man
   - name: bzip2
     requirements:
       run:
