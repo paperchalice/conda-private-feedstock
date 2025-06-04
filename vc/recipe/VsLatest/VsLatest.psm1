@@ -1,6 +1,7 @@
 $Env:DISTUTILS_USE_SDK = $true
-$Env:CC = "cl.exe"
-$Env:CXX = "cl.exe"
+$Env:CC = 'cl.exe'
+$Env:CXX = 'cl.exe'
+$Env:LD = 'link.exe'
 
 $vswhere = vswhere -format json -latest -utf8 | ConvertFrom-Json
 $vs_ver_major = $vswhere.catalog.productLine -replace 'Dev'
