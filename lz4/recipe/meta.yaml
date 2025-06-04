@@ -1,0 +1,48 @@
+{% set pkg_name = "lz4-c" %}
+{% set name = "lz4" %}
+{% set version = "1.10.0" %}
+
+package:
+  name: {{ pkg_name }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz
+  sha256: 537512904744b35e232912055ccf8ec66d768639ff3abe5788d90d792ec5f48b
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - cmake
+
+outputs:
+  - name: lz4-runtime
+    files:
+      - Library/bin/*.dll
+  - name: lz4-dev
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        strong:
+          - lz4-runtime
+  - name: lz4-tool
+    requirements:
+      run:
+        - lz4-runtime
+    files:
+      - Library/bin/*.exe
+  - name: lz4-doc
+    files:
+      - Library/man
+  - name: lz4-full
+    requirements:
+      run:
+        - lz4-tool
+        - lz4-dev
+        - lz4-runtime
+        - lz4-doc
