@@ -36,7 +36,7 @@ outputs:
   - name: bzip2-doc
     files:
       - Library/man
-  - name: bzip2
+  - name: bzip2-full
     requirements:
       run:
         - bzip2-tool
