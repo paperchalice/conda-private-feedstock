@@ -5,5 +5,5 @@ cmake --build build --config $CMAKE_BUILD_TYPE
 cmake --install build --config $CMAKE_BUILD_TYPE
 
 foreach ($i in @('lz4cat', 'unlz4')) {
-    New-Item -Path "$LIBRARY_BIN\$i.exe" -ItemType SymbolicLink 'lz4.exe' 
+    New-Item -Path "$LIBRARY_BIN\$i.exe" -ItemType SymbolicLink -Target 'lz4.exe' 
 }

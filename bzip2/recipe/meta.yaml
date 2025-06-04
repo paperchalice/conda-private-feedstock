@@ -35,7 +35,7 @@ outputs:
       - Library/bin/*.exe
   - name: bzip2-doc
     files:
-      - Library/man
+      - Library/share/man
   - name: bzip2-full
     requirements:
       run:
