@@ -1,7 +1,7 @@
 name: forge
 channels:
-  - paperchalice
   - conda-forge
+  - paperchalice
   - defaults
 dependencies:
   - anaconda-client
