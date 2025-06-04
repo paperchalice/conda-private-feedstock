@@ -1,1 +1,2 @@
 zlib/recipe/*.patch text eol=lf
+libb2/recipe/*.patch text eol=lf

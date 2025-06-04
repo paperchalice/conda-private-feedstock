@@ -1,0 +1,45 @@
+{% set version = "0.98.1" %}
+
+package:
+  name: libb2-meta
+  version: {{ version }}
+
+source:
+  url: https://github.com/BLAKE2/libb2/archive/refs/heads/master.zip
+  patches:
+    - cpuid.patch
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - binutils
+    - m2-autoconf
+    - m2-automake-wrapper
+    - m2-bash
+    - m2-grep
+    - m2-libtool
+    - m2-m4
+    - m2-make
+    - m2-patch
+    - m2-pkg-config
+
+outputs:
+  - name: libb2-runtime
+    files:
+      - Library/bin/*.dll
+  - name: libb2-dev
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        strong:
+          - libb2-runtime
+  - name: libb2
+    requirements:
+      run:
+        - libb2-dev
+        - libb2-runtime
