@@ -38,7 +38,7 @@ outputs:
       - Library/bin/*.exe
   - name: lz4-doc
     files:
-      - Library/man
+      - Library/share/man
   - name: lz4-full
     requirements:
       run:
