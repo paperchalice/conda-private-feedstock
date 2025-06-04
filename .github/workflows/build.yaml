@@ -28,7 +28,7 @@ jobs:
 
       - name: Build package with conda-build
         run: |
-          conda-build "${{ github.event.inputs.pkg_name }}\\recipe"
+          conda-build "${{ github.event.inputs.pkg_name }}\\recipe" --zstd-compression-level=22
 
       - name: Upload to Anaconda
         env:
