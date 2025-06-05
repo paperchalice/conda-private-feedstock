@@ -20,3 +20,17 @@ diff --git a/m4/ax_gcc_x86_cpuid.m4 b/m4/ax_gcc_x86_cpuid.m4
       return 0;
  ])],
       [ax_cv_gcc_x86_cpuid_$1=`cat conftest_cpuid`; rm -f conftest_cpuid],
+diff --git a/configure.ac b/configure.ac
+--- configure.ac
++++ configure.ac
+@@ -34,9 +34,9 @@
+ 
+ # Checks for library functions.
+ AC_CHECK_FUNCS([memset])
+ 
+-dnl AM_PROG_AR 
++AM_PROG_AR
+ AC_PROG_LIBTOOL
+ dnl LT_INIT
+ 
+ 
