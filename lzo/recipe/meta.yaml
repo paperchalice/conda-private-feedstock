@@ -27,6 +27,11 @@ outputs:
       run_exports:
         strong:
           - lzo-runtime
+  - name: lzo-full
+    requirements:
+      run:
+        - lzo-dev
+        - lzo-runtime
 
 about:
   home: http://www.oberhumer.com/opensource/lzo/
