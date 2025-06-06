@@ -1,4 +1,4 @@
-$Env:CFLAGS = ($Env:CFLAGS -replace '/', '-') + '-O1'
+$Env:CFLAGS = ($Env:CFLAGS -replace '/', '-') + ' -O1'
 $MSYS2_PREFIX = $LIBRARY_PREFIX -replace '\\', '/' -replace 'C:', '/c/'
 
 bash -c './autogen.sh'
