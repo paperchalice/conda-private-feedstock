@@ -1,0 +1,10 @@
+{% set name = "binutils" %}
+{% set version = "2.43" %}
+
+package:
+  name: binutils
+  version: {{ version }}
+
+requirements:
+  run:
+    - binutils_impl_win-64
