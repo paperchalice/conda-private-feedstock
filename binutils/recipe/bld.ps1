@@ -1,4 +1,4 @@
-$tools = @('add2line', 'ar', 'as', 'c++filt', 'dlltool', 'dllwrap', 'elfedit', 'gprof',
+$tools = @('addr2line', 'ar', 'as', 'c++filt', 'dlltool', 'dllwrap', 'elfedit', 'gprof',
   'ld.bfd', 'ld', 'nm', 'objcopy', 'objdump', 'ranlib', 'readelf', 'size', 'strings', 'strip',
   'windmc', 'windres')
 
