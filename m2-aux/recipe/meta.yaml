@@ -4,4 +4,4 @@ package:
 
 requirements:
   run:
-    - m2-conda-epoch
+    - m2-bash
