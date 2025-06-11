@@ -1,0 +1,54 @@
+{% set version = "1.18" %}
+
+package:
+  name: libiconv-split
+  version: {{ version }}
+
+source:
+  url: http://ftp.gnu.org/pub/gnu/libiconv/libiconv-{{ version }}.tar.gz
+  sha256: 3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - m2-aux
+    - m2-autoconf
+    - m2-automake-wrapper
+    - m2-bash
+    - m2-grep
+    - m2-libtool
+    - m2-m4
+    - m2-make
+    - m2-patch
+
+outputs:
+  - name: libiconv-runtime
+    files:
+      - Library/bin/*.dll
+  - name: libiconv-dev
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        - libiconv-runtime
+  - name: libiconv-doc
+    files:
+      - Library/share
+  - name: iconv
+    requirements:
+      run:
+        - libiconv-runtime
+    files:
+      - Library/bin/*.exe
+
+about:
+  home: https://www.gnu.org/software/libiconv/
+  license: GPL-3.0-only AND LGPL-2.1-only
+  license_file:
+    - COPYING
+    - COPYING.LIB
+  summary: Split feedstock providing iconv and libiconv for systems which don't have one (or that cannot convert from/to Unicode.)
