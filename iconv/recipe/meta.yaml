@@ -27,14 +27,25 @@ requirements:
 outputs:
   - name: libiconv-runtime
     files:
-      - Library/bin/*.dll
+      - Library/bin/iconv-2.dll
   - name: libiconv-dev
     files:
-      - Library/include
-      - Library/lib
+      - Library/include/iconv.h
+      - Library/lib/iconv.lib
     build:
       run_exports:
         - libiconv-runtime
+  - name: libcharset-runtime
+    files:
+      - Library/bin/charset-1.dll
+  - name: libcharset-dev
+    files:
+      - Library/include/libcharset.h
+      - Library/include/localcharset.h
+      - Library/lib/charset.lib
+    build:
+      run_exports:
+        - libcharset-runtime
   - name: libiconv-doc
     files:
       - Library/share
