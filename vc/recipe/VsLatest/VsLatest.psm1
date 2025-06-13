@@ -15,8 +15,11 @@ if ($Env:CONDA_BUILD) {
     $Env:CMAKE_GENERATOR = "Visual Studio $vs_ver_major $($vswhere.catalog.productLineVersion)"
     $Env:CMAKE_GENERATOR_PLATFORM = 'x64'
     $Env:CMAKE_INSTALL_PREFIX = $LIBRARY_PREFIX
-    $Env:CFLAGS = "/Zc:inline /Zc:preprocessor /utf-8"
-    $Env:CXXFLAGS = "/permissive- /Zc:__cplusplus /Zc:checkGwOdr /Zc:externConstexpr /Zc:inline /Zc:preprocessor /Zc:referenceBinding /Zc:rvalueCast /Zc:templateScope /utf-8"
+    $Env:CFLAGS = "/nologo /Zc:inline /Zc:preprocessor /utf-8 " +
+    "/DWIN32 /D_WINDOWS /DNDEBUG"
+    $Env:CXXFLAGS = "/nologo /permissive- /Zc:__cplusplus /Zc:checkGwOdr /Zc:externConstexpr /Zc:inline /Zc:preprocessor " +
+    "/Zc:referenceBinding /Zc:rvalueCast /Zc:templateScope /utf-8 " +
+    "/DWIN32 /D_WINDOWS /DNDEBUG"
 
     $CMAKE_BUILD_TYPE = $Env:CMAKE_BUILD_TYPE
     Export-ModuleMember -Variable "CMAKE_BUILD_TYPE"
