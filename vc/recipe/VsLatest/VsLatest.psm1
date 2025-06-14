@@ -32,5 +32,7 @@ function Enter-M2 {
     $Env:CXX = 'compile cl'
     $Env:AR = 'ar-lib lib'
     $Env:WINDRES = 'windres-rc rc'
+    $Env:INCLUDE = "$Env:LIBRARY_INC;$Env:INCLUDE"
+    $Env:LIB = "$Env:LIBRARY_LIB;$Env:LIB"
 }
 Export-ModuleMember -Function "Enter-M2"
