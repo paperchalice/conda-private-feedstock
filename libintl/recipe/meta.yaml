@@ -1,0 +1,39 @@
+{% set version = "0.25" %}
+
+package:
+  name: libintl-split
+  version: {{ version }}
+
+source:
+  url: https://ftp.gnu.org/pub/gnu/gettext/gettext-{{ version }}.tar.xz
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - m2-aux
+    - m2-autoconf
+    - m2-automake-wrapper
+    - m2-bash
+    - m2-findutils
+    - m2-grep
+    - m2-libtool
+    - m2-m4
+    - m2-make
+    - m2-patch
+
+outputs:
+  - name: libintl-runtime
+    files:
+      - Library/bin
+  - name: libintl-dev
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        - libintl-runtime
+  - name: libintl
+    requirements:
+      run:
+        - libintl-dev
+        - libintl-runtime
