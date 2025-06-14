@@ -24,3 +24,13 @@ if ($Env:CONDA_BUILD) {
     $CMAKE_BUILD_TYPE = $Env:CMAKE_BUILD_TYPE
     Export-ModuleMember -Variable "CMAKE_BUILD_TYPE"
 }
+
+function Enter-M2 {
+    $Env:CFLAGS = ($Env:CFLAGS -replace '/', '-') + ' -O1'
+    $Env:CXXFLAGS = ($Env:CXXFLAGS -replace '/', '-') + ' -O1'
+    $Env:CC = 'compile cl'
+    $Env:CXX = 'compile cl'
+    $Env:AR = 'ar-lib lib'
+    $Env:WINDRES = 'windres-rc rc'
+}
+Export-ModuleMember -Function "Enter-M2"
