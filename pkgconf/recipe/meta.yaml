@@ -1,0 +1,46 @@
+{% set version = "2.4.3" %}
+
+package:
+  name: pkgconf-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/pkgconf/pkgconf/archive/pkgconf-${{ version }}.tar.gz
+  sha256: cea5b0ed69806b69c1900ce2f6f223a33f15230ad797243634df9fd56e64b156
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - meson
+    - ninja
+
+outputs:
+  - name: libpkgconf-runtime
+    files:
+      - Library/bin/*.dll
+  - name: libpkgconf-dev
+    files:
+      include:
+        - Library
+      exclude:
+        - Library/bin
+    run_exports:
+      strong:
+        - libpkgconf-runtime
+  - name: libpkgconf
+    requirements:
+      - libpkgconf-runtime
+      - libpkgconf-dev
+  - name: pkgconf-tools
+    files:
+      - Library/bin/*.exe
+    requirements:
+      run:
+        - libpkgconf-runtime
+
+about:
+  license: MIT
+  license_file: COPYING
+  summary: package compiler and linker metadata toolkit
+  homepage: https://github.com/pkgconf/pkgconf
+  repository: https://github.com/pkgconf/pkgconf

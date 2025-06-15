@@ -17,12 +17,17 @@ outputs:
   - name: liblzma-runtime
     files:
       - Library/bin/*.dll
-  - name: liblzma-devel
+  - name: liblzma-dev
     files:
       - Library/include
       - Library/lib
-    build:
-      run_exports:
+    run_exports:
+      strong:
+        - liblzma-runtime
+  - name: liblzma
+    requirements:
+      run:
+        - liblzma-dev
         - liblzma-runtime
   - name: xz-tools
     requirements:
