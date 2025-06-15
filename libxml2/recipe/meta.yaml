@@ -1,0 +1,52 @@
+{% set version = "2.14.3" %}
+
+package:
+  name: libxml2-split
+  version: {{ version }}
+
+source:
+  url: https://gitlab.gnome.org/GNOME/libxml2/-/archive/v{{ version }}/libxml2-v{{ version }}.tar.gz
+  sha256: 82f54c6b383d961fc33d93fd1b8e7cb0bee9338eb8c2083ab804fc02a38d20a5
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - cmake
+    - libiconv-dev
+    - liblzma-dev
+    - zlib
+
+outputs:
+  - name: libxml2-runtime
+    files:
+      - Library/bin/*.dll
+  - name: libxml2-dev
+    files:
+      - Library/include
+      - Library/lib
+      - Library/share
+    run_exports:
+      strong:
+        - libxml2-runtime
+  - name: libxml2-tools
+    files:
+      - Library/bin/*.exe
+    requirements:
+      - libxml2-runtime
+  - name: libxml2-full
+    requirements:
+    - libxml2-runtime
+    - libxml2-dev
+    - libxml2-tools
+about:
+  home: http://xmlsoft.org/
+  license: MIT
+  license_family: MIT
+  license_file: Copyright
+  summary: The XML C parser and toolkit of Gnome
+  description: |
+    Though libxml2 is written in C a variety of language
+    bindings make it available in other environments.
+  doc_url: http://xmlsoft.org/html/index.html
+  doc_source_url: https://github.com/GNOME/libxml2/blob/master/doc/devhelp/index.html
+  dev_url: https://git.gnome.org/browse/libxml2/
