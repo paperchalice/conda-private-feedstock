@@ -26,9 +26,8 @@ outputs:
         - liblzma-runtime
   - name: liblzma
     requirements:
-      run:
-        - liblzma-dev
-        - liblzma-runtime
+      - liblzma-dev
+      - liblzma-runtime
   - name: xz-tools
     requirements:
       run:

@@ -2,15 +2,15 @@
 
 package:
   name: pkgconf-split
-  version: ${{ version }}
+  version: {{ version }}
 
 source:
-  url: https://github.com/pkgconf/pkgconf/archive/pkgconf-${{ version }}.tar.gz
+  url: https://github.com/pkgconf/pkgconf/archive/pkgconf-{{ version }}.tar.gz
   sha256: cea5b0ed69806b69c1900ce2f6f223a33f15230ad797243634df9fd56e64b156
 
 requirements:
   build:
-    - ${{ compiler('c') }}
+    - {{ compiler('c') }}
     - meson
     - ninja
 
@@ -35,8 +35,7 @@ outputs:
     files:
       - Library/bin/*.exe
     requirements:
-      run:
-        - libpkgconf-runtime
+      - libpkgconf-runtime
 
 about:
   license: MIT
