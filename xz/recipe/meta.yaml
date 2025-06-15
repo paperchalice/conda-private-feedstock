@@ -12,7 +12,6 @@ requirements:
   build:
     - {{ compiler('c') }}
     - cmake
-    - zlib
 
 outputs:
   - name: liblzma-runtime
