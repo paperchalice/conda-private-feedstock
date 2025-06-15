@@ -7,5 +7,5 @@ $config_args = @("--prefix=$MSYS2_PREFIX",
   '--build=x86_64-w64-mingw32'
 ) -join ' '
 bash -c "./configure $config_args"
-bash -c 'make'
-bash -c 'make install'
+bash -c 'make -i'
+bash -c 'make install -i'
