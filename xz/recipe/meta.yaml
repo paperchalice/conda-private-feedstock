@@ -1,0 +1,50 @@
+{% set version = "5.8.1" %}
+
+package:
+  name: xz-split
+  version: {{ version }}
+
+source:
+  url: https://github.com/tukaani-project/xz/releases/download/v{{ version }}/xz-{{ version }}.tar.gz
+  sha256: 507825b599356c10dca1cd720c9d0d0c9d5400b9de300af00e4d1ea150795543
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - cmake
+    - zlib
+
+outputs:
+  - name: liblzma-runtime
+    files:
+      - Library/bin/*.dll
+  - name: liblzma-devel
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        - liblzma-runtime
+  - name: xz-tools
+    requirements:
+      run:
+        liblzma-runtime
+    files:
+      - Library/bin/*.exe
+
+about:
+  home: http://tukaani.org/xz/
+  license: 0BSD AND LGPL-2.1-or-later AND GPL-2.0-or-later
+  license_file:
+    - COPYING
+    - COPYING.0BSD
+    - COPYING.LGPLv2.1
+    - COPYING.GPLv2
+  summary: Data compression software with high compression ratio
+  description: |
+    XZ Utils is free general-purpose data compression software with a high
+    compression ratio. XZ Utils were written for POSIX-like systems, but also
+    work on some not-so-POSIX systems.
+  doc_url: http://tukaani.org/xz/
+  doc_source_url: https://github.com/xz-mirror/xz/blob/master/README
+  dev_url: http://git.tukaani.org/
