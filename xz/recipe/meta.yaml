@@ -24,7 +24,7 @@ outputs:
     run_exports:
       strong:
         - liblzma-runtime
-  - name: liblzma
+  - name: liblzma-full
     requirements:
       - liblzma-dev
       - liblzma-runtime
