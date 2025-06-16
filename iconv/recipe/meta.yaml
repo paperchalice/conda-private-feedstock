@@ -14,6 +14,8 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - gettext-static
+    - libintl-dev
     - m2-aux
     - m2-autoconf
     - m2-automake-wrapper
@@ -51,8 +53,7 @@ outputs:
       - Library/share
   - name: iconv
     requirements:
-      run:
-        - libiconv-runtime
+      - libiconv-runtime
     files:
       - Library/bin/*.exe
 

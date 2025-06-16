@@ -3,7 +3,7 @@ $MSYS2_PREFIX = $LIBRARY_PREFIX -replace '\\', '/' -replace 'C:', '/c/'
 $Env:CC = 'compile cl'
 $Env:WINDRES = 'windres-rc rc'
 
-bash -c "./configure --prefix=$MSYS2_PREFIX --enable-shared=yes --enable-static=no --host=x86_64-pc-windows"
+bash -c "./configure --prefix=$MSYS2_PREFIX --enable-shared=yes --enable-static=no --enable-nls --host=x86_64-pc-windows"
 bash -c 'make'
 bash -c 'make install'
 
