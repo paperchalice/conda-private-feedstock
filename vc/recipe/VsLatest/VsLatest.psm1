@@ -15,11 +15,12 @@ if ($Env:CONDA_BUILD) {
     $Env:CMAKE_GENERATOR = "Visual Studio $vs_ver_major $($vswhere.catalog.productLineVersion)"
     $Env:CMAKE_GENERATOR_PLATFORM = 'x64'
     $Env:CMAKE_INSTALL_PREFIX = $LIBRARY_PREFIX
-    $Env:CFLAGS = "/nologo /Zc:inline /Zc:preprocessor /utf-8 " +
+    $Env:CFLAGS = "/nologo /MP /Zc:inline /Zc:preprocessor /utf-8 " +
     "/DWIN32 /D_WINDOWS /DNDEBUG"
-    $Env:CXXFLAGS = "/nologo /permissive- /Zc:__cplusplus /Zc:checkGwOdr /Zc:externConstexpr /Zc:inline /Zc:preprocessor " +
+    $Env:CXXFLAGS = "/nologo /MP /permissive- /Zc:__cplusplus /Zc:checkGwOdr /Zc:externConstexpr /Zc:inline /Zc:preprocessor " +
     "/Zc:referenceBinding /Zc:rvalueCast /Zc:templateScope /utf-8 " +
     "/DWIN32 /D_WINDOWS /DNDEBUG"
+    $Env:LDFLAGS = '/nologo /DEBUG /INCREMENTAL:NO /OPT:REF /OPT:ICF'
 
     $CMAKE_BUILD_TYPE = $Env:CMAKE_BUILD_TYPE
     Export-ModuleMember -Variable "CMAKE_BUILD_TYPE"
@@ -28,6 +29,7 @@ if ($Env:CONDA_BUILD) {
 function Enter-M2 {
     $Env:CFLAGS = ($Env:CFLAGS -replace '/', '-') + ' -O1 -MD'
     $Env:CXXFLAGS = ($Env:CXXFLAGS -replace '/', '-') + ' -O1 -MD'
+    $Env:LDFLAGS = ($Env:LDFLAGS  -replace '/', '-')
     $Env:CC = 'compile cl'
     $Env:CXX = 'compile cl'
     $Env:AR = 'ar-lib lib'
