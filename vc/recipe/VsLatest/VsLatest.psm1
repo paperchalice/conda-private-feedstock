@@ -26,8 +26,8 @@ if ($Env:CONDA_BUILD) {
 }
 
 function Enter-M2 {
-    $Env:CFLAGS = ($Env:CFLAGS -replace '/', '-') + ' -O1'
-    $Env:CXXFLAGS = ($Env:CXXFLAGS -replace '/', '-') + ' -O1'
+    $Env:CFLAGS = ($Env:CFLAGS -replace '/', '-') + ' -O1 -MD'
+    $Env:CXXFLAGS = ($Env:CXXFLAGS -replace '/', '-') + ' -O1 -MD'
     $Env:CC = 'compile cl'
     $Env:CXX = 'compile cl'
     $Env:AR = 'ar-lib lib'
