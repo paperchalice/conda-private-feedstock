@@ -5,7 +5,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://ftp.gnu.org/pub/gnu/gettext/gettext-{{ version }}.tar.xz
+  url: https://mirrors.tuna.tsinghua.edu.cn/gnu/gettext/gettext-{{ version }}.tar.xz
+  sha256: 05240b29f5b0f422e5a4ef8e9b5f76d8fa059cc057693d2723cdb76f36a88ab0
 
 requirements:
   build:

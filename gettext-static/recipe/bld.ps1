@@ -1,17 +1,18 @@
 Enter-M2
-$MSYS2_PREFIX = $LIBRARY_PREFIX -replace '\\', '/' -replace 'C:', '/c/'
-$config_args = @("--prefix=$MSYS2_PREFIX",
+$prefix = $LIBRARY_PREFIX.Replace('\', '/')
+$Env:RC = 'windres-rc rc'
+$config_args = @("--prefix=$prefix",
   '--disable-nls',
   '--enable-shared=no',
   '--enable-static=yes',
   '--disable-csharp',
   '--disable-java',
-  '--disable-nls',
+  '--enable-relocatable',
   '--build=x86_64-w64-mingw32'
 ) -join ' '
 bash -c "./configure $config_args"
-bash -c 'make -i'
-bash -c 'make install -i'
+bash -c 'make'
+bash -c 'make install'
 
 Remove-Item -Recurse $LIBRARY_INC $LIBRARY_LIB
 $shares = @('doc', 'info', 'man')
