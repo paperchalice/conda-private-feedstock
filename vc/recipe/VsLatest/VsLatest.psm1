@@ -20,7 +20,7 @@ if ($Env:CONDA_BUILD) {
     $Env:CXXFLAGS = "/nologo /MP /permissive- /Zc:__cplusplus /Zc:checkGwOdr /Zc:externConstexpr /Zc:inline /Zc:preprocessor " +
     "/Zc:referenceBinding /Zc:rvalueCast /Zc:templateScope /utf-8 " +
     "/DWIN32 /D_WINDOWS /DNDEBUG"
-    $Env:LDFLAGS = '/nologo /DEBUG /INCREMENTAL:NO /OPT:REF /OPT:ICF'
+    $Env:LDFLAGS = '/nologo /INCREMENTAL:NO /OPT:REF /OPT:ICF'
 
     $CMAKE_BUILD_TYPE = $Env:CMAKE_BUILD_TYPE
     Export-ModuleMember -Variable "CMAKE_BUILD_TYPE"
