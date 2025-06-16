@@ -3,8 +3,8 @@ $prefix = $LIBRARY_PREFIX.Replace('\', '/')
 $Env:RC = 'windres-rc rc'
 $config_args = @("--prefix=$prefix",
   '--disable-nls',
-  '--enable-shared=yes',
-  '--enable-static=no',
+  '--enable-shared=no',
+  '--enable-static=yes',
   '--disable-csharp',
   '--disable-java',
   '--enable-relocatable',
