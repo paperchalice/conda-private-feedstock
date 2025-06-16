@@ -15,7 +15,7 @@ requirements:
   build:
     - {{ compiler('c') }}
     - gettext-static
-    - libintl-dev
+    - libintl
     - m2-aux
     - m2-autoconf
     - m2-automake-wrapper
@@ -34,6 +34,8 @@ outputs:
     files:
       - Library/include/iconv.h
       - Library/lib/iconv.lib
+      - Library/share/doc
+      - Library/share/man
     build:
       run_exports:
         - libiconv-runtime
@@ -48,12 +50,13 @@ outputs:
     build:
       run_exports:
         - libcharset-runtime
-  - name: libiconv-doc
+  - name: iconv-nls
     files:
-      - Library/share
+      - Library/share/locale
   - name: iconv
     requirements:
       - libiconv-runtime
+      - libintl-runtime
     files:
       - Library/bin/*.exe
 

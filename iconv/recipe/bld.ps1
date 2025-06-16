@@ -1,9 +1,7 @@
-$Env:CFLAGS = ($Env:CFLAGS -replace '/', '-') + ' -O1'
-$MSYS2_PREFIX = $LIBRARY_PREFIX -replace '\\', '/' -replace 'C:', '/c/'
-$Env:CC = 'compile cl'
-$Env:WINDRES = 'windres-rc rc'
-
-bash -c "./configure --prefix=$MSYS2_PREFIX --enable-shared=yes --enable-static=no --enable-nls --host=x86_64-pc-windows"
+Enter-M2
+$Env:RC = 'windres-rc rc'
+$prefix = $LIBRARY_PREFIX.Replace('\', '/')
+bash -c "./configure --prefix=$prefix --enable-shared=yes --enable-relocatable --enable-static=no --enable-nls --host=x86_64-pc-windows"
 bash -c 'make'
 bash -c 'make install'
 
