@@ -11,6 +11,7 @@ source:
 requirements:
   build:
     - {{ compiler('c') }}
+    - libiconv-dev
     - m2-aux
     - m2-autoconf
     - m2-automake-wrapper
