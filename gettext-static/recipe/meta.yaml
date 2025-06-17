@@ -5,21 +5,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://mirrors.tuna.tsinghua.edu.cn/gnu/gettext/gettext-{{ version }}.tar.xz
-  sha256: 05240b29f5b0f422e5a4ef8e9b5f76d8fa059cc057693d2723cdb76f36a88ab0
+  url: https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.25-v1.17/gettext0.25-iconv1.17-static-64.zip
 
 requirements:
   build:
     - {{ compiler('c') }}
-    - libiconv-dev
-    - libiconv-runtime
-    - m2-aux
-    - m2-autoconf
-    - m2-automake-wrapper
-    - m2-bash
-    - m2-findutils
-    - m2-grep
-    - m2-libtool
-    - m2-m4
-    - m2-make
-    - m2-patch
