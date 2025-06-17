@@ -1,3 +1,7 @@
+$hello = 'libtextstyle\adhoc-tests\hello.c'
+(Get-Content $hello).Replace('int i;', 'int i; void*Ptr = &sprintf;') | `
+  Set-Content $hello
+
 Enter-M2
 $prefix = $LIBRARY_PREFIX.Replace('\', '/')
 $Env:RC = 'windres-rc rc'
