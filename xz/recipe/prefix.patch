@@ -1,0 +1,78 @@
+diff --git a/src/common/tuklib_progname.h b/src/common/tuklib_progname.h
+--- src/common/tuklib_progname.h
++++ src/common/tuklib_progname.h
+@@ -26,6 +26,9 @@
+ 
+ #define tuklib_progname_init TUKLIB_SYMBOL(tuklib_progname_init)
+ extern void tuklib_progname_init(char **argv);
+ 
++#define get_locale_dir TUKLIB_SYMBOL(get_locale_dir)
++extern char *get_locale_dir(void);
++
+ TUKLIB_DECLS_END
+ #endif
+diff --git a/src/common/tuklib_progname.c b/src/common/tuklib_progname.c
+--- src/common/tuklib_progname.c
++++ src/common/tuklib_progname.c
+@@ -9,8 +9,9 @@
+ //
+ ///////////////////////////////////////////////////////////////////////////////
+ 
+ #include "tuklib_progname.h"
++#include <Windows.h>
+ #include <string.h>
+ 
+ 
+ #ifndef HAVE_PROGRAM_INVOCATION_NAME
+@@ -46,4 +47,33 @@
+ 
+ 	progname = argv[0];
+ 	return;
+ }
++
++char *get_locale_dir(void)
++{
++    DWORD sz =  MAX_PATH;
++    PSTR p = malloc(sz);
++    DWORD ret = GetModuleFileName(NULL, p, sz);
++    while(ret == sz) {
++        sz *= 2;
++        p = realloc(p, sz);
++        ret = GetModuleFileName(NULL, p, sz);
++    }
++    int strsz = ret + 20;
++    char *s = malloc(strsz);
++    strcpy(s, p);
++    free(p);
++    int cnt = 0;
++    for(int i = ret - 1; i != -1; --i) {
++        if (s[i] == '\\') {
++            ++cnt;
++            if (cnt == 2) {
++                s[i] = '\0';
++                continue;
++            }
++            s[i] = '/';
++        }
++    }
++    strcat(s, "/share/locale");
++    return s;
++}
+diff --git a/src/common/tuklib_gettext.h b/src/common/tuklib_gettext.h
+--- src/common/tuklib_gettext.h
++++ src/common/tuklib_gettext.h
+@@ -24,12 +24,13 @@
+ #endif
+ 
+ #if TUKLIB_GETTEXT
+ #	include <libintl.h>
++#	include "tuklib_progname.h"
+ #	define tuklib_gettext_init(package, localedir) \
+ 		do { \
+ 			setlocale(LC_ALL, ""); \
+-			bindtextdomain(package, localedir); \
++			bindtextdomain(package, get_locale_dir()); \
+ 			textdomain(package); \
+ 		} while (0)
+ #	define _(msgid) gettext(msgid)
+ #else
