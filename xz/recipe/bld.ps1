@@ -2,7 +2,8 @@
   Set-Content CMakeLists.txt
 
 cmake -S . -B build `
-  -DBUILD_SHARED_LIBS=ON
+  -DBUILD_SHARED_LIBS=ON `
+  -DXZ_NLS=ON
 cmake --build build --config $CMAKE_BUILD_TYPE
 cmake --install build --config $CMAKE_BUILD_TYPE
 

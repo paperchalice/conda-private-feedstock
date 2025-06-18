@@ -12,6 +12,8 @@ requirements:
   build:
     - {{ compiler('c') }}
     - cmake
+    - gettext-static
+    - libintl-dev
 
 outputs:
   - name: liblzma-runtime
@@ -31,9 +33,13 @@ outputs:
   - name: xz-tools
     requirements:
       run:
-        liblzma-runtime
+        - libintl-runtime
+        - liblzma-runtime
     files:
       - Library/bin/*.exe
+  - name: xz-nls
+    files:
+      - Library/share/locale
 
 about:
   home: http://tukaani.org/xz/
