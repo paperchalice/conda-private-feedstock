@@ -16,11 +16,14 @@ if ($Env:CONDA_BUILD) {
     $Env:CMAKE_GENERATOR_PLATFORM = 'x64'
     $Env:CMAKE_INSTALL_PREFIX = $LIBRARY_PREFIX
     $Env:CFLAGS = "/nologo /MP /Zc:inline /Zc:preprocessor /utf-8 " +
-    "/DWIN32 /D_WINDOWS /DNDEBUG"
+    "/DWIN32 /D_WINDOWS /DNDEBUG" +
+    " /I $Env:BUILD_PREFIX\Library\include"
     $Env:CXXFLAGS = "/nologo /MP /permissive- /Zc:__cplusplus /Zc:checkGwOdr /Zc:externConstexpr /Zc:inline /Zc:preprocessor " +
     "/Zc:referenceBinding /Zc:rvalueCast /Zc:templateScope /utf-8 " +
-    "/DWIN32 /D_WINDOWS /DNDEBUG"
-    $Env:LDFLAGS = '/NOLOGO /INCREMENTAL:NO'
+    "/DWIN32 /D_WINDOWS /DNDEBUG" +
+    " /I $Env:BUILD_PREFIX\Library\include"
+    $Env:LDFLAGS = "/NOLOGO /INCREMENTAL:NO" +
+    " /LIBPATH $Env:BUILD_PREFIX\Library\lib"
     $Env:INCLUDE = "$Env:BUILD_PREFIX\Library\include;$Env:INCLUDE"
     $Env:LIB = "$Env:BUILD_PREFIX\Library\lib;$Env:LIB"
 
