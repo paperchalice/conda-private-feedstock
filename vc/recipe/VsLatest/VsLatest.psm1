@@ -21,6 +21,8 @@ if ($Env:CONDA_BUILD) {
     "/Zc:referenceBinding /Zc:rvalueCast /Zc:templateScope /utf-8 " +
     "/DWIN32 /D_WINDOWS /DNDEBUG"
     $Env:LDFLAGS = '/NOLOGO /INCREMENTAL:NO'
+    $Env:INCLUDE = "$Env:BUILD_PREFIX\Library\include;$Env:INCLUDE"
+    $Env:LIB = "$Env:BUILD_PREFIX\Library\lib;$Env:LIB"
 
     $CMAKE_BUILD_TYPE = $Env:CMAKE_BUILD_TYPE
     Export-ModuleMember -Variable "CMAKE_BUILD_TYPE"
@@ -34,7 +36,5 @@ function Enter-M2 {
     $Env:CXX = 'compile cl'
     $Env:AR = 'ar-lib lib'
     $Env:WINDRES = 'windres-rc rc'
-    $Env:INCLUDE = "$Env:BUILD_PREFIX\Library\include;$Env:INCLUDE"
-    $Env:LIB = "$Env:BUILD_PREFIX\Library\lib;$Env:LIB"
 }
 Export-ModuleMember -Function "Enter-M2"
