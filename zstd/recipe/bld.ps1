@@ -8,3 +8,8 @@ cmake -S build/cmake -B bld `
     -DZSTD_LZ4_SUPPORT=ON
 cmake --build bld --config $CMAKE_BUILD_TYPE
 cmake --install bld --config $CMAKE_BUILD_TYPE
+
+$links = @('zstdcat', 'unzstd', 'zstdmt')
+foreach($l in $links) {
+    New-Item -Path "$LIBRARY_BIN\$l.exe" -ItemType SymbolicLink -Target "zstd.exe"
+}
