@@ -1,0 +1,35 @@
+{% set version = "1.5.7" %}
+
+package:
+  name: zstd-split
+  version: {{ version }}
+
+source:
+  url: https://github.com/facebook/zstd/archive/v{{ version }}.tar.gz
+  sha256: 37d7284556b20954e56e1ca85b80226768902e2edabd3b649e9e72c0c9012ee3
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake-no-system
+    - lz4-full
+    - liblzma-full
+    - zlib
+
+outputs:
+  - name: zstd-runtime
+    files:
+      - Library/bin/*.dll
+  - name: zstd-dev
+    files:
+      - Library/include
+      - Library/lib
+  - name: zstd-tools
+    files:
+      - Library/bin/*.exe
+    requirements:
+      - zstd-runtime
+      - liblzma-runtime
+      - lz4-runtime
+      - zlib-runtime
