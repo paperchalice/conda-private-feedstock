@@ -23,7 +23,7 @@ if ($Env:CONDA_BUILD) {
     "/DWIN32 /D_WINDOWS /DNDEBUG" +
     " /I $Env:BUILD_PREFIX\Library\include"
     $Env:LDFLAGS = "/NOLOGO /INCREMENTAL:NO" +
-    " /LIBPATH $Env:BUILD_PREFIX\Library\lib"
+    " /LIBPATH:$Env:BUILD_PREFIX\Library\lib"
     $Env:INCLUDE = "$Env:BUILD_PREFIX\Library\include;$Env:INCLUDE"
     $Env:LIB = "$Env:BUILD_PREFIX\Library\lib;$Env:LIB"
 
