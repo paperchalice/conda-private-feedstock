@@ -1,0 +1,49 @@
+{% set version = "3.5.0" %}
+
+package:
+  name: openssl-split
+  version: {{ version }}
+
+source:
+  url: https://github.com/openssl/openssl/releases/download/openssl-{{ version }}/openssl-{{ version }}.tar.gz
+  sha256: 344d0a79f1a9b08029b0744e2cc401a43f9c90acd1044d09a530b4885a8e9fc0
+  patches:
+    - lib.patch
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - nasm
+    - perl
+    - m2-patch
+    - zlib
+    - brotli-full
+    - zstd-dev
+  # Empty host section to ensure that this is identified as cb3
+  host:
+
+outputs:
+  - name: openssl-runtime
+    files:
+      - Library/bin/*.dll
+      - Library/etc
+    requirements:
+      - libbrotlidec-dev
+      - libbrotlienc-dev
+      - zlib-dev
+      - zstd-runtime
+  - name: openssl-dev
+    files:
+      - Library/lib
+      - Library/include
+      - Library/html
+    build:
+      run_exports:
+        strong:
+          - openssl-runtime-runtime
+  - name: openssl-tools
+    files:
+      - Library/bin/*.exe
+      - Library/bin/*.pl
+    requirements:
+      - openssl-runtime

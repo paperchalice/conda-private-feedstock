@@ -1,0 +1,32 @@
+diff --git a/Configurations/platform/Windows/MSVC.pm b/Configurations/platform/Windows/MSVC.pm
+--- Configurations/platform/Windows/MSVC.pm
++++ Configurations/platform/Windows/MSVC.pm
+@@ -17,9 +17,11 @@
+ # It's possible that this variant of |sharedname| should be in Windows.pm.
+ # However, this variant was VC only in 1.1.1, so we maintain that here until
+ # further notice.
+ sub sharedname {
+-    return platform::BASE::__concat(platform::BASE->sharedname($_[1]),
++    my $lib = platform::BASE->sharedname($_[1]);
++    $lib =~ s|^lib|| if defined $lib;
++    return platform::BASE::__concat($lib,
+                                     "-",
+                                     $_[0]->shlib_version_as_filename(),
+                                     ($target{multilib} // '' ),
+                                     ($_[0]->shlibvariant() // ''));
+diff --git a/Configurations/platform/Windows.pm b/Configurations/platform/Windows.pm
+--- Configurations/platform/Windows.pm
++++ Configurations/platform/Windows.pm
+@@ -52,9 +52,11 @@
+                                     ($_[0]->shlibvariant() // ''));
+ }
+ 
+ sub sharedname_import {
+-    return platform::BASE::__isshared($_[1]) ? $_[1] : undef;
++    my $lib = $_[1];
++    $lib =~ s|^lib|| if defined $lib;
++    return platform::BASE::__isshared($_[1]) ? $lib : undef;
+ }
+ 
+ sub sharedlib_import {
+     return platform::BASE::__concat($_[0]->sharedname_import($_[1]),

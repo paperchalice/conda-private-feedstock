@@ -1,0 +1,25 @@
+$opts = @(
+    'VC-WIN64A',
+    "--prefix=$LIBRARY_PREFIX",
+    "--openssldir=$LIBRARY_PREFIX\etc\ssl",
+    '--release',
+    'enable-brotli',
+    'enable-zlib',
+    'enable-zstd',
+    '--with-zlib-lib=z.lib',
+    '--with-zstd-lib=zstd.lib'
+    'no-legacy',
+    'no-tls-deprecated-ec',
+    'no-deprecated',
+    'shared'
+)
+$Env:CFLAGS += ' /O1'
+$Env:CXXFLAGS += ' /O1'
+$Env:LDFLAGS += ' /DEBUG'
+perl .\Configure @opts
+nmake
+nmake install
+
+Remove-Item $LIBRARY_BIN\*.pdb
+New-Item $LIBRARY_LIB\pkgconfig -ItemType Directory
+Copy-Item exporters\*.pc -Destination $LIBRARY_LIB\pkgconfig
