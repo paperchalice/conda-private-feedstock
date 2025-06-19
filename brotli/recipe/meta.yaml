@@ -1,0 +1,72 @@
+{% set version = "1.1.0" %}
+
+package:
+  name: brotli-split
+  version: {{ version }}
+
+source:
+  fn: brotli-{{ version }}.tar.gz
+  url: https://github.com/google/brotli/archive/v{{ version }}.tar.gz
+  sha256: e720a6ca29428b803f4ad165371771f5398faba397edf6778837a18599ea13ff
+
+
+requirements:
+  build:
+    - cmake
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+
+outputs:
+  - name: libbrotlicommon-runtime
+    files:
+      - Library/brotlicommon.dll
+  - name: libbrotlienc-runtime
+    files:
+      - Library/brotlienc.dll
+  - name: libbrotlidec-runtime
+    files:
+      - Library/bin/brotlidec.dll
+    requirements:
+      - libbrotlicommon-runtime
+  - name: libbrotlicommon-dev
+    files:
+      - Library/include/brotli/port.h
+      - Library/include/brotli/shared_dictionary.h
+      - Library/include/brotli/types.h
+      - Library/lib/brotlicommon.lib
+      - Library/lib/pkgconfig/libbrotlicommon.pc
+    build:
+      run_exports:
+        - libbrotlicommon-runtime
+  - name: libbrotlidec-dev
+    files:
+      - Library/include/brotli/decode.h
+      - Library/lib/brotlidec.lib
+      - Library/lib/pkgconfig/libbrotlidec.pc
+    requirements:
+      - libbrotlicommon-dev
+    build:
+      run_exports:
+        - libbrotlidec-runtime
+  - name: libbrotlienc-dev
+    files:
+      - Library/include/brotli/encode.h
+      - Library/lib/brotlienc.lib
+      - Library/lib/pkgconfig/libbrotlienc.pc
+    requirements:
+      - libbrotlicommon-dev
+    build:
+      run_exports:
+        - libbrotlienc-runtime
+  - name: brotli-tools
+    files:
+      - Library/bin/*.exe
+    requirements:
+      - libbrotlicommon-runtime
+      - libbrotlidec-runtime
+      - libbrotlienc-runtime
+  - name: brotli-full
+    requirements:
+      - brotli-tools
+      - libbrotlidec-dev
+      - libbrotlienc-dev
