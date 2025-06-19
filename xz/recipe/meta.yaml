@@ -26,6 +26,7 @@ outputs:
     files:
       - Library/include
       - Library/lib
+      - Library/share/doc
     run_exports:
       strong:
         - liblzma-runtime
