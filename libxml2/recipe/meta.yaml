@@ -20,6 +20,10 @@ outputs:
   - name: libxml2-runtime
     files:
       - Library/bin/*.dll
+    requirements:
+      - libiconv-runtime
+      - liblzma-runtime
+      - zlib-runtime
   - name: libxml2-dev
     files:
       - Library/include
@@ -28,6 +32,10 @@ outputs:
     run_exports:
       strong:
         - libxml2-runtime
+    requirements:
+      - libiconv-dev
+      - liblzma-dev
+      - zlib-dev
   - name: libxml2-tools
     files:
       - Library/bin/*.exe
