@@ -28,9 +28,9 @@ outputs:
       - Library/bin/*.dll
       - Library/etc
     requirements:
-      - libbrotlidec-dev
-      - libbrotlienc-dev
-      - zlib-dev
+      - libbrotlidec-runtime
+      - libbrotlienc-runtime
+      - zlib-runtime
       - zstd-runtime
   - name: openssl-dev
     files:
@@ -41,9 +41,18 @@ outputs:
       run_exports:
         strong:
           - openssl-runtime-runtime
+    requirements:
+      - libbrotlidec-dev
+      - libbrotlienc-dev
+      - zlib-dev
+      - zstd-dev
   - name: openssl-tools
     files:
       - Library/bin/*.exe
       - Library/bin/*.pl
     requirements:
       - openssl-runtime
+  - name: openssl-full
+    requirements:
+      - openssl-tools
+      - openssl-dev
