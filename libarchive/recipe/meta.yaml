@@ -1,0 +1,28 @@
+{% set version = "3.8.1" %}
+
+package:
+  name: libarchive-split
+  version: {{ version }}
+
+source:
+  url: https://github.com/libarchive/libarchive/archive/v{{ version }}.tar.gz
+  sha256: ad5dfe0d9a5999494c445b9bc3271d84160950bb1790cf892fb132f563d036b6
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - bzip2-dev
+    - libiconv-dev
+    - liblzma-dev
+    - lz4-dev
+    - lzo-dev
+    - openssl-dev
+    - pcre2-dev
+    - pkgconf-tools
+    - zlib
+    - zstd-dev
+
+outputs:
+  - name: libarchive-runtime
+    files:
+    - Library
