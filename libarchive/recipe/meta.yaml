@@ -12,6 +12,7 @@ requirements:
   build:
     - {{ compiler('c') }}
     - bzip2-dev
+    - libb2-dev
     - libiconv-dev
     - liblzma-dev
     - lz4-dev
