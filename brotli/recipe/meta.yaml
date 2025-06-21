@@ -17,56 +17,23 @@ requirements:
     - {{ compiler('cxx') }}
 
 outputs:
-  - name: libbrotlicommon-runtime
+  - name: brotli-runtime
     files:
-      - Library/brotlicommon.dll
-  - name: libbrotlienc-runtime
+      - Library/*.dll
+  - name: brotli-dev
     files:
-      - Library/brotlienc.dll
-  - name: libbrotlidec-runtime
-    files:
-      - Library/bin/brotlidec.dll
-    requirements:
-      - libbrotlicommon-runtime
-  - name: libbrotlicommon-dev
-    files:
-      - Library/include/brotli/port.h
-      - Library/include/brotli/shared_dictionary.h
-      - Library/include/brotli/types.h
-      - Library/lib/brotlicommon.lib
-      - Library/lib/pkgconfig/libbrotlicommon.pc
+      - Library/include
+      - Library/lib
     build:
       run_exports:
-        - libbrotlicommon-runtime
-  - name: libbrotlidec-dev
-    files:
-      - Library/include/brotli/decode.h
-      - Library/lib/brotlidec.lib
-      - Library/lib/pkgconfig/libbrotlidec.pc
-    requirements:
-      - libbrotlicommon-dev
-    build:
-      run_exports:
-        - libbrotlidec-runtime
-  - name: libbrotlienc-dev
-    files:
-      - Library/include/brotli/encode.h
-      - Library/lib/brotlienc.lib
-      - Library/lib/pkgconfig/libbrotlienc.pc
-    requirements:
-      - libbrotlicommon-dev
-    build:
-      run_exports:
-        - libbrotlienc-runtime
+        - brotli-runtime
   - name: brotli-tools
     files:
       - Library/bin/*.exe
     requirements:
-      - libbrotlicommon-runtime
-      - libbrotlidec-runtime
-      - libbrotlienc-runtime
+      - brotli-runtime
   - name: brotli-full
     requirements:
       - brotli-tools
-      - libbrotlidec-dev
-      - libbrotlienc-dev
+      - brotli-runtime
+      - brotli-dev
