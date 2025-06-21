@@ -17,10 +17,10 @@ requirements:
     - liblzma-dev
     - lz4-dev
     - lzo-dev
-    - openssl-full
+    - openssl-dev
     - pcre2-dev
     - pkgconf-tools
-    - zlib
+    - zlib-dev
     - zstd-dev
 
 outputs:

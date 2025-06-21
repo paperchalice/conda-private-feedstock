@@ -19,7 +19,7 @@ requirements:
 outputs:
   - name: brotli-runtime
     files:
-      - Library/*.dll
+      - Library/bin/*.dll
   - name: brotli-dev
     files:
       - Library/include
