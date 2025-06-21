@@ -1,0 +1,46 @@
+{% set version = "1.21.3" %}
+
+package:
+  name: krb5
+  version: {{ version }}
+
+source:
+  url: https://github.com/krb5/krb5/archive/krb5-{{ version }}-final.tar.gz
+  sha256: 2157d92020d408ed63ebcd886a92d1346a1383b0f91123a0473b4f69b4a24861
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - posix
+    - perl
+    - pkgconf-tools
+    - make
+    - gettext-static
+
+outputs:
+  - name: krb5-runtime
+    files:
+      - Library/bin/*.dll
+      - Library/bin/plugins
+    requirements:
+      - openssl-runtime
+  - name: krb5-dev
+    files:
+      - Library/bin/*.chm
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        - krb5-runtime
+  - name: krb5-tools
+    files:
+      - Library/bin/*.exe
+    requirements:
+      - krb5-runtime
+    
+about:
+  home: http://web.mit.edu/kerberos/
+  license: MIT
+  license_file: doc/notice.rst
+  summary: A network authentication protocol.
