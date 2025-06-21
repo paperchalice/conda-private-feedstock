@@ -17,7 +17,7 @@ requirements:
     - liblzma-dev
     - lz4-dev
     - lzo-dev
-    - openssl-dev
+    - openssl-full
     - pcre2-dev
     - pkgconf-tools
     - zlib
@@ -26,4 +26,28 @@ requirements:
 outputs:
   - name: libarchive-runtime
     files:
-    - Library
+      - Library/bin/*.dll
+    requirements:
+      - bzip2-runtime
+      - libb2-runtime
+      - libiconv-runtime
+      - liblzma-runtime
+      - lz4-runtime
+      - lzo-runtime
+      - openssl-runtime
+      - pcre2-runtime
+      - zlib-runtime
+      - zstd-runtime
+  - name: libarchive-dev
+    files:
+      - Library/include
+      - Library/lib
+      - Library/share
+    build:
+      run_exports:
+        - libarchive-runtime
+  - name: libarchive-tools
+    files:
+      - Library/bin/*.exe
+    requirements:
+      - libarchive-runtime
