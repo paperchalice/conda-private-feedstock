@@ -1,0 +1,34 @@
+{% set version = "0.11.1" %}
+
+package:
+  name: libssh-split
+  version: {{ version }}
+
+source:
+  url: https://www.libssh.org/files/0.11/libssh-{{ version }}.tar.xz
+  sha256: 14b7dcc72e91e08151c58b981a7b570ab2663f630e7d2837645d5a9c612c1b79
+
+requirements:
+  build:
+    - {{ compiler("c") }}
+    - cmake
+    - krb5-dev
+    - krb5-tools
+    - openssl-dev
+    - zlib-dev
+
+outputs:
+  - name: libssh-runtime
+    files:
+      - Library/bin/*.dll
+    requirements:
+      - krb5-runtime
+      - openssl-runtime
+      - zlib-runtime
+  - name: libssh-dev
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        - {{ pin_subpackage("libssh-runtime", max_pin="x") }}
