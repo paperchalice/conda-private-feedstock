@@ -5,6 +5,8 @@ $Env:OPENSSL_ROOT_DIR = "$Env:BUILD_PREFIX\Library"
 (Get-Content src/libcrypto.c).Replace('EVP_CIPHER_CTX_init', 'EVP_CIPHER_CTX_reset') | `
   Set-Content src/libcrypto.c
 
+Remove-Item $Env:BUILD_PREFIX\Library\lib\libcrypto.lib
+
 $cmake_options = @(
   '-DBUILD_SHARED_LIBS=ON',
   '-DWITH_EXAMPLES=OFF',
@@ -14,6 +16,6 @@ $cmake_options = @(
   '-DGSSAPI_LIBRARIES=gssapi64.lib;krb5_64.lib;comerr64.lib'
 )
 
-cmake -S . -B build @cmake_options
+cmake -S . -B build --debug-find-pkg=OpenSSL @cmake_options
 cmake --build build --config $CMAKE_BUILD_TYPE
 cmake --install build --config $CMAKE_BUILD_TYPE
