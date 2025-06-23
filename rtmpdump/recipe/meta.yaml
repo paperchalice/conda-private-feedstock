@@ -1,0 +1,31 @@
+{% set version = "2.6" %}
+
+package:
+  name: rtmpdump-split
+  version: {{ version }}
+
+source:
+  git_url: git://git.ffmpeg.org/rtmpdump
+  git_depth: 1
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - cmake-no-system
+    - openssl-dev
+    - zlib-dev
+
+outputs:
+  - name: rtmpdump-runtime
+    files:
+      - Library/bin
+    requirements:
+      - openssl-runtime
+      - zlib-runtime
+  - name: rtmpdump-dev
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        - {{ pin_subpackage('rtmpdump-runtime', max_pin='x') }}
