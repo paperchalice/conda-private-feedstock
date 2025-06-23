@@ -1,0 +1,26 @@
+{% set version = "0.1" %}
+
+package:
+  name: getopt-split
+  version: {{ version }}
+
+source:
+  url: https://github.com/libimobiledevice-win32/getopt/archive/{{ version }}.tar.gz
+  sha256: 7e9653ecd58ce4149959bf6a905f4ab2f7889856fe1218afbf84284074f9e549
+  patches:
+    - vs.patch
+requirements:
+  build:
+    - m2-patch
+
+outputs:
+  - name: getopt-win32-runtime
+    files:
+      - Library/bin
+  - name: getopt-win32-dev
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        - {{ pin_subpackage("getopt-win32-runtime", max_pin="x") }}

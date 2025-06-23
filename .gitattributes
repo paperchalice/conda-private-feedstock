@@ -3,3 +3,4 @@ libb2/recipe/*.patch text eol=lf
 xz/recipe/*.patch text eol=lf
 openssl/recipe/*.patch text eol=lf
 libpsl/recipe/*.patch text eol=lf
+getopt/recipe/*.patch text eol=lf
