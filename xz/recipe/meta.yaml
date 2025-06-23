@@ -28,7 +28,6 @@ outputs:
       - Library/lib
       - Library/share/doc
     run_exports:
-      strong:
         - liblzma-runtime
   - name: liblzma-full
     requirements:

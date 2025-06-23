@@ -25,7 +25,6 @@ outputs:
       - Library/lib
     build:
       run_exports:
-        strong:
           - bzip2-runtime
   - name: bzip2-tool
     requirements:

@@ -30,7 +30,6 @@ outputs:
       - Library/lib
       - Library/share
     run_exports:
-      strong:
         - libxml2-runtime
     requirements:
       - libiconv-dev

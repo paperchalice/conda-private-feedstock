@@ -36,7 +36,8 @@ outputs:
   - name: curl-dev
     build:
       run_exports:
-        - {{ pin_subpackage('curl-runtime', max_pin='x') }}
+        strong:
+          - {{ pin_subpackage('curl-runtime', max_pin='x') }}
     files:
       - Library/include
       - Library/lib

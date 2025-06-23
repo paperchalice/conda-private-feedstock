@@ -25,7 +25,6 @@ outputs:
       - Library/lib
     build:
       run_exports:
-        strong:
           - lzo-runtime
   - name: lzo-full
     requirements:

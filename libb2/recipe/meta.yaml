@@ -36,7 +36,6 @@ outputs:
       - Library/lib
     build:
       run_exports:
-        strong:
           - libb2-runtime
   - name: libb2
     requirements:

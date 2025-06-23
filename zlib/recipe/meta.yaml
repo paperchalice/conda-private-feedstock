@@ -30,7 +30,6 @@ outputs:
       - Library/lib
     build:
       run_exports:
-        strong:
           - zlib-runtime
   - name: zlib-tool
     requirements:

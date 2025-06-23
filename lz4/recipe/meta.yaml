@@ -28,7 +28,6 @@ outputs:
       - Library/lib
     build:
       run_exports:
-        strong:
           - lz4-runtime
   - name: lz4-tool
     requirements:

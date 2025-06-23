@@ -25,7 +25,6 @@ outputs:
       exclude:
         - Library/bin
     run_exports:
-      strong:
         - libpkgconf-runtime
   - name: libpkgconf
     requirements:
