@@ -11,7 +11,7 @@ source:
 requirements:
   build:
     - {{ compiler("c") }}
-    - cmake
+    - cmake-no-system
     - krb5-dev
     - krb5-tools
     - openssl-dev
