@@ -28,8 +28,7 @@ outputs:
       - Library/bin/*.dll
       - Library/etc
     requirements:
-      - libbrotlidec-runtime
-      - libbrotlienc-runtime
+      - brotli-runtime
       - zlib-runtime
       - zstd-runtime
   - name: openssl-dev
@@ -42,8 +41,7 @@ outputs:
         strong:
           - openssl-runtime
     requirements:
-      - libbrotlidec-dev
-      - libbrotlienc-dev
+      - brotli-dev
       - zlib-dev
       - zstd-dev
   - name: openssl-tools

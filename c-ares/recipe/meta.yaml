@@ -1,0 +1,40 @@
+{% set version = "1.34.5" %}
+
+package:
+  name: c-ares
+  version: {{ version }}
+
+source:
+  url: https://github.com/c-ares/c-ares/releases/download/v{{ version }}/c-ares-{{ version }}.tar.gz
+  sha256: 7d935790e9af081c25c495fd13c2cfcda4792983418e96358ef6e7320ee06346
+
+requirements:
+  build:
+    - {{ compiler("c") }}
+    - cmake
+    
+
+outputs:
+  - name: c-ares-runtime
+    files:
+      - Library/bin/*.dll
+  - name: c-ares-dev
+    build:
+      run_exports:
+        - {{ pin_subpackage("c-ares-runtime", max_pin="x") }}
+    files:
+      - Library/include
+      - Library/lib
+      - Library/share
+  - name: c-ares-tools
+    files:
+      - Library/bin/*.exe
+    requirements:
+      - c-ares-runtime
+
+about:
+  home: https://c-ares.haxx.se/
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.md
+  summary: This is c-ares, an asynchronous resolver library

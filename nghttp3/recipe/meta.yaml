@@ -1,0 +1,25 @@
+{% set version = "1.10.1" %}
+
+package:
+  name: nghttp3-split
+  version: {{ version }}
+
+source:
+  url: https://github.com/ngtcp2/nghttp3/releases/download/v1.10.1/nghttp3-{{ version }}.tar.xz
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - cmake
+
+outputs:
+  - name: nghttp3-runtime
+    files:
+      - Library/bin/*.dll
+  - name: nghttp3-dev
+    files:
+      - Library/include
+      - Library/lib
+    build:
+      run_exports:
+        - {{ pin_subpackage('nghttp3-runtime', max_pin='x') }}

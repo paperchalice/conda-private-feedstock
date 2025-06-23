@@ -12,6 +12,7 @@ requirements:
   build:
     - {{ compiler('c') }}
     - bzip2-dev
+    - libb2-dev
     - libiconv-dev
     - liblzma-dev
     - lz4-dev
@@ -19,10 +20,34 @@ requirements:
     - openssl-dev
     - pcre2-dev
     - pkgconf-tools
-    - zlib
+    - zlib-dev
     - zstd-dev
 
 outputs:
   - name: libarchive-runtime
     files:
-    - Library
+      - Library/bin/*.dll
+    requirements:
+      - bzip2-runtime
+      - libb2-runtime
+      - libiconv-runtime
+      - liblzma-runtime
+      - lz4-runtime
+      - lzo-runtime
+      - openssl-runtime
+      - pcre2-runtime
+      - zlib-runtime
+      - zstd-runtime
+  - name: libarchive-dev
+    files:
+      - Library/include
+      - Library/lib
+      - Library/share
+    build:
+      run_exports:
+        - libarchive-runtime
+  - name: libarchive-tools
+    files:
+      - Library/bin/*.exe
+    requirements:
+      - libarchive-runtime

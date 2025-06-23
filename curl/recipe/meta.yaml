@@ -1,0 +1,66 @@
+{% set version = "8.14.1" %}
+
+package:
+  name: curl-split
+  version: {{ version }}
+
+source:
+  url: http://curl.haxx.se/download/curl-{{ version }}.tar.bz2
+  sha256: 5760ed3c1a6aac68793fc502114f35c3e088e8cd5c084c2d044abdf646ee48fb
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - cmake-no-system  # [win]
+    - pkgconf-tools
+    - c-ares-dev
+    - libpsl-dev
+    - nghttp3-dev
+    - zlib-dev
+    - zstd-dev
+    - libssh-dev
+    - openssl-dev
+
+outputs:
+  - name: curl-runtime
+    files:
+      - Library/bin/*.dll
+    requirements:
+      - c-ares-runtime
+      - libpsl-runtime
+      - nghttp3-runtime
+      - openssl-runtime
+      - libssh-runtime
+      - zlib-runtime
+      - zstd-runtime
+  - name: curl-
+    build:
+      run_exports:
+        - {{ pin_subpackage('curl-runtime', max_pin='x') }}
+    files:
+      - Library/include
+      - Library/lib
+      - Library/share
+  
+
+about:
+  home: http://curl.haxx.se/
+  license: curl
+  license_family: MIT
+  license_file: COPYING
+  summary: tool and library for transferring data with URL syntax
+
+  description: |
+    Curl is an open source command line tool and library for transferring data
+    with URL syntax. It is used in command lines or scripts to transfer data.
+  doc_url: https://curl.haxx.se/docs/
+  dev_url: https://github.com/curl/curl
+  doc_source_url: https://github.com/curl/curl/tree/master/docs
+
+extra:
+  recipe-maintainers:
+    - msarahan
+    - jakirkham
+    - ocefpaf
+    - mingwandroid
+    - xylar
