@@ -33,7 +33,7 @@ outputs:
       - libssh-runtime
       - zlib-runtime
       - zstd-runtime
-  - name: curl-
+  - name: curl-dev
     build:
       run_exports:
         - {{ pin_subpackage('curl-runtime', max_pin='x') }}
@@ -41,7 +41,12 @@ outputs:
       - Library/include
       - Library/lib
       - Library/share
-  
+  - name: curl-tools
+    files:
+      - Library/bin/*.exe
+      - Library/bin/curl-config
+    requirements:
+      - curl-runtime
 
 about:
   home: http://curl.haxx.se/
