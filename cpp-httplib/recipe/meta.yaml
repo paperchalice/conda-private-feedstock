@@ -1,0 +1,41 @@
+{% set version = "0.21.0" %}
+
+package:
+  name: cpp-httplib-split
+  version: {{ version }}
+
+source:
+  url: https://github.com/yhirose/cpp-httplib/archive/refs/tags/v{{ version }}.tar.gz
+
+requirements:
+  build:
+    - {{ compiler("c") }}
+    - cmake-no-system
+    - brotli-dev
+    - zlib-dev
+    - zstd-full
+    
+
+outputs:
+  - name: cpp-httplib-runtime
+    files:
+      - Library/bin/*.dll
+    requirements:
+      - brotli-runtime
+      - zlib-runtime
+      - zstd-runtime
+  - name: cpp-httplib-dev
+    build:
+      run_exports:
+        - {{ pin_subpackage("cpp-httplib-runtime", max_pin="x") }}
+    files:
+      - Library/include
+      - Library/lib
+      - Library/share
+
+about:
+  home: https://github.com/yhirose/cpp-httplib
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: A C++ header-only HTTP/HTTPS server and client library
