@@ -1,0 +1,39 @@
+{% set version = "20.1.7" %}
+package:
+  name: llvm-core-split
+  version: {{ version }}
+
+source:
+  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.7/llvm-project-{{ version }}.src.tar.xz
+
+requirements:
+  build:
+    - cpp-httplib-dev
+    - cpp-httplib-runtime
+    - curl-dev
+    - iconv-dev
+    - libxml2-dev
+    - pkgconf-tools
+    - zstd-full
+    - zlib-dev
+    - sphinx
+
+outputs:
+  - name: llvm-core-runtime
+    files:
+      - Library/bin/*.dll
+    requirements:
+      - cpp-httplib-runtime
+      - curl-runtime
+      - iconv-runtime
+      - libxml2-runtime
+      - zstd-runtime
+      - zlib-runtime
+  - name: llvm-core-dev
+    files:
+      - Library/include
+      - Library/lib
+      - Library/share
+  - name: llvm-core-tools
+    files:
+      - Library/bin/*.exe
