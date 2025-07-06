@@ -1,77 +1,58 @@
-diff --git a/src/common/tuklib_progname.h b/src/common/tuklib_progname.h
---- src/common/tuklib_progname.h
-+++ src/common/tuklib_progname.h
-@@ -26,6 +26,9 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -206,9 +206,9 @@
+ else()
+     # Elsewhere a space is safe. This also keeps things compatible with
+     # EBCDIC in case CMake-based build is ever done on such a system.
+     set(PACKAGE_NAME_DEFINITION "${PACKAGE_NAME}")
+-    set(LOCALEDIR_DEFINITION "${CMAKE_INSTALL_FULL_LOCALEDIR}")
++    set(LOCALEDIR_DEFINITION "${CMAKE_INSTALL_LOCALEDIR}")
+ endif()
  
- #define tuklib_progname_init TUKLIB_SYMBOL(tuklib_progname_init)
- extern void tuklib_progname_init(char **argv);
+ # When used with MSVC, CMake can merge .manifest files with
+ # linker-generated manifests and embed the result in an executable.
+@@ -340,8 +340,9 @@
+ # it's not done here. (xz has translations, xzdec doesn't.)
+ set(XZ_NLS_DEFAULT OFF)
+ find_package(Intl)
+ find_package(Gettext)
++find_package(prefix-stub REQUIRED)
+ if(Intl_FOUND AND GETTEXT_FOUND)
+     set(XZ_NLS_DEFAULT ON)
+ endif()
  
-+#define get_locale_dir TUKLIB_SYMBOL(get_locale_dir)
-+extern char *get_locale_dir(void);
-+
- TUKLIB_DECLS_END
- #endif
-diff --git a/src/common/tuklib_progname.c b/src/common/tuklib_progname.c
---- src/common/tuklib_progname.c
-+++ src/common/tuklib_progname.c
-@@ -9,8 +9,9 @@
- //
- ///////////////////////////////////////////////////////////////////////////////
+@@ -2158,9 +2159,9 @@
+             src/xz/list.h
+         )
+     endif()
  
- #include "tuklib_progname.h"
-+#include <Windows.h>
- #include <string.h>
+-    target_link_libraries(xz PRIVATE liblzma libgnu)
++    target_link_libraries(xz PRIVATE liblzma libgnu me::prefix-stub)
  
- 
- #ifndef HAVE_PROGRAM_INVOCATION_NAME
-@@ -46,4 +47,33 @@
- 
- 	progname = argv[0];
- 	return;
- }
-+
-+char *get_locale_dir(void)
-+{
-+    DWORD sz =  MAX_PATH;
-+    PSTR p = malloc(sz);
-+    DWORD ret = GetModuleFileName(NULL, p, sz);
-+    while(ret == sz) {
-+        sz *= 2;
-+        p = realloc(p, sz);
-+        ret = GetModuleFileName(NULL, p, sz);
-+    }
-+    int strsz = ret + 20;
-+    char *s = malloc(strsz);
-+    strcpy(s, p);
-+    free(p);
-+    int cnt = 0;
-+    for(int i = ret - 1; i != -1; --i) {
-+        if (s[i] == '\\') {
-+            ++cnt;
-+            if (cnt == 2) {
-+                s[i] = '\0';
-+                continue;
-+            }
-+            s[i] = '/';
-+        }
-+    }
-+    strcat(s, "/share/locale");
-+    return s;
-+}
+     if(USE_POSIX_THREADS)
+         # src/xz/signals.c uses mythread_sigmask() which with POSIX
+         # threads calls pthread_sigmask(). Thus, we need the threading
 diff --git a/src/common/tuklib_gettext.h b/src/common/tuklib_gettext.h
 --- src/common/tuklib_gettext.h
 +++ src/common/tuklib_gettext.h
-@@ -24,12 +24,13 @@
- #endif
+@@ -12,8 +12,9 @@
+ #ifndef TUKLIB_GETTEXT_H
+ #define TUKLIB_GETTEXT_H
  
- #if TUKLIB_GETTEXT
+ #include "tuklib_common.h"
++#include <prefix-stub/relocate.h>
+ #include <locale.h>
+ 
+ #ifndef TUKLIB_GETTEXT
+ #	ifdef ENABLE_NLS
+@@ -27,9 +28,9 @@
  #	include <libintl.h>
-+#	include "tuklib_progname.h"
  #	define tuklib_gettext_init(package, localedir) \
  		do { \
  			setlocale(LC_ALL, ""); \
 -			bindtextdomain(package, localedir); \
-+			bindtextdomain(package, get_locale_dir()); \
++			bindtextdomain(package, prefix_stub_relocate(localedir)); \
  			textdomain(package); \
  		} while (0)
  #	define _(msgid) gettext(msgid)
