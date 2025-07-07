@@ -18,6 +18,7 @@ requirements:
     - libintl-dev
     - m2-patch
     - prefix-stub-dev
+    - prefix-stub-runtime
 
 outputs:
   - name: liblzma-runtime
