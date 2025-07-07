@@ -17,7 +17,7 @@ outputs:
   - name: prefix-stub-runtime
     files:
       - Library/bin/*.dll
-  - name: prefix-stub--dev
+  - name: prefix-stub-dev
     build:
       run_exports:
         - {{ pin_subpackage("prefix-stub-runtime", max_pin="x") }}
