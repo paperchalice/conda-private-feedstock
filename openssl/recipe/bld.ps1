@@ -1,7 +1,7 @@
 $opts = @(
     'VC-WIN64A',
     "--prefix=$LIBRARY_PREFIX",
-    "--openssldir=$LIBRARY_PREFIX\etc\ssl",
+    "--openssldir=SSL",
     '--release',
     'enable-brotli',
     'enable-zlib',

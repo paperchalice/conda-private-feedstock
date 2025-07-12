@@ -9,6 +9,7 @@ source:
   sha256: 344d0a79f1a9b08029b0744e2cc401a43f9c90acd1044d09a530b4885a8e9fc0
   patches:
     - lib.patch
+    - reloc.patch
 
 requirements:
   build:
@@ -19,6 +20,7 @@ requirements:
     - zlib
     - brotli-full
     - zstd-dev
+    - prefix-stub-dev
   # Empty host section to ensure that this is identified as cb3
   host:
 
@@ -26,9 +28,12 @@ outputs:
   - name: openssl-runtime
     files:
       - Library/bin/*.dll
-      - Library/etc
+      - Library/SSL
+      - Library/lib/engines-3
+      - Library/lib/ossl-modules
     requirements:
       - brotli-runtime
+      - prefix-stub-runtime
       - zlib-runtime
       - zstd-runtime
   - name: openssl-dev
