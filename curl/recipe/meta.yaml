@@ -7,6 +7,8 @@ package:
 source:
   url: http://curl.haxx.se/download/curl-{{ version }}.tar.bz2
   sha256: 5760ed3c1a6aac68793fc502114f35c3e088e8cd5c084c2d044abdf646ee48fb
+  patches:
+    - cert.patch
 
 requirements:
   build:
