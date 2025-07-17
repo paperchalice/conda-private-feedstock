@@ -44,3 +44,18 @@ diff --git a/src/tool_operate.c b/src/tool_operate.c
    }
  #endif
    return CURLE_OK;
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+--- src/CMakeLists.txt
++++ src/CMakeLists.txt
+@@ -99,9 +99,10 @@
+ 
+ # Build curl executable
+ add_executable(${EXE_NAME} ${CURL_CFILES} ${CURL_HFILES} ${_curl_cfiles_gen} ${_curl_hfiles_gen} ${CURLX_CFILES} ${CURLX_HFILES})
+ target_compile_definitions(${EXE_NAME} PRIVATE ${_curl_definitions})
+-target_link_libraries(${EXE_NAME} ${LIB_SELECTED_FOR_EXE} ${CURL_LIBS})
++find_package(prefix-stub)
++target_link_libraries(${EXE_NAME} ${LIB_SELECTED_FOR_EXE} ${CURL_LIBS} me::prefix-stub)
+ 
+ add_executable(${PROJECT_NAME}::${EXE_NAME} ALIAS ${EXE_NAME})
+ 
+ add_executable(curlinfo EXCLUDE_FROM_ALL "curlinfo.c")
