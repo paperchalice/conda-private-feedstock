@@ -51,6 +51,7 @@ outputs:
       - Library/bin/*.exe
       - Library/bin/curl-config
     requirements:
+      - cacert
       - curl-runtime
       - prefix-stub-runtime
 
