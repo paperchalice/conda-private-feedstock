@@ -52,6 +52,7 @@ outputs:
       - Library/bin/curl-config
     requirements:
       - curl-runtime
+      - prefix-stub-runtime
 
 about:
   home: http://curl.haxx.se/
