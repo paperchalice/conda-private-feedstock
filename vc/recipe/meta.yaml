@@ -24,11 +24,6 @@ package:
   name: vs{{ vsyear }}
   version: {{ runtime_version }}
 
-source:
-  # Latest version redirect: https://aka.ms/vs/16/release/vc_redist.x64.exe
-  - url: https://download.visualstudio.microsoft.com/download/pr/{{ uuid }}/{{ sha256 }}/VC_redist.x64.exe      # [cross_target_platform == "win-64"]
-    sha256: {{ sha256 | lower }}                                                                                # [cross_target_platform == "win-64"]
-
 build:
   number: {{ build_num }}
   skip: True  # [not win]
@@ -36,25 +31,6 @@ build:
 outputs:
   - name: vc{{ vc_major }}_runtime
     version: {{ runtime_version }}
-    script: vc_repack.py
-    script_interpreter: >-
-      python -m vc_repack --extract --version {{ runtime_version }}
-      --target-platform {{ cross_target_platform }}
-    build:
-      skip: True  # [cross_target_platform != target_platform]
-      binary_relocation: false
-      detect_binary_files_with_prefix: false
-      no_link:
-        - Library/bin/*.dll
-      missing_dso_whitelist:
-        - "*.dll"
-        - "*.DLL"
-    requirements:
-      build:
-        - m2-p7zip <10  # [build_platform.startswith("win")]
-      host:
-      run:
-      run_constrained:
     about:
       summary: >-
         MSVC runtimes associated with cl.exe version {{ cl_version }}
@@ -65,8 +41,6 @@ outputs:
       license_file:
         - LICENSE.TXT
         - LICENSE.RTF
-    test:
-      commands: echo "this is an empty wrapper package"
 
   - name: vs{{ runtime_year }}_runtime
     version: {{ runtime_version }}
@@ -105,18 +79,11 @@ outputs:
   
   - name: vs{{ vsyear }}_{{ cross_target_platform }}
     version: {{ cl_version }}
-    script: vc_repack.py
-    script_interpreter: >-
-      python -m vc_repack --activate --host-platform {{ target_platform }}
-      --target-platform {{ cross_target_platform }} --version {{ runtime_version }}
-      --activate-year {{ vsyear }} --activate-major {{ vsver }} --activate-vcver {{ vcver }}
-      --activate-vcvars-ver {{ vcvars_ver }}
     build:
       track_features:
         - vc{{ vc_major }}
     requirements:
       run:
-        # Used to set up the path in the activate script
         - vswhere
     test:
       commands:
