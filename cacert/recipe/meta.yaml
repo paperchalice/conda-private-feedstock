@@ -1,0 +1,15 @@
+package:
+  name: cacert
+  version: latest
+
+source:
+  url: https://curl.se/ca/cacert.pem
+
+build:
+  noarch: generic
+
+
+about:
+  home: https://curl.se/docs/caextract.html
+  license: ISC
+  summary: Certificates for use with other packages.

@@ -1,12 +1,14 @@
-{% set version = "8.14.1" %}
+{% set version = "8.15.0" %}
 
 package:
   name: curl-split
   version: {{ version }}
 
 source:
-  url: http://curl.haxx.se/download/curl-{{ version }}.tar.bz2
-  sha256: 5760ed3c1a6aac68793fc502114f35c3e088e8cd5c084c2d044abdf646ee48fb
+  url: http://curl.haxx.se/download/curl-{{ version }}.tar.xz
+  sha256: 6cd0a8a5b126ddfda61c94dc2c3fc53481ba7a35461cf7c5ab66aa9d6775b609
+  patches:
+    - cert.patch
 
 requirements:
   build:
@@ -20,6 +22,8 @@ requirements:
     - zstd-dev
     - libssh-dev
     - openssl-dev
+    - prefix-stub-runtime
+    - prefix-stub-dev
 
 outputs:
   - name: curl-runtime
@@ -47,7 +51,9 @@ outputs:
       - Library/bin/*.exe
       - Library/bin/curl-config
     requirements:
+      - cacert
       - curl-runtime
+      - prefix-stub-runtime
 
 about:
   home: http://curl.haxx.se/

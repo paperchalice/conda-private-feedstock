@@ -24,3 +24,8 @@ outputs:
     files:
       - Library/include
       - Library/lib
+  - name: prefix-stub
+    requirements:
+      run:
+        - prefix-stub-runtime
+        - prefix-stub-dev

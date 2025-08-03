@@ -1,0 +1,61 @@
+diff --git a/src/tool_doswin.c b/src/tool_doswin.c
+--- src/tool_doswin.c
++++ src/tool_doswin.c
+@@ -31,8 +31,9 @@
+ 
+ #ifdef _WIN32
+ #  include <stdlib.h>
+ #  include <tlhelp32.h>
++#  include <prefix-stub/relocate.h>
+ #  include "tool_cfgable.h"
+ #  include "tool_libinfo.h"
+ #endif
+ 
+@@ -591,8 +592,17 @@
+ 
+   buf[0] = TEXT('\0');
+ 
+   res_len = SearchPath(NULL, bundle_file, NULL, PATH_MAX, buf, &ptr);
++  if (res_len == 0) {
++    const char *p_ssl = prefix_stub_relocate("SSL");
++    if (*p_ssl) {
++      const TCHAR *p_ssl_w = curlx_convert_UTF8_to_tchar(p_ssl);
++      if (p_ssl_w)
++        res_len = SearchPath(p_ssl_w, bundle_file, NULL, PATH_MAX, buf, &ptr);
++      curlx_unicodefree(p_ssl_w);
++    }
++  }
+   if(res_len > 0) {
+     char *mstr = curlx_convert_tchar_to_UTF8(buf);
+     tool_safefree(config->cacert);
+     if(mstr)
+diff --git a/src/tool_operate.c b/src/tool_operate.c
+--- src/tool_operate.c
++++ src/tool_operate.c
+@@ -2121,8 +2121,11 @@
+   !defined(CURL_DISABLE_CA_SEARCH)
+     result = FindWin32CACert(config, TEXT("curl-ca-bundle.crt"));
+     if(result)
+       goto fail;
++    result = FindWin32CACert(config, TEXT("cacert.pem"));
++    if(result)
++      goto fail;
+ #endif
+   }
+ #endif
+   return CURLE_OK;
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+--- src/CMakeLists.txt
++++ src/CMakeLists.txt
+@@ -99,9 +99,10 @@
+ 
+ # Build curl executable
+ add_executable(${EXE_NAME} ${CURL_CFILES} ${CURL_HFILES} ${_curl_cfiles_gen} ${_curl_hfiles_gen} ${CURLX_CFILES} ${CURLX_HFILES})
+ target_compile_definitions(${EXE_NAME} PRIVATE ${_curl_definitions})
+-target_link_libraries(${EXE_NAME} ${LIB_SELECTED_FOR_EXE} ${CURL_LIBS})
++find_package(prefix-stub)
++target_link_libraries(${EXE_NAME} ${LIB_SELECTED_FOR_EXE} ${CURL_LIBS} me::prefix-stub)
+ 
+ add_executable(${PROJECT_NAME}::${EXE_NAME} ALIAS ${EXE_NAME})
+ 
+ add_executable(curlinfo EXCLUDE_FROM_ALL "curlinfo.c")
