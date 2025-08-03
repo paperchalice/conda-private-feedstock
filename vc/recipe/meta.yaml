@@ -38,9 +38,6 @@ outputs:
       home: https://visualstudio.microsoft.com/downloads/
       license: LicenseRef-MicrosoftVisualCpp2015-2022Runtime
       license_family: Proprietary
-      license_file:
-        - LICENSE.TXT
-        - LICENSE.RTF
 
   - name: vs{{ runtime_year }}_runtime
     version: {{ runtime_version }}
@@ -79,17 +76,15 @@ outputs:
   
   - name: vs{{ vsyear }}_{{ cross_target_platform }}
     version: {{ cl_version }}
+    script: vc_repack.py
+    script_interpreter: >-
+      python -m vc_repack
     build:
       track_features:
         - vc{{ vc_major }}
     requirements:
       run:
         - vswhere
-    test:
-      commands:
-        - echo "%CMAKE_GENERATOR%"
-        - echo "%CMAKE_GENERATOR_PLATFORM%"
-        - echo "%CMAKE_GENERATOR_TOOLSET%"
     about:
       summary: >-
         Activation and version verification of MSVC {{ vcver }}
@@ -108,6 +103,8 @@ outputs:
         Activation and version verification of MSVC {{ vcver }}
         (VS {{ vsyear }} compiler, update {{ update_version }})
       license: BSD-3-Clause
+  - name: ucrt
+    version: "10.0.22621.0"
 
 about:
   home: https://docs.microsoft.com/en-us/visualstudio/windows/?view=vs-{{ vsyear }}
