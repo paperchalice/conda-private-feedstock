@@ -25,6 +25,12 @@ jobs:
           environment-file: etc/environment.yml
           miniforge-version: latest
           python-version: 3.13
+      
+      - name: Adjust env for conda-bld
+        if: ${{ github.event.inputs.pkg_name == 'conda-bld' }}
+        run: |
+          conda remove conda-bld -y
+          conda install conda-build -y
 
       - name: Build package with conda-build
         run: |
