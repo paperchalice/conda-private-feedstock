@@ -1,12 +1,12 @@
-{% set version = "2.2.4" %}
+{% set version = "2.2.5" %}
 
 package:
-  name: zlib-meta
+  name: zlib
   version: {{ version }}
 
 source:
   url: https://github.com/zlib-ng/zlib-ng/archive/refs/tags/{{ version }}.tar.gz
-  sha256: a73343c3093e5cdc50d9377997c3815b878fd110bf6511c2c7759f2afb90f5a3
+  sha256: 5b3b022489f3ced82384f06db1e13ba148cbce38c7941e424d6cb414416acd18
   fn: zlib-ng.tar.gz
   patches:
     - archive_name.patch
@@ -19,6 +19,10 @@ requirements:
     - {{ compiler('c') }}
     - cmake
     - m2-patch
+  run:
+    - zlib-runtime
+    - zlib-dev
+    - zlib-tools
 
 outputs:
   - name: zlib-runtime
@@ -31,18 +35,12 @@ outputs:
     build:
       run_exports:
           - zlib-runtime
-  - name: zlib-tool
+  - name: zlib-tools
     requirements:
       run:
         - zlib-runtime
     files:
       - Library/bin/*.exe
-  - name: zlib
-    requirements:
-      run:
-        - zlib-tool
-        - zlib-dev
-        - zlib-runtime
 
 test:
   commands:
