@@ -1,0 +1,44 @@
+{% set version = "1.6.50" %}
+
+package:
+  name: libpng
+  version: {{ version }}
+
+source:
+  url: https://github.com/pnggroup/libpng/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 71158e53cfdf2877bc99bcab33641d78df3f48e6e0daad030afe9cb8c031aa46
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - cmake
+  host:
+    - zlib-dev
+
+outputs:
+  - name: libpng-runtime
+    files:
+      include:
+        - Library/bin/*.dll
+    requirements:
+      host: zlib-dev
+  - name: libpng-dev
+    files:
+      include:
+        - Library/include
+        - Library/lib
+        - Library/share
+    requirements:
+      run_exports:
+        - libpng-runtime
+
+about:
+  license: zlib-acknowledgement
+  license_file: LICENSE
+  summary: PNG reference library
+  description: |
+    libpng is the official PNG reference library. It supports almost all PNG
+    features, is extensible, and has been extensively tested for over 20 years.
+  homepage: http://www.libpng.org/pub/png/libpng.html
+  repository: https://sourceforge.net/p/libpng/code/ci/libpng16/tree/
+  documentation: http://www.libpng.org/pub/png/libpng.html
