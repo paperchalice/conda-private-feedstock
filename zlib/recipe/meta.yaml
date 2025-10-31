@@ -32,7 +32,7 @@ outputs:
     files:
       - Library/include
       - Library/lib
-    build:
+    requirements:
       run_exports:
           - zlib-runtime
   - name: zlib-tools
