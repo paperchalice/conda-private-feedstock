@@ -1,12 +1,12 @@
-{% set version = "3.8.1" %}
+{% set version = "3.8.2" %}
 
 package:
-  name: libarchive-split
+  name: libarchive
   version: {{ version }}
 
 source:
-  url: https://github.com/libarchive/libarchive/archive/v{{ version }}.tar.gz
-  sha256: ad5dfe0d9a5999494c445b9bc3271d84160950bb1790cf892fb132f563d036b6
+  url: https://github.com/libarchive/libarchive/releases/download/v{{ version }}/libarchive-{{ version }}.tar.xz
+  sha256: db0dee91561cbd957689036a3a71281efefd131d35d1d98ebbc32720e4da58e2
 
 requirements:
   build:
@@ -22,22 +22,27 @@ requirements:
     - pkgconf-tools
     - zlib-dev
     - zstd-dev
+  run:
+    - libarchive-tools
+    - libarchive-runtime
+    - libarchive-dev
 
 outputs:
   - name: libarchive-runtime
     files:
       - Library/bin/*.dll
     requirements:
-      - bzip2-runtime
-      - libb2-runtime
-      - libiconv-runtime
-      - liblzma-runtime
-      - lz4-runtime
-      - lzo-runtime
-      - openssl-runtime
-      - pcre2-runtime
-      - zlib-runtime
-      - zstd-runtime
+      run:
+        - bzip2-runtime
+        - libb2-runtime
+        - libiconv-runtime
+        - liblzma-runtime
+        - lz4-runtime
+        - lzo-runtime
+        - openssl-runtime
+        - pcre2-runtime
+        - zlib-runtime
+        - zstd-runtime
   - name: libarchive-dev
     files:
       - Library/include
@@ -50,4 +55,5 @@ outputs:
     files:
       - Library/bin/*.exe
     requirements:
-      - libarchive-runtime
+      run:
+        - libarchive-runtime
