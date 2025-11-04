@@ -11,19 +11,38 @@ Enter-VsDevShell $vswhere.instanceId -SkipAutomaticLocation -DevCmdArguments "-a
 
 # CMake environments
 if ($Env:CONDA_BUILD) {
+    [string[]]$cflag_list = @(
+        ,'-nologo'
+        ,'-MP'
+        ,'-Zc:inline'
+        ,'-Zc:preprocessor'
+        ,'-utf-8'
+        ,'-DWIN32'
+        ,'-D_WINDOWS'
+        ,'-DNDEBUG'
+        ,'-I', $($Env:LIBRARY_INC.Replace('\', '/'))
+    )
+    [string[]]$cxxflag_list = $cflag_list + @(
+        ,'-permissive-'
+        ,'-Zc:__cplusplus'
+        ,'-Zc:checkGwOdr'
+        ,'-Zc:externConstexpr'
+        , '-Zc:referenceBinding'
+        , '-Zc:rvalueCast',
+        , '-Zc:templateScope'
+    )
+    [string[]]$ldflags_list = @(
+        ,'-NOLOGO'
+        ,'-INCREMENTAL:NO'
+        ,  "-LIBPATH:$($Env:LIBRARY_LIB.Replace('\', '/'))"
+    )
     $Env:CMAKE_BUILD_TYPE = 'MinSizeRel'
     $Env:CMAKE_GENERATOR = "Visual Studio $vs_ver_major $($vswhere.catalog.productLineVersion)"
     $Env:CMAKE_GENERATOR_PLATFORM = 'x64'
     $Env:CMAKE_INSTALL_PREFIX = $LIBRARY_PREFIX.Replace('\', '/')
-    $Env:CFLAGS = "-nologo -MP -Zc:inline -Zc:preprocessor -utf-8 " +
-    "-DWIN32 -D_WINDOWS -DNDEBUG" +
-    " -I $($Env:LIBRARY_INC.Replace('\', '/'))"
-    $Env:CXXFLAGS = "-nologo -MP -permissive- -Zc:__cplusplus -Zc:checkGwOdr -Zc:externConstexpr -Zc:inline -Zc:preprocessor " +
-    "-Zc:referenceBinding -Zc:rvalueCast -Zc:templateScope -utf-8 " +
-    "-DWIN32 -D_WINDOWS -DNDEBUG" +
-    " -I $($Env:LIBRARY_INC.Replace('\', '/'))"
-    $Env:LDFLAGS = "-NOLOGO -INCREMENTAL:NO" +
-    " -LIBPATH:$($Env:LIBRARY_LIB.Replace('\', '/'))"
+    $Env:CFLAGS = $cflag_list -join ' '
+    $Env:CXXFLAGS = $cxxflag_list -join ' '
+    $Env:LDFLAGS = $ldflags_list -join ' '
     $Env:INCLUDE = "$Env:LIBRARY_INC;$Env:INCLUDE"
     $Env:LIB = "$Env:LIBRARY_LIB;$Env:LIB"
 
