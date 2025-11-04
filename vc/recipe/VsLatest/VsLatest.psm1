@@ -40,6 +40,7 @@ if ($Env:CONDA_BUILD) {
     $Env:CMAKE_GENERATOR = "Visual Studio $vs_ver_major $($vswhere.catalog.productLineVersion)"
     $Env:CMAKE_GENERATOR_PLATFORM = 'x64'
     $Env:CMAKE_INSTALL_PREFIX = $LIBRARY_PREFIX.Replace('\', '/')
+    $Env:CMAKE_PREFIX_PATH = "$Env:LIBRARY_PREFIX;$Env:CMAKE_PREFIX_PATH"
     $Env:CFLAGS = $cflag_list -join ' '
     $Env:CXXFLAGS = $cxxflag_list -join ' '
     $Env:LDFLAGS = $ldflags_list -join ' '
