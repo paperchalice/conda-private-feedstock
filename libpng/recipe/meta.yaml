@@ -12,9 +12,12 @@ requirements:
   build:
     - {{ compiler('c') }}
     - cmake
+  host:
+    - zlib-dev
   run:
     - libpng-runtime
     - libpng-dev
+    - libpng-tools
 
 outputs:
   - name: libpng-runtime
@@ -22,7 +25,8 @@ outputs:
       include:
         - Library/bin/*.dll
     requirements:
-      host: zlib-dev
+      run:
+        - zlib-runtime
   - name: libpng-dev
     files:
       include:
@@ -30,7 +34,16 @@ outputs:
         - Library/lib
         - Library/share
     requirements:
+      run:
+        - libpng-runtime
       run_exports:
+        - libpng-runtime
+  - name: libpng-tools
+    files:
+      include:
+        - Library/bin/*.exe
+    requirements:
+      run:
         - libpng-runtime
 
 about:
