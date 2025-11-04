@@ -35,6 +35,8 @@ outputs:
     requirements:
       run_exports:
           - zlib-runtime
+      run:
+        - zlib-runtime
   - name: zlib-tools
     requirements:
       run:

@@ -12,8 +12,9 @@ requirements:
   build:
     - {{ compiler('c') }}
     - cmake
-  host:
-    - zlib-dev
+  run:
+    - libpng-runtime
+    - libpng-dev
 
 outputs:
   - name: libpng-runtime
