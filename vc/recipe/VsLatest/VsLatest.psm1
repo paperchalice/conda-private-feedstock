@@ -63,7 +63,8 @@ function Enter-M2 {
     $Env:CC = 'compile cl'
     $Env:CXX = 'compile cl'
     $Env:AR = 'ar-lib lib'
-    $Env:WINDRES = 'windres-rc rc'
+    $Env:RC = 'windres-rc rc'
+    $Env:WINDRES = $Env:RC
     $Env:NM = 'dumpbin -symbols'
 }
 Export-ModuleMember -Function "Enter-M2"
