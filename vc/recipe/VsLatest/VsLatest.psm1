@@ -49,11 +49,12 @@ if ($Env:CONDA_BUILD) {
 
     $CMAKE_BUILD_TYPE = $Env:CMAKE_BUILD_TYPE
     Export-ModuleMember -Variable "CMAKE_BUILD_TYPE"
-} else {
+}
+else {
     # normal environment
-    $Env:INCLUDE="$Env:CONDA_PREFIX\Library\include;$Env:INCLUDE"
-    $Env:LIB="$Env:CONDA_PREFIX\Library\lib;$Env:LIB"
-    $Env:CMAKE_PREFIX_PATH="$Env:CONDA_PREFIX\Library;$Env:CMAKE_PREFIX_PATH"
+    $Env:INCLUDE = "$Env:CONDA_PREFIX\Library\include;$Env:INCLUDE"
+    $Env:LIB = "$Env:CONDA_PREFIX\Library\lib;$Env:LIB"
+    $Env:CMAKE_PREFIX_PATH = "$Env:CONDA_PREFIX\Library;$Env:CMAKE_PREFIX_PATH"
 }
 
 function Enter-M2 {
@@ -63,5 +64,6 @@ function Enter-M2 {
     $Env:CXX = 'compile cl'
     $Env:AR = 'ar-lib lib'
     $Env:WINDRES = 'windres-rc rc'
+    $Env:NM = 'dumpbin -symbols'
 }
 Export-ModuleMember -Function "Enter-M2"
