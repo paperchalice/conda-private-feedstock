@@ -7,6 +7,11 @@ on:
       pkg_name:
         description: "Package name"
         required: true
+  workflow_call:
+    inputs:
+      pkg_name:
+        description: "Package name"
+        required: true
 
 jobs:
   build-package:

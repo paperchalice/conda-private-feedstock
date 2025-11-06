@@ -1,0 +1,11 @@
+name: PR build trigger
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  call-build:
+    uses: ./.github/workflows/build.yaml
+    with:
+      pkg_name: ${{ github.event.pull_request.title }}
