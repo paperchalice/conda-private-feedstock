@@ -1,5 +1,5 @@
 name: Build package
-run-name: Build ${{ github.event.inputs.pkg_name }}
+run-name: Build ${{ inputs.pkg_name }}
 
 on:
   workflow_dispatch:
@@ -33,18 +33,18 @@ jobs:
           python-version: 3.13
       
       - name: Adjust env for conda-bld
-        if: ${{ github.event.inputs.pkg_name == 'conda-bld' }}
+        if: ${{ inputs.pkg_name == 'conda-bld' }}
         run: |
           conda remove conda-bld -y
           conda install conda-build -y
 
       - name: Build package with conda-build
         run: |
-          conda-build "${{ github.event.inputs.pkg_name }}\\recipe" --zstd-compression-level=22
+          conda-build "${{ inputs.pkg_name }}\\recipe" --zstd-compression-level=22
 
       - name: Upload to Anaconda
         env:
           ANACONDA_API_TOKEN: ${{ secrets.token }}
         run: |
-          $BUILT_PACKAGE=$(conda-build "${{ github.event.inputs.pkg_name }}\\recipe" --output).split("`n")
+          $BUILT_PACKAGE=$(conda-build "${{ inputs.pkg_name }}\\recipe" --output).split("`n")
           anaconda upload --force --user paperchalice @BUILT_PACKAGE
