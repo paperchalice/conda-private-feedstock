@@ -21,4 +21,6 @@ requirements:
     - m2-m4
     - m2-make
     - m2-patch
-
+  host:
+    - libxml2-dev
+    - libiconv-dev
