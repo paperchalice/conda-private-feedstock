@@ -9,3 +9,4 @@ jobs:
     uses: ./.github/workflows/build.yaml
     with:
       pkg_name: ${{ github.event.pull_request.title }}
+    secrets: inherit
