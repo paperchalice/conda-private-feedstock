@@ -1,50 +1,53 @@
-{% set version = "2.14.3" %}
+{% set version = "2.15.1" %}
 
 package:
-  name: libxml2-split
+  name: libxml2
   version: {{ version }}
 
 source:
   url: https://gitlab.gnome.org/GNOME/libxml2/-/archive/v{{ version }}/libxml2-v{{ version }}.tar.gz
-  sha256: 82f54c6b383d961fc33d93fd1b8e7cb0bee9338eb8c2083ab804fc02a38d20a5
+  sha256: 0a5ebf8fa131585748d661ae692503483aff39d9b29b6c4b342cd80d422f246c
 
 requirements:
   build:
     - {{ compiler('c') }}
     - cmake
+  host:
     - libiconv-dev
-    - liblzma-dev
-    - zlib
+    - zlib-dev
+  run:
+    - libxml2-runtime
+    - libxml2-dev
+    - libxml2-tools
 
 outputs:
   - name: libxml2-runtime
     files:
-      - Library/bin/*.dll
+      include:
+        - Library/bin/*.dll
     requirements:
-      - libiconv-runtime
-      - liblzma-runtime
-      - zlib-runtime
+      run:
+        - libiconv-runtime
+        - zlib-runtime
   - name: libxml2-dev
     files:
-      - Library/include
-      - Library/lib
-      - Library/share
+      include:
+        - Library/include
+        - Library/lib
+        - Library/share
     run_exports:
-        - libxml2-runtime
+      - libxml2-runtime
     requirements:
       - libiconv-dev
-      - liblzma-dev
       - zlib-dev
+      - libxml2-runtime
   - name: libxml2-tools
     files:
-      - Library/bin/*.exe
+      include:
+        - Library/bin/*.exe
     requirements:
       - libxml2-runtime
-  - name: libxml2-full
-    requirements:
-    - libxml2-runtime
-    - libxml2-dev
-    - libxml2-tools
+
 about:
   home: http://xmlsoft.org/
   license: MIT
