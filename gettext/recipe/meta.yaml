@@ -24,3 +24,5 @@ requirements:
   host:
     - libxml2-dev
     - libiconv-dev
+    - libiconv-runtime
+    - libunistring-dev
