@@ -21,4 +21,127 @@ requirements:
     - m2-m4
     - m2-make
     - m2-patch
+  host:
+    - libxml2-dev
+    - libiconv-dev
+    - libiconv-runtime
+    - libunistring-dev
 
+outputs:
+  - name: libintl-runtime
+    files:
+      include:
+        - Library/bin/intl-*.dll
+    requirements:
+      run:
+        - libiconv-runtime
+  - name: libintl-dev
+    files:
+      include:
+        - Library/include/libintl.h
+        - Library/lib/intl.lib
+        - Library/share/man/man3
+    requirements:
+      run:
+        - libiconv-dev
+        - libintl-runtime
+      run_exports:
+        - libintl-runtime
+  - name: libintl
+    requirements:
+      run:
+        - libintl-runtime
+        - libintl-dev
+
+  - name: libasprintf-runtime
+    files:
+      include:
+        - Library/bin/asprintf-*.dll
+  - name: libasprintf-dev
+    files:
+      include:
+        - Library/lib/asprintf.lib
+        - Library/include/autosprintf.h
+        - Library/share/info/autosprintf.info
+        - Library/share/doc/libasprintf
+  - name: libasprintf
+    requirements:
+      run:
+        - libasprintf-runtime
+        - libasprintf-dev
+
+  - name: libtextstyle-dev
+    files:
+      include:
+        - Library/include/textstyle
+        - Library/include/textstyle.h
+        - Library/lib/textstyle.lib
+        - Library/share/doc/libtextstyle
+        - Library/share/info/libtextstyle.info
+    requirements:
+      run:
+        - libtextstyle-runtime
+        - libiconv-dev
+      run_exports:
+        - libtextstyle-runtime
+  - name: libtextstyle-runtime
+    files:
+      include:
+        - Library/bin/textstyle-*.dll
+    requirements:
+      run:
+        - libiconv-runtime
+  - name: libtextstyle
+    requirements:
+      run:
+        - libtextstyle-dev
+        - libtextstyle-runtime
+  
+  - name: gettext-dev
+    files:
+      include:
+        - Library/include/gettext-po.h
+        - Library/lib/gettext*.lib
+        - Library/share
+      exclude:
+        - Library/share/doc/lib*
+        - Library/share/man/man3
+        - Library/share/info/libtextstyle.info
+        - Library/share/info/autosprintf.info
+    requirements:
+      run:
+        - gettext-runtime
+        - libintl-dev
+        - libiconv-dev
+        - libtextstyle-dev
+        - libunistring-dev
+        - libxml2-dev
+      run_exports:
+        - gettext-runtime
+  - name: gettext-runtime
+    files:
+      include:
+        - Library/bin/gettext*.dll
+    requirements:
+      run:
+        - libiconv-runtime
+        - libintl-runtime
+        - libtextstyle-runtime
+        - libunistring-runtime
+        - libxml2-runtime
+  - name: gettext-tools
+    files:
+      include:
+        - Library/bin/*.exe
+        - Library/bin/*.sh
+        - Library/bin/autopoint
+        - Library/bin/gettextize
+        - Library/libexec
+    requirements:
+      run:
+        - gettext-runtime
+  - name: gettext
+    run:
+      - gettext-dev
+      - gettext-runtime
+      - gettext-tools

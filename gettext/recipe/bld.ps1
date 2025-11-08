@@ -1,14 +1,22 @@
 Enter-M2
 
-$BashSrc = (Get-Command bash).Source
-if ($BashSrc -ne "$BUILD_PREFIX\Library\usr\bin\bash.exe")
-{
-    false
-}
+[string[]]$configure_args = @(
+    , "--prefix=$(cygpath $LIBRARY_PREFIX)"
+    , '--enable-shared=yes'
+    , '--enable-static=no'
+    , '--enable-year2038'
+    , '--enable-relocatable'
+    , '--build=x86_64-w64-mingw32'
+    , "--with-libxml2-prefix=$(cygpath $LIBRARY_PREFIX)"
+    , "--with-libiconv-prefix=$(cygpath $LIBRARY_PREFIX)"
+    , "--with-libunistring-prefix=$(cygpath $LIBRARY_PREFIX)"
+    , '--disable-csharp'
+    , '--disable-java'
+)
 
-$MSYS2_PREFIX = $LIBRARY_PREFIX -replace '\\', '/' -replace 'C:', '/c/'
-bash -c "./configure --prefix=$MSYS2_PREFIX --enable-shared=yes --enable-static=no --build=x86_64-w64-mingw32"
-bash -c 'make'
+bash -c "./configure $($configure_args -join ' ')"
+bash -c 'make -j'
 bash -c 'make install'
 
-Rename-Item $LIBRARY_LIB\intl.dll.lib $LIBRARY_LIB\intl.lib
+Get-ChildItem $LIBRARY_LIB\*.dll.lib | Rename-Item -NewName { $_.Name -replace '\.dll.lib','.lib' }
+Remove-Item $LIBRARY_PREFIX\share\gettext\archive.dir.tar.xz

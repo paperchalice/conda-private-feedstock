@@ -6,6 +6,7 @@ on:
     inputs:
       pkg_name:
         description: "Package name"
+        type: string
         required: true
   workflow_call:
     inputs:
