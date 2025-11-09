@@ -108,6 +108,7 @@ outputs:
         - Library/share/man/man3
         - Library/share/info/libtextstyle.info
         - Library/share/info/autosprintf.info
+        - Library/share/locale
     requirements:
       run:
         - gettext-runtime
@@ -137,6 +138,7 @@ outputs:
         - Library/bin/autopoint
         - Library/bin/gettextize
         - Library/libexec
+        - Library/share/locale
     requirements:
       run:
         - gettext-runtime
@@ -145,3 +147,8 @@ outputs:
       - gettext-dev
       - gettext-runtime
       - gettext-tools
+
+about:
+  home: https://www.gnu.org/software/gettext/
+  license: LGPL-2.1-or-later AND GPL-3.0-or-later
+  summary: Internationalization package
