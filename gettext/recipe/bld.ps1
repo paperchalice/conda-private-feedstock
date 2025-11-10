@@ -1,7 +1,7 @@
 Enter-M2
 
 [string[]]$configure_args = @(
-    , "--prefix=$(cygpath $LIBRARY_PREFIX)"
+    , "--prefix=$($LIBRARY_PREFIX.Replace('\', '/'))"
     , '--enable-shared=yes'
     , '--enable-static=no'
     , '--enable-year2038'
