@@ -1,20 +1,17 @@
 {% set version = "1.18" %}
 
 package:
-  name: libiconv-split
+  name: libiconv
   version: {{ version }}
 
 source:
   url: http://ftp.gnu.org/pub/gnu/libiconv/libiconv-{{ version }}.tar.gz
   sha256: 3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8
 
-build:
-  number: 0
-
 requirements:
   build:
     - {{ compiler('c') }}
-    - libintl
+    - gettext-tools
     - m2-aux
     - m2-autoconf
     - m2-automake-wrapper
@@ -24,40 +21,52 @@ requirements:
     - m2-m4
     - m2-make
     - m2-patch
+  run:
+    - libiconv-dev
+    - libiconv-runtime
+    - libcharset-dev
+    - libcharset-runtime
+    - libiconv-tools
 
 outputs:
   - name: libiconv-runtime
-    files:
-      - Library/bin/iconv-2.dll
+    include:
+      files:
+        - Library/bin/iconv-2.dll
   - name: libiconv-dev
-    files:
-      - Library/include/iconv.h
-      - Library/lib/iconv.lib
-      - Library/share/doc
-      - Library/share/man
-    build:
+    include:
+      files:
+        - Library/include/iconv.h
+        - Library/lib/iconv.lib
+        - Library/share/doc
+        - Library/share/man
+    requirements:
+      run:
+        - libiconv-runtime
       run_exports:
         - libiconv-runtime
   - name: libcharset-runtime
     files:
       - Library/bin/charset-1.dll
   - name: libcharset-dev
-    files:
-      - Library/include/libcharset.h
-      - Library/include/localcharset.h
-      - Library/lib/charset.lib
-    build:
+    include:
+      files:
+        - Library/include/libcharset.h
+        - Library/include/localcharset.h
+        - Library/lib/charset.lib
+    requirements:
+      run:
+        - libcharset-runtime
       run_exports:
         - libcharset-runtime
-  - name: iconv-nls
-    files:
-      - Library/share/locale
-  - name: iconv
+  - name: libiconv-tools
     requirements:
       - libiconv-runtime
       - libintl-runtime
     files:
-      - Library/bin/*.exe
+      include:
+        - Library/bin/*.exe
+        - Library/share/locale
 
 about:
   home: https://www.gnu.org/software/libiconv/
