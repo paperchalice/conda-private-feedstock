@@ -3,17 +3,18 @@
 package:
   name: getopt
   version: {{ version }}
-requirements:
-  run:
-    - getopt-dev
-    - getopt-runtime
 
 source:
   url: https://github.com/ludvikjerabek/getopt-win/archive/refs/tags/v{{ version }}.tar.gz
   sha256: 3d6ae295260b62af0e2bf2b0287d88e6beeb7a1f7c1f85738c6db4b33e7df13c
+
 requirements:
   build:
+    - {{ compiler('c') }}
     - cmake
+  run:
+    - getopt-dev
+    - getopt-runtime
 
 outputs:
   - name: getopt-runtime
