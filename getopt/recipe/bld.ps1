@@ -1,7 +1,6 @@
-$cflags = $Env:CFLAGS -split ' '
-$ldflags = $Env:LDFLAGS -split ' '
-cl @cflags /c .\getopt.c /DEXPORTS_GETOPT
-link @ldflags /DLL .\getopt.obj
-Move-Item .\getopt.dll -Destination $LIBRARY_BIN
-Move-Item .\getopt.lib -Destination $LIBRARY_LIB
-Move-Item .\getopt.h -Destination $LIBRARY_INC
+cmake -S . -B bld `
+    -DBUILD_SHARED_LIBS=ON `
+    -DBUILD_STATIC_LIBS=OFF `
+    -DBUILD_TESTING=OFF
+cmake --build bld --config $CMAKE_BUILD_TYPE
+cmake --install bld --config $CMAKE_BUILD_TYPE
