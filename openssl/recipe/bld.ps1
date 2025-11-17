@@ -10,7 +10,7 @@ $opts = @(
     '--with-zstd-lib=zstd.lib'
     'no-legacy',
     'no-tls-deprecated-ec',
-    'no-deprecated',
+    # 'no-deprecated',
     'shared'
 )
 $Env:CFLAGS += ' /O1'
@@ -21,5 +21,5 @@ nmake
 nmake install
 
 Remove-Item $LIBRARY_BIN\*.pdb
-New-Item $LIBRARY_LIB\pkgconfig -ItemType Directory
-Copy-Item exporters\*.pc -Destination $LIBRARY_LIB\pkgconfig
+# New-Item $LIBRARY_LIB\pkgconfig -ItemType Directory
+# Copy-Item exporters\*.pc -Destination $LIBRARY_LIB\pkgconfig
