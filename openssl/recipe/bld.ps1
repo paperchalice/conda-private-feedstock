@@ -21,5 +21,5 @@ nmake
 nmake install
 
 Remove-Item $LIBRARY_BIN\*.pdb
-# New-Item $LIBRARY_LIB\pkgconfig -ItemType Directory
-# Copy-Item exporters\*.pc -Destination $LIBRARY_LIB\pkgconfig
+New-Item $LIBRARY_LIB\pkgconfig -Force -ItemType Directory
+Copy-Item exporters\*.pc -Destination $LIBRARY_LIB\pkgconfig
