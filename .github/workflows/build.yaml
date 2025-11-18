@@ -41,11 +41,11 @@ jobs:
 
       - name: Build package with conda-build
         run: |
-          conda-build "${{ inputs.pkg_name }}\\recipe" --zstd-compression-level=22
+          conda-build "${{ inputs.pkg_name }}" --zstd-compression-level=22
 
       - name: Upload to Anaconda
         env:
           ANACONDA_API_TOKEN: ${{ secrets.token }}
         run: |
-          $BUILT_PACKAGE=$(conda-build "${{ inputs.pkg_name }}\\recipe" --output).split("`n")
+          $BUILT_PACKAGE=$(conda-build "${{ inputs.pkg_name }}" --output).split("`n")
           anaconda upload --force --user paperchalice @BUILT_PACKAGE
