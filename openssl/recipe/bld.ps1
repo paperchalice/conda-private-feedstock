@@ -10,7 +10,7 @@ $opts = @(
     '--with-zstd-lib=zstd.lib'
     'no-legacy',
     'no-tls-deprecated-ec',
-    # 'no-deprecated',
+    'no-deprecated',
     'shared'
 )
 $Env:CFLAGS += ' /O1'
