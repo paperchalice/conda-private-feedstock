@@ -1,0 +1,102 @@
+diff --git a/librtmp/log.h b/librtmp/log.h
+index 2adb111..a88366d 100644
+--- a/librtmp/log.h
++++ b/librtmp/log.h
+@@ -28,6 +28,8 @@
+ #include <stdarg.h>
+ #include <stdint.h>
+ 
++#include "librtmp/rtmp_export.h"
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -43,7 +45,7 @@ typedef enum
+   RTMP_LOGDEBUG, RTMP_LOGDEBUG2, RTMP_LOGALL
+ } RTMP_LogLevel;
+ 
+-extern RTMP_LogLevel RTMP_debuglevel;
++extern RTMP_EXPORT RTMP_LogLevel RTMP_debuglevel;
+ 
+ typedef void (RTMP_LogCallback)(int level, const char *fmt, va_list);
+ void RTMP_LogSetCallback(RTMP_LogCallback *cb);
+diff --git a/librtmp/rtmp.h b/librtmp/rtmp.h
+index 6d7dd89..dc91da8 100644
+--- a/librtmp/rtmp.h
++++ b/librtmp/rtmp.h
+@@ -34,6 +34,7 @@
+ #include <stddef.h>
+ 
+ #include "amf.h"
++#include "librtmp/rtmp_export.h"
+ 
+ #ifdef __cplusplus
+ extern "C"
+@@ -65,9 +66,9 @@ extern "C"
+ 
+ #define	RTMP_CHANNELS	65600
+ 
+-  extern const char RTMPProtocolStringsLower[][7];
+-  extern const AVal RTMP_DefaultFlashVer;
+-  extern int RTMP_ctrlC;
++  extern RTMP_EXPORT const char RTMPProtocolStringsLower[][7];
++  extern RTMP_EXPORT const AVal RTMP_DefaultFlashVer;
++  extern RTMP_EXPORT int RTMP_ctrlC;
+ 
+   uint32_t RTMP_GetTime(void);
+ 
+diff --git a/librtmp/rtmp_sys.h b/librtmp/rtmp_sys.h
+index 85d7e53..2ee096f 100644
+--- a/librtmp/rtmp_sys.h
++++ b/librtmp/rtmp_sys.h
+@@ -26,17 +26,21 @@
+ 
+ #include <winsock2.h>
+ #include <ws2tcpip.h>
++#include <sys/types.h>
++
++#include "librtmp/rtmp_export.h"
+ 
+ #ifdef _MSC_VER	/* MSVC */
+-#define snprintf _snprintf
++// #define snprintf _snprintf
+ #define strcasecmp stricmp
+ #define strncasecmp strnicmp
+-#define vsnprintf _vsnprintf
++// #define vsnprintf _vsnprintf
+ #endif
+ 
+ #define GetSockError()	WSAGetLastError()
+ #define SetSockError(e)	WSASetLastError(e)
+ #define setsockopt(a,b,c,d,e)	(setsockopt)(a,b,c,(const char *)d,(int)e)
++#undef EWOULDBLOCK
+ #define EWOULDBLOCK	WSAETIMEDOUT	/* we don't use nonblocking, but we do use timeouts */
+ #define sleep(n)	Sleep(n*1000)
+ #define msleep(n)	Sleep(n)
+diff --git a/rtmpdump.c b/rtmpdump.c
+index 13741a7..ac8d937 100644
+--- a/rtmpdump.c
++++ b/rtmpdump.c
+@@ -34,8 +34,8 @@
+ #include "librtmp/log.h"
+ 
+ #ifdef WIN32
+-#define fseeko fseeko64
+-#define ftello ftello64
++#define fseeko _fseeki64
++#define ftello _ftelli64
+ #include <io.h>
+ #include <fcntl.h>
+ #define	SET_BINMODE(f)	setmode(fileno(f), O_BINARY)
+@@ -279,7 +279,7 @@ GetLastKeyframe(FILE * file,	// output file [in]
+ 		uint32_t * nInitialFrameSize)	// length of initialFrame [out]
+ {
+   const size_t bufferSize = 16;
+-  char buffer[bufferSize];
++  char buffer[16];
+   uint8_t dataType;
+   int bAudioOnly;
+   off_t size;
+-- 
+2.51.0.windows.1
+
