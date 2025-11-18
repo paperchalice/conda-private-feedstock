@@ -1,12 +1,12 @@
-{% set version = "3.5.0" %}
+{% set version = "3.6.0" %}
 
 package:
-  name: openssl-split
+  name: openssl
   version: {{ version }}
 
 source:
   url: https://github.com/openssl/openssl/releases/download/openssl-{{ version }}/openssl-{{ version }}.tar.gz
-  sha256: 344d0a79f1a9b08029b0744e2cc401a43f9c90acd1044d09a530b4885a8e9fc0
+  sha256: b6a5f44b7eb69e3fa35dbf15524405b44837a481d43d81daddde3ff21fcbb8e9
   patches:
     - lib.patch
     - reloc.patch
@@ -17,20 +17,24 @@ requirements:
     - nasm
     - perl
     - m2-patch
+  host:
     - zlib
     - brotli-full
     - zstd-dev
     - prefix-stub-dev
-  # Empty host section to ensure that this is identified as cb3
-  host:
+  run:
+    - openssl-runtime
+    - openssl-dev
+    - openssl-tools
 
 outputs:
   - name: openssl-runtime
     files:
-      - Library/bin/*.dll
-      - Library/SSL
-      - Library/lib/engines-3
-      - Library/lib/ossl-modules
+      include:
+        - Library/bin/*.dll
+        - Library/SSL
+        - Library/lib/engines-3
+        - Library/lib/ossl-modules
     requirements:
       - brotli-runtime
       - prefix-stub-runtime
@@ -38,23 +42,22 @@ outputs:
       - zstd-runtime
   - name: openssl-dev
     files:
-      - Library/lib
-      - Library/include
-      - Library/html
-    build:
-      run_exports:
-          - openssl-runtime
+      include:
+        - Library/lib
+        - Library/include
+        - Library/html
+    run_exports:
+      - openssl-runtime
     requirements:
-      - brotli-dev
-      - zlib-dev
-      - zstd-dev
+      run:
+        - brotli-dev
+        - openssl-runtime
+        - zlib-dev
+        - zstd-dev
   - name: openssl-tools
     files:
-      - Library/bin/*.exe
-      - Library/bin/*.pl
+      include:
+        - Library/bin/*.exe
+        - Library/bin/*.pl
     requirements:
       - openssl-runtime
-  - name: openssl-full
-    requirements:
-      - openssl-tools
-      - openssl-dev
