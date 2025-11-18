@@ -2,7 +2,7 @@
 
 package:
   name: libpng
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/pnggroup/libpng/archive/refs/tags/v{{ version }}.tar.gz

@@ -2,7 +2,7 @@
 
 package:
   name: cpp-httplib-split
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/yhirose/cpp-httplib/archive/refs/tags/v{{ version }}.tar.gz

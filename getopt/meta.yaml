@@ -2,7 +2,7 @@
 
 package:
   name: getopt
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/ludvikjerabek/getopt-win/archive/refs/tags/v{{ version }}.tar.gz

@@ -2,7 +2,7 @@
 
 package:
   name: krb5
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/krb5/krb5/archive/krb5-{{ version }}-final.tar.gz

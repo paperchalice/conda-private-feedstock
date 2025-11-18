@@ -2,7 +2,7 @@
 
 package:
   name: libxml2
-  version: {{ version }}
+  version: head
 
 source:
   url: https://gitlab.gnome.org/GNOME/libxml2/-/archive/v{{ version }}/libxml2-v{{ version }}.tar.gz

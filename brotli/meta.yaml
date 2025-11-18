@@ -2,7 +2,7 @@
 
 package:
   name: brotli-split
-  version: {{ version }}
+  version: head
 
 source:
   fn: brotli-{{ version }}.tar.gz

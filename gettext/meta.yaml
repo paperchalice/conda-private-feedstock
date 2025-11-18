@@ -2,7 +2,7 @@
 
 package:
   name: gettext
-  version: {{ version }}
+  version: head
 
 source:
   url: https://ftp.gnu.org/pub/gnu/gettext/gettext-{{ version }}.tar.xz

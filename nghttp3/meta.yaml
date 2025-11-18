@@ -2,7 +2,7 @@
 
 package:
   name: nghttp3-split
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/ngtcp2/nghttp3/releases/download/v1.10.1/nghttp3-{{ version }}.tar.xz

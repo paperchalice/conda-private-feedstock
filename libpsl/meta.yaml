@@ -3,7 +3,7 @@
 
 package:
   name: libpsl-split
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/rockdaboot/{{ name }}/releases/download/{{ version }}/{{ name }}-{{ version }}.tar.gz

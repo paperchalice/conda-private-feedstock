@@ -2,7 +2,7 @@
 
 package:
   name: prefix-stub-split
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/paperchalice/prefix-stub/archive/refs/heads/main.zip

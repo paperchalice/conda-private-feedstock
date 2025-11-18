@@ -3,7 +3,7 @@
 
 package:
   name: lzo
-  version: {{ version }}
+  version: head
 
 source:
   url: http://www.oberhumer.com/opensource/lzo/download/lzo-{{ version }}.tar.gz

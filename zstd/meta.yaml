@@ -2,7 +2,7 @@
 
 package:
   name: zstd-split
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/facebook/zstd/archive/v{{ version }}.tar.gz

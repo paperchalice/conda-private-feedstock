@@ -2,7 +2,7 @@
 
 package:
   name: curl-split
-  version: {{ version }}
+  version: head
 
 source:
   url: http://curl.haxx.se/download/curl-{{ version }}.tar.xz

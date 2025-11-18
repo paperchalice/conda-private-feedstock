@@ -3,7 +3,7 @@
 
 package:
   name: binutils
-  version: {{ version }}
+  version: head
 
 requirements:
   run:

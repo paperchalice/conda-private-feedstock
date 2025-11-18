@@ -2,7 +2,7 @@
 
 package:
   name: pkgconf-split
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/pkgconf/pkgconf/archive/pkgconf-{{ version }}.tar.gz

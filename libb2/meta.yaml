@@ -2,7 +2,7 @@
 
 package:
   name: libb2-meta
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/BLAKE2/libb2/archive/refs/heads/master.zip

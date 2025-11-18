@@ -4,7 +4,7 @@
 
 package:
   name: {{ pkg_name }}
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz

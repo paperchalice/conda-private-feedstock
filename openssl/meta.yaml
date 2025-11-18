@@ -2,7 +2,7 @@
 
 package:
   name: openssl
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/openssl/openssl/releases/download/openssl-{{ version }}/openssl-{{ version }}.tar.gz

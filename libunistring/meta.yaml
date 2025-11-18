@@ -2,7 +2,7 @@
 
 package:
   name: libunistring
-  version: {{ version }}
+  version: head
 
 source:
   url: https://ftp.gnu.org/gnu/libunistring/libunistring-{{ version }}.tar.xz

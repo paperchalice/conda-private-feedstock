@@ -2,7 +2,7 @@
 
 package:
   name: xz-split
-  version: {{ version }}
+  version: head
 
 source:
   url: https://github.com/tukaani-project/xz/releases/download/v{{ version }}/xz-{{ version }}.tar.gz
