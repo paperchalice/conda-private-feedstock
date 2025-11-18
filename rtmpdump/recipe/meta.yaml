@@ -1,0 +1,46 @@
+package:
+  name: rtmpdump
+  version: head
+
+source:
+  git_url: https://git.ffmpeg.org/rtmpdump.git
+  git_depth: 1
+  patches:
+    - cmake-adpation.patch
+    - pkgconfig-adjust.patch
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - cmake
+  host:
+    - getopt-dev
+    - zlib-dev
+  run:
+    - rtmpdump-tools
+    - rtmpdump-dev
+    - rtmpdump-runtime
+
+outputs:
+  - name: rtmpdump-runtime
+    files:
+      include:
+        - Library/bin/*.dll
+  - name: rtmpdump-tools
+    requirements:
+      - getopt-runtime
+      - rtmpdump-runtime
+      - zlib-runtime
+    files:
+      include:
+        - Library/bin/*.exe
+  - name: rtmpdump-dev
+    run_exports:
+      - rtmpdump-runtime
+    requirements:
+      - rtmpdump-runtime
+    files:
+      include:
+        - Library/include
+        - Library/lib
+        - Library/share

@@ -1,0 +1,19 @@
+---
+ librtmp/librtmp.pc.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/librtmp/librtmp.pc.in b/librtmp/librtmp.pc.in
+index 551b4d9..0a124fb 100644
+--- a/librtmp/librtmp.pc.in
++++ b/librtmp/librtmp.pc.in
+@@ -1,6 +1,6 @@
+ prefix=@prefix@
+ exec_prefix=${prefix}
+-libdir=@libdir@
++libdir=${prefix}/@libdir@
+ incdir=${prefix}/include
+ 
+ Name: librtmp
+-- 
+2.51.0.windows.1
+
