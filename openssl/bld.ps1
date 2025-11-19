@@ -11,6 +11,8 @@ $opts = @(
     'no-legacy',
     'no-tls-deprecated-ec',
     'no-deprecated',
+    'no-tests',
+    'no-unit-test',
     'shared'
 )
 $Env:CFLAGS += ' /O1'
