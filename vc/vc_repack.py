@@ -48,9 +48,9 @@ def main():
         print(" ", ", ".join(Environment.items))
         sys.exit(2)
 
-    tgt_dir = Path(f"{env.prefix}/etc/conda/Modules/VsLatest")
+    tgt_dir = Path(f"{env.prefix}/etc/conda/activate.d")
     os.makedirs(tgt_dir)
-    shutil.copytree(f'{Path(f"{env.recipe_dir}/VsLatest")}', f'{tgt_dir}', dirs_exist_ok=True)
+    shutil.copytree(f'{Path(f"{env.recipe_dir}/vs_activate.ps1")}', f'{tgt_dir}', dirs_exist_ok=True)
 
 
 if __name__ == "__main__":
