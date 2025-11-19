@@ -6,8 +6,7 @@ $Env:LD = 'link.exe'
 $vswhere = vswhere -format json -latest -utf8 | ConvertFrom-Json
 $vs_ver_major = $vswhere.catalog.productLine -replace 'Dev'
 
-Import-Module "$($vswhere.installationPath)\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
-Enter-VsDevShell $vswhere.instanceId -SkipAutomaticLocation -DevCmdArguments '-arch=x64 -host_arch=x64'
+& "$($vswhere.installationPath)\Common7\Tools\Launch-VsDevShell.ps1" -SkipAutomaticLocation -Arch amd64 -HostArch amd64
 
 if ($Env:CONDA_BUILD) {
     # building packages
