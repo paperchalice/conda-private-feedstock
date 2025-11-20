@@ -85,7 +85,6 @@ outputs:
     requirements:
       run:
         - vswhere
-        - ninja
     about:
       summary: >-
         Activation and version verification of MSVC {{ vcver }}
