@@ -33,19 +33,20 @@ jobs:
           miniforge-version: latest
           python-version: 3.13
       
-      - name: Adjust env for conda-bld
-        if: ${{ inputs.pkg_name == 'conda-bld' }}
+      - name: Adjust env for rattler-bld
+        if: ${{ inputs.pkg_name == 'rattler-bld' }}
         run: |
-          conda remove conda-bld -y
-          conda install conda-build -y
+          mamba remove rattler-bld -y
+          mamba install rattler-build -y
 
-      - name: Build package with conda-build
+      - name: Build package with rattler-build
         run: |
-          conda-build "${{ inputs.pkg_name }}" --zstd-compression-level=22
+          rattler-build build -r "${{ inputs.pkg_name }}" `
+            --package-format conda:max --allow-symlinks-on-windows
 
       - name: Upload to Anaconda
         env:
-          ANACONDA_API_TOKEN: ${{ secrets.token }}
+          ANACONDA_API_KEY: ${{ secrets.token }}
         run: |
-          $BUILT_PACKAGE=$(conda-build "${{ inputs.pkg_name }}" --output).split("`n")
-          anaconda upload --force --user paperchalice @BUILT_PACKAGE
+          $BUILT_PACKAGE=$(Get-ChildItem ./output/win-64/*.conda )
+          rattler-build upload anaconda --force -o paperchalice @BUILT_PACKAGE

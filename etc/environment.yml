@@ -5,6 +5,4 @@ channels:
   - defaults
 dependencies:
   - anaconda-client
-  - conda-bld
-  - vs2022_win-64
 anaconda_upload: False
