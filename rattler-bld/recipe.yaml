@@ -1,0 +1,54 @@
+context:
+  name: rattler-bld
+  version: "0.57.2"
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/paperchalice/rattler-build/archive/refs/heads/me.zip
+
+build:
+  script:
+    - if: osx and x86_64
+      then:
+        - if [[ "${MACOSX_SDK_VERSION}" != "11.0" ]]; then exit 1; fi
+        # use the default linker for macOS as we are hitting a bug with the conda-forge linker
+        - unset CARGO_TARGET_X86_64_APPLE_DARWIN_LINKER
+    - if: unix
+      then:
+        # Unix recipe
+        - export OPENSSL_DIR="$PREFIX"
+        - cargo install --locked --bin rattler-build --root ${PREFIX} --path . --no-track
+        - cargo-bundle-licenses --format yaml --output ${SRC_DIR}/THIRDPARTY.yml
+      else:
+        # Win recipe
+        # hack: path too long for pixi_config subpackage, https://github.com/prefix-dev/pixi/issues/3691
+        - set CARGO_HOME=C:\.cargo
+        - md %CARGO_HOME%
+        - cargo install --locked --bin rattler-build --root %PREFIX% --path . --no-track
+        - if errorlevel 1 exit 1
+        - cargo-bundle-licenses --format yaml --output %SRC_DIR%/THIRDPARTY.yml
+        - if errorlevel 1 exit 1
+  number: 0
+
+requirements:
+  build:
+    - ${{ compiler('rust') }}
+    - cargo-bundle-licenses
+  host:
+    - ${{ "openssl" if linux }}
+  run:
+    - ${{ "patchelf" if linux }}
+
+about:
+  homepage: https://github.com/prefix-dev/rattler-build
+  summary: rattler-build is the universal conda package builder for Windows, macOS and Linux
+  description: |
+    The rattler-build tooling and library creates cross-platform relocatable binaries / packages
+    from a simple recipe format.
+    The recipe format is heavily inspired by conda-build and boa, and the output of a regular
+    rattler-build run is a package that can be installed using mamba, conda or rattler.
+  license: BSD-3-Clause
+  documentation: https://rattler.build
