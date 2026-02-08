@@ -36,7 +36,7 @@ if ($Env:CONDA_BUILD) {
     )
     $Env:CMAKE_BUILD_TYPE = 'MinSizeRel'
     $Env:CMAKE_GENERATOR = 'Ninja'
-    $Env:CMAKE_GENERATOR_PLATFORM = 'x64'
+    # $Env:CMAKE_GENERATOR_PLATFORM = 'x64'
     $Env:CMAKE_INSTALL_PREFIX = $LIBRARY_PREFIX.Replace('\', '/')
     $Env:CMAKE_PREFIX_PATH = "$Env:LIBRARY_PREFIX;$Env:CMAKE_PREFIX_PATH"
     $Env:CFLAGS = $cflag_list -join ' '
