@@ -15,4 +15,6 @@ outputs:
         interpreter: powershell
         content: |
           New-Item -ItemType Directory -Force $PREFIX/etc/conda/activate.d
+          New-Item -ItemType Directory -Force $LIBRARY_BIN
           Copy-Item -Path $RECIPE_DIR/vs_activate.ps1 -Destination $PREFIX/etc/conda/activate.d
+          Copy-Item -Path $RECIPE_DIR/vs_activate.ps1 -Destination $LIBRARY_BIN
