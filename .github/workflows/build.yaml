@@ -47,6 +47,12 @@ jobs:
       - name: Upload to Anaconda
         env:
           ANACONDA_API_KEY: ${{ secrets.token }}
+          ANACONDA_AUTH_API_KEY: ${{ secrets.token }}
         run: |
-          $BUILT_PACKAGE=$(Get-ChildItem ./output/win-64/*.conda )
+          $BUILT_PACKAGE=$(Get-ChildItem ./output/win-64/*.conda)
+          foreach ($i in $BUILT_PACKAGE) {
+            $name = $i.Name
+            $pkg = ($name -split '-')[0..(($name -split '-').Count - 3)] -join '-'
+            anaconda remove -f paperchalice/$pkg
+          }
           rattler-build upload anaconda --force -o paperchalice @BUILT_PACKAGE
