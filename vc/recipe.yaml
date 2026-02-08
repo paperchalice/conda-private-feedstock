@@ -1,0 +1,17 @@
+recipe:
+  name: vc
+  version: 1.0
+
+outputs:
+  - package:
+      name: visual-studio
+      version: 18
+    requirements:
+      run:
+        - vswhere
+    build:
+      script:
+        interpreter: powershell
+        content: |
+          New-Item -ItemType Directory -Force $PREFIX/etc/conda/activate.d
+          Copy-Item -Path $RECIPE_DIR/vs_activate.ps1 -Destination $PREFIX/etc/conda/activate.d

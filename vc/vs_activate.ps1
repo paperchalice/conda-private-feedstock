@@ -1,9 +1,9 @@
-$Env:DISTUTILS_USE_SDK = $true
-$Env:CC = 'cl.exe'
-$Env:CXX = 'cl.exe'
-$Env:LD = 'link.exe'
-
 if ($Env:CONDA_BUILD) {
+    $Env:DISTUTILS_USE_SDK = $true
+    $Env:CC = 'cl.exe'
+    $Env:CXX = 'cl.exe'
+    $Env:LD = 'link.exe'
+
     $vswhere = vswhere -format json -latest -utf8 | ConvertFrom-Json
 
     & "$($vswhere.installationPath)\Common7\Tools\Launch-VsDevShell.ps1" -SkipAutomaticLocation -Arch amd64 -HostArch amd64

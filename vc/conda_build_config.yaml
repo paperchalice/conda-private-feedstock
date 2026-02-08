@@ -1,9 +1,9 @@
 vcver:
  - 14.3
 vsyear:
- - 2022
+ - 2026
 vsver:
- - 17
+ - 18
 # vc_repack.py checks the expected runtime version (which can be used to find out of course)
 runtime_version:
  # the azure/github images only contain the latest minor version per vs-line;
