@@ -4,6 +4,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - anaconda-auth
   - anaconda-client
   - rattler-bld
 anaconda_upload: False
