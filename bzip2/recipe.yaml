@@ -1,0 +1,44 @@
+context:
+  name: bzip2
+  version: "1.0.9"
+
+recipe:
+  name: ${{ name }}
+  version: ${{ version }}
+
+cache:
+  source:
+    url: https://gitlab.com/paperchalice/bzip2/-/archive/master/bzip2-master.zip
+  requirements:
+    build:
+      - cmake-no-system
+      - visual-studio
+  build:
+    script: bld.ps1
+
+outputs:
+  - package:
+      name: bzip2-dev
+    build:
+      files:
+        - Library/lib
+        - Library/include
+        - Library/share/man
+    requirements:
+      run_exports:
+          - bzip2-rt
+      run:
+        - bzip2-rt
+  - package:
+      name: bzip2-rt
+    build:
+      files:
+        - Library/bin/*.dll
+  - package:
+      name: bzip2-tools
+    requirements:
+      run:
+        - bzip2-rt
+    build:
+      files:
+        - Library/bin/*.exe
