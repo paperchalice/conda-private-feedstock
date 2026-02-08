@@ -8,6 +8,7 @@ outputs:
       version: 18
     requirements:
       run:
+        - ninja
         - vswhere
     build:
       script:
