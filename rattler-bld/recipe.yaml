@@ -41,6 +41,7 @@ requirements:
     - ${{ "openssl" if linux }}
   run:
     - ${{ "patchelf" if linux }}
+    - ninja
 
 about:
   homepage: https://github.com/prefix-dev/rattler-build

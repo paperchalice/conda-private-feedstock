@@ -42,6 +42,7 @@ jobs:
       - name: Build package with rattler-build
         run: |
           rattler-build build -r "${{ inputs.pkg_name }}" `
+            --experimental `
             --package-format conda:max --allow-symlinks-on-windows
 
       - name: Upload to Anaconda
