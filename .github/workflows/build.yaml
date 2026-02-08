@@ -31,7 +31,7 @@ jobs:
           auto-activate-base: true
           environment-file: etc/environment.yml
           miniforge-version: latest
-          python-version: 3.13
+          python-version: 3.14
       
       - name: Adjust env for rattler-bld
         if: ${{ inputs.pkg_name == 'rattler-bld' }}
