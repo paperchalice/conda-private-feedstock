@@ -1,0 +1,79 @@
+context:
+  name: libiconv
+  version: "1.18"
+
+recipe:
+  name: ${{ name }}
+  version: ${{ version }}
+
+cache:
+  source:
+    url: http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ version }}.tar.gz
+    sha256: 3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8
+  requirements:
+    build:
+      - vs
+      # - gettext-tools
+      - m2-aux
+      - m2-autoconf
+      - m2-automake-wrapper
+      - m2-bash
+      - m2-grep
+      - m2-libtool
+      - m2-m4
+      - m2-make
+      - m2-patch
+  build:
+    script: bld.ps1
+
+outputs:
+  - package:
+      name: libiconv-runtime
+    build:
+      files:
+        - Library/bin/*.dll
+  - package:
+      name: libiconv-dev
+    build:
+      files:
+        - Library/include
+        - Library/lib
+        - Library/share/doc
+        - Library/share/man
+    requirements:
+      run:
+        - libiconv-runtime
+      run_exports:
+        - libiconv-runtime
+  - package:
+      name: libcharset-runtime
+    build:
+      files:
+        - Library/bin/charset-1.dll
+  - package:
+      name: libcharset-dev
+    build:
+      files:
+        - Library/include/libcharset.h
+        - Library/include/localcharset.h
+        - Library/lib/charset.lib
+    requirements:
+      run:
+        - libcharset-runtime
+      run_exports:
+        - libcharset-runtime
+  - package:
+      name: libiconv-tools
+    requirements:
+      run:
+        - libiconv-runtime
+        # - libintl-runtime
+    build:
+      files:
+        - Library/bin/*.exe
+        # - Library/share/locale
+
+about:
+  homepage: https://www.gnu.org/software/libiconv/
+  license: GPL-3.0-only AND LGPL-2.1-only
+  summary: Split feedstock providing iconv and libiconv for systems which don't have one (or that cannot convert from/to Unicode.)
