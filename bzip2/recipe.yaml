@@ -26,11 +26,11 @@ outputs:
         - Library/share/man
     requirements:
       run_exports:
-          - bzip2-rt
+          - bzip2-runtime
       run:
-        - bzip2-rt
+        - bzip2-runtime
   - package:
-      name: bzip2-rt
+      name: bzip2-runtime
     build:
       files:
         - Library/bin/*.dll
@@ -38,7 +38,7 @@ outputs:
       name: bzip2-tools
     requirements:
       run:
-        - bzip2-rt
+        - bzip2-runtime
     build:
       files:
         - Library/bin/*.exe

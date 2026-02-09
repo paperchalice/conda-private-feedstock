@@ -28,11 +28,11 @@ outputs:
         - Library/include
     requirements:
       run_exports:
-          - zlib-rt
+          - zlib-runtime
       run:
-        - zlib-rt
+        - zlib-runtime
   - package:
-      name: zlib-rt
+      name: zlib-runtime
     build:
       files:
         - Library/bin/*.dll
@@ -40,7 +40,7 @@ outputs:
       name: zlib-tools
     requirements:
       run:
-        - zlib-rt
+        - zlib-runtime
     build:
       files:
         - Library/bin/*.exe
