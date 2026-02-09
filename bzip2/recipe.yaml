@@ -12,7 +12,7 @@ cache:
   requirements:
     build:
       - cmake-no-system
-      - visual-studio
+      - vs
   build:
     script: bld.ps1
 
