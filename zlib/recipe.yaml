@@ -44,3 +44,11 @@ outputs:
     build:
       files:
         - Library/bin/*.exe
+
+about:
+  home: https://github.com/zlib-ng/zlib-ng
+  dev_url: https://github.com/zlib-ng/zlib-ng
+  license: Zlib
+  license_family: Other
+  license_file: LICENSE.md
+  summary: zlib data compression library for the next generation systems
