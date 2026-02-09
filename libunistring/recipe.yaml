@@ -1,0 +1,58 @@
+context:
+  name: libunistring
+  version: "1.4.1"
+
+recipe:
+  name: ${{ name }}
+  version: ${{ version }}
+
+cache:
+  source:
+    url: https://ftp.gnu.org/gnu/libunistring/libunistring-${{ version }}.tar.xz
+    sha256: 67d88430892527861903788868c77802a217b0959990f7449f2976126a307763
+  requirements:
+    build:
+      - vs
+      - m2-aux
+      - m2-autoconf
+      - m2-automake-wrapper
+      - m2-bash
+      - m2-findutils
+      - m2-grep
+      - m2-libtool
+      - m2-m4
+      - m2-make
+    host:
+      - libiconv-dev
+      - libiconv-runtime
+  build:
+    script: bld.ps1
+
+outputs:
+  - package:
+      name: libunistring-runtime
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+    requirements:
+      run:
+        - libiconv-runtime
+  - package:
+      name: libunistring-dev
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - libunistring-runtime
+      run_exports:
+        - libunistring-runtime
+
+about:
+  homepage: https://www.gnu.org/software/libunistring
+  license: GPL-3.0-only OR LGPL-3.0-only
+  summary: This library provides functions for manipulating Unicode strings and for manipulating C strings according to the Unicode standard.
