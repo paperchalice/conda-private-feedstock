@@ -1,6 +1,6 @@
 package:
   name: m2-aux
-  version: 0.0.0
+  version: "0.0.0"
 
 requirements:
   run:
