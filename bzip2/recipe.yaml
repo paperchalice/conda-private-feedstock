@@ -44,9 +44,7 @@ outputs:
         - Library/bin/*.exe
 
 about:
-  home: https://gitlab.com/bzip2/bzip2
-  license_family: BSD
-  license_file: LICENSE
+  homepage: https://gitlab.com/bzip2/bzip2
   license: bzip2-1.0.6
   summary: high-quality data compressor
   description: |
@@ -54,4 +52,3 @@ about:
     compresses files to within 10% to 15% of the best available techniques,
     whilst being around twice as fast at compression and six times faster
     at decompression.
-  dev_url: https://gitlab.com/bzip2/bzip2
