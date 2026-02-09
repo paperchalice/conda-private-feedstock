@@ -4,10 +4,11 @@ recipe:
 
 outputs:
   - package:
-      name: visual-studio
+      name: vs
       version: 18
     requirements:
       run:
+        - jom
         - ninja
         - vswhere
     build:
