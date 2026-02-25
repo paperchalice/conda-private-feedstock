@@ -37,10 +37,12 @@ jobs:
         run: |
           mamba remove rattler-bld -y
           mamba install rattler-build -y
+      - name: install upx
+        run: |
+          winget install --disable-interactivity --accept-source-agreements --accept-package-agreements UPX.UPX
 
       - name: Build package with rattler-build
         run: |
-          winget install UPX.UPX
           rattler-build build -r "${{ inputs.pkg_name }}" `
             --experimental --config-file .\config.toml `
             --package-format conda:max --allow-symlinks-on-windows
