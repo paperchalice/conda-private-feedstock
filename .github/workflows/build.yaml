@@ -17,7 +17,46 @@ on:
 
 jobs:
   build-package:
+    if: ${{ inputs.pkg_name != 'rattler-bld' }}
     runs-on: windows-2025-vs2026
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: etc/environment.yml
+          miniforge-version: latest
+          python-version: 3.14
+
+      - name: install upx
+        run: |
+          winget install --disable-interactivity --accept-source-agreements --accept-package-agreements UPX.UPX
+
+      - name: Build package with rattler-build
+        run: |
+          rattler-build build -r "${{ inputs.pkg_name }}" `
+            --experimental --config-file .\config.toml `
+            --package-format conda:max --allow-symlinks-on-windows
+
+      - name: Upload to Anaconda
+        env:
+          ANACONDA_API_KEY: ${{ secrets.token }}
+        run: |
+          $BUILT_PACKAGE=$(Get-ChildItem ./output/win-64/*.conda)
+          foreach ($i in $BUILT_PACKAGE) {
+            $name = $i.Name
+            $pkg = ($name -split '-')[0..(($name -split '-').Count - 3)] -join '-'
+            anaconda -t $Env:ANACONDA_API_KEY remove -f paperchalice/$pkg
+          }
+          rattler-build upload anaconda --force -o paperchalice @BUILT_PACKAGE
+  build-rattler-bld:
+    if: ${{ inputs.pkg_name == 'rattler-bld' }}
+    runs-on: windows-2025
     defaults:
       run:
         shell: pwsh
@@ -33,13 +72,9 @@ jobs:
           python-version: 3.14
       
       - name: Adjust env for rattler-bld
-        if: ${{ inputs.pkg_name == 'rattler-bld' }}
         run: |
           mamba remove rattler-bld -y
           mamba install rattler-build -y
-      - name: install upx
-        run: |
-          winget install --disable-interactivity --accept-source-agreements --accept-package-agreements UPX.UPX
 
       - name: Build package with rattler-build
         run: |
