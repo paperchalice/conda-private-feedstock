@@ -36,6 +36,7 @@ jobs:
       - name: install upx
         run: |
           winget install --disable-interactivity --accept-source-agreements --accept-package-agreements UPX.UPX
+          Write-Output "$Env:LOCALAPPDATA\Microsoft\WinGet\Links" >> $Env:GITHUB_PATH
 
       - name: Build package with rattler-build
         run: |
