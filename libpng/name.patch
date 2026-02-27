@@ -1,0 +1,87 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -418,9 +418,9 @@
+   # We are, most likely, on a Windows toolchain like MSVC, Clang on Windows,
+   # Borland/Embarcadero, etc. We need to specify the "libpng" name explicitly.
+   # We also need to use a custom suffix, in order to distinguish between the
+   # shared import library name and the static library name.
+-  set(PNG_SHARED_OUTPUT_NAME "libpng${PNGLIB_ABI_VERSION}")
++  set(PNG_SHARED_OUTPUT_NAME "png${PNGLIB_ABI_VERSION}")
+   set(PNG_STATIC_OUTPUT_NAME "libpng${PNGLIB_ABI_VERSION}_static")
+ endif()
+ 
+ if(PNG_SHARED)
+@@ -807,8 +807,22 @@
+   configure_file("${CMAKE_CURRENT_SOURCE_DIR}/libpng-config.in"
+                  "${CMAKE_CURRENT_BINARY_DIR}/libpng${PNGLIB_ABI_VERSION}-config"
+                  @ONLY)
+   create_symlink(libpng-config FILE libpng${PNGLIB_ABI_VERSION}-config)
++else()
++  set(prefix "${CMAKE_INSTALL_PREFIX}")
++  set(exec_prefix "${CMAKE_INSTALL_PREFIX}")
++  set(libdir "${CMAKE_INSTALL_FULL_LIBDIR}")
++  set(includedir "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
++  configure_file("${CMAKE_CURRENT_SOURCE_DIR}/libpng.pc.in"
++                 "${CMAKE_CURRENT_BINARY_DIR}/libpng${PNGLIB_ABI_VERSION}.pc"
++                 @ONLY)
++  create_symlink(libpng.pc FILE libpng${PNGLIB_ABI_VERSION}.pc)
++  execute_process(COMMAND "${CMAKE_COMMAND}"
++                          -E create_symlink
++                          "libpng${PNGLIB_ABI_VERSION}.pc"
++                          "libpng.pc"
++                  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
+ endif()
+ 
+ # Install.
+ if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
+@@ -824,8 +838,25 @@
+     if(NOT WIN32 OR CYGWIN OR MINGW)
+       create_symlink(libpng${CMAKE_SHARED_LIBRARY_SUFFIX} TARGET png_shared)
+       install(FILES "$<TARGET_LINKER_FILE_DIR:png_shared>/libpng${CMAKE_SHARED_LIBRARY_SUFFIX}"
+               DESTINATION "${CMAKE_INSTALL_LIBDIR}")
++    else()
++      add_custom_command(TARGET png_shared
++                         POST_BUILD
++                         COMMAND "${CMAKE_COMMAND}"
++                                 -E create_symlink
++                                 "$<TARGET_LINKER_IMPORT_FILE_NAME:png_shared>"
++                                 "$<TARGET_LINKER_IMPORT_FILE_DIR:png_shared>/png${CMAKE_IMPORT_LIBRARY_SUFFIX}")
++      add_custom_command(TARGET png_shared
++                         POST_BUILD
++                         COMMAND "${CMAKE_COMMAND}"
++                                 -E create_symlink
++                                 "$<TARGET_FILE_NAME:png_shared>"
++                                 "$<TARGET_FILE_DIR:png_shared>/png${CMAKE_SHARED_LIBRARY_SUFFIX}")
++      install(FILES "$<TARGET_LINKER_IMPORT_FILE_DIR:png_shared>/png${CMAKE_IMPORT_LIBRARY_SUFFIX}"
++              DESTINATION "${CMAKE_INSTALL_LIBDIR}")
++      install(FILES "$<TARGET_FILE_DIR:png_shared>/png${CMAKE_SHARED_LIBRARY_SUFFIX}"
++              DESTINATION "${CMAKE_INSTALL_BINDIR}")
+     endif()
+   endif()
+ 
+   if(PNG_STATIC)
+@@ -872,8 +903,13 @@
+     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libpng${PNGLIB_ABI_VERSION}.pc"
+             DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+     install(PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/libpng${PNGLIB_ABI_VERSION}-config"
+             DESTINATION "${CMAKE_INSTALL_BINDIR}")
++  else()
++    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libpng.pc"
++            DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
++    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libpng${PNGLIB_ABI_VERSION}.pc"
++            DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+   endif()
+ endif()
+ 
+ # Create an export file that CMake users can include() to import our targets.
+diff --git a/libpng.pc.in b/libpng.pc.in
+--- libpng.pc.in
++++ libpng.pc.in
+@@ -7,6 +7,5 @@
+ Description: Loads and saves PNG files
+ Version: @PNGLIB_VERSION@
+ Requires.private: zlib
+ Libs: -L${libdir} -lpng@PNGLIB_MAJOR@@PNGLIB_MINOR@
+-Libs.private: @LIBS@
+ Cflags: -I${includedir}

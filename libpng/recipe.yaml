@@ -1,0 +1,78 @@
+context:
+  version: "1.6.55"
+
+recipe:
+  name: libpng
+  version: ${{ version }}
+
+source:
+  url: https://github.com/pnggroup/libpng/archive/refs/tags/v${{ version }}.tar.gz
+  sha256: 71a2c5b1218f60c4c6d2f1954c7eb20132156cae90bdb90b566c24db002782a6
+  patches:
+    - name.patch
+
+outputs:
+  - staging:
+      name: libpng-split
+    requirements:
+      build:
+        - vs
+        - cmake
+        - zlib-full
+    build:
+      script: bld.ps1
+
+  - package:
+      name: libpng-runtime
+    inherit:
+      from: libpng-split
+    build:
+      files:
+        - Library/bin/*.dll
+    requirements:
+      run:
+        - zlib-runtime
+  - package:
+      name: libpng-dev
+    inherit:
+      from: libpng-split
+    build:
+      files:
+        - Library/include
+        - Library/lib
+        - Library/share
+    requirements:
+      run:
+        - libpng-runtime
+      run_exports:
+        - libpng-runtime
+  - package:
+      name: libpng-tools
+    inherit:
+      from: libpng-split
+    build:
+      files:
+        - Library/bin/*.exe
+    requirements:
+      run:
+        - libpng-runtime
+    
+  - package:
+      name: libpng-full
+    requirements:
+      run:
+        - libpng-dev
+        - libpng-runtime
+        - libpng-tools
+
+about:
+  license: zlib-acknowledgement
+  license_file: LICENSE
+  summary: PNG reference library
+  description: |
+    libpng is the official PNG reference library. It supports almost all PNG
+    features, is extensible, and has been extensively tested for over 20 years.
+  homepage: http://www.libpng.org/pub/png/libpng.html
+  repository: https://sourceforge.net/p/libpng/code/ci/libpng16/tree/
+  documentation: http://www.libpng.org/pub/png/libpng.html
+
