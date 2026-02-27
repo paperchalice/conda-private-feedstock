@@ -6,22 +6,26 @@ recipe:
   name: ${{ name }}
   version: ${{ version }}
 
-cache:
-  source:
-    url: https://github.com/zlib-ng/zlib-ng/archive/refs/tags/${{ version }}.tar.gz
-    sha256: f9c65aa9c852eb8255b636fd9f07ce1c406f061ec19a2e7d508b318ca0c907d1
-    patches:
-      - archive_name.patch
-  requirements:
-    build:
-      - cmake-no-system
-      - vs
-  build:
-    script: bld.ps1
+source:
+  url: https://github.com/zlib-ng/zlib-ng/archive/refs/tags/${{ version }}.tar.gz
+  sha256: f9c65aa9c852eb8255b636fd9f07ce1c406f061ec19a2e7d508b318ca0c907d1
+  patches:
+    - archive_name.patch
 
 outputs:
+  - staging:
+      name: zlib-split
+    requirements:
+      build:
+        - cmake-no-system
+        - vs
+    build:
+      script: bld.ps1
+
   - package:
       name: zlib-dev
+    inherit:
+      from: zlib-split
     build:
       files:
         - Library/lib
@@ -33,17 +37,28 @@ outputs:
         - zlib-runtime
   - package:
       name: zlib-runtime
+    inherit:
+      from: zlib-split
     build:
       files:
         - Library/bin/*.dll
   - package:
       name: zlib-tools
+    inherit:
+      from: zlib-split
     requirements:
       run:
         - zlib-runtime
     build:
       files:
         - Library/bin/*.exe
+  - package:
+      name: zlib-full
+    requirements:
+      run:
+        - zlib-dev
+        - zlib-runtime
+        - zlib-tools
 
 about:
   homepage: https://github.com/zlib-ng/zlib-ng
