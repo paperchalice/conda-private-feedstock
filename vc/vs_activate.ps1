@@ -37,14 +37,13 @@ if ($Env:CONDA_BUILD) {
     $Env:CMAKE_BUILD_TYPE = 'MinSizeRel'
     $Env:CMAKE_GENERATOR = 'Ninja'
     # $Env:CMAKE_GENERATOR_PLATFORM = 'x64'
-    $Env:CMAKE_INSTALL_PREFIX = $LIBRARY_PREFIX.Replace('\', '/')
+    $Env:CMAKE_INSTALL_PREFIX = $Env:LIBRARY_PREFIX.Replace('\', '/')
     $Env:CMAKE_PREFIX_PATH = "$Env:LIBRARY_PREFIX;$Env:CMAKE_PREFIX_PATH"
     $Env:CFLAGS = $cflag_list -join ' '
     $Env:CXXFLAGS = $cxxflag_list -join ' '
     $Env:LDFLAGS = $ldflags_list -join ' '
     $Env:INCLUDE = "$Env:LIBRARY_INC;$Env:INCLUDE"
     $Env:LIB = "$Env:LIBRARY_LIB;$Env:LIB"
-    $CMAKE_BUILD_TYPE = $Env:CMAKE_BUILD_TYPE
 
     function Enter-M2 {
         $Env:CFLAGS += ' -O1 -MD'
