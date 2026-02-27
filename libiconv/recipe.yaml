@@ -6,34 +6,39 @@ recipe:
   name: ${{ name }}
   version: ${{ version }}
 
-cache:
-  source:
-    url: http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ version }}.tar.gz
-    sha256: 3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8
-  requirements:
-    build:
-      - vs
-      # - gettext-tools
-      - m2-aux
-      - m2-autoconf
-      - m2-automake-wrapper
-      - m2-bash
-      - m2-grep
-      - m2-libtool
-      - m2-m4
-      - m2-make
-      - m2-patch
-  build:
-    script: bld.ps1
+source:
+  url: http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ version }}.tar.gz
+  sha256: 3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8
 
 outputs:
+  - staging:
+      name: libiconv-split
+    requirements:
+      build:
+        - vs
+        # - gettext-tools
+        - m2-aux
+        - m2-autoconf
+        - m2-automake-wrapper
+        - m2-bash
+        - m2-grep
+        - m2-libtool
+        - m2-m4
+        - m2-make
+        - m2-patch
+    build:
+      script: bld.ps1
   - package:
       name: libiconv-runtime
+    inherit:
+      from: libiconv-split
     build:
       files:
         - Library/bin/*.dll
   - package:
       name: libiconv-dev
+    inherit:
+      from: libiconv-split
     build:
       files:
         - Library/include
@@ -47,11 +52,15 @@ outputs:
         - libiconv-runtime
   - package:
       name: libcharset-runtime
+    inherit:
+      from: libiconv-split
     build:
       files:
         - Library/bin/charset-1.dll
   - package:
       name: libcharset-dev
+    inherit:
+      from: libiconv-split
     build:
       files:
         - Library/include/libcharset.h
@@ -64,6 +73,8 @@ outputs:
         - libcharset-runtime
   - package:
       name: libiconv-tools
+    inherit:
+      from: libiconv-split
     requirements:
       run:
         - libiconv-runtime
@@ -72,6 +83,16 @@ outputs:
       files:
         - Library/bin/*.exe
         # - Library/share/locale
+
+  - package:
+      name: libiconv-full
+    requirements:
+      run:
+        - libcharset-dev
+        - libcharset-runtime
+        - libiconv-dev
+        - libiconv-runtime
+        - libiconv-tools
 
 about:
   homepage: https://www.gnu.org/software/libiconv/
