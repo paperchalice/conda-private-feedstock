@@ -3,5 +3,5 @@ cmake -S . -B bld `
     -DBUILD_SHARED_LIBS=ON `
     -DPNG_STATIC=OFF `
     -DENABLE_TEST=OFF
-cmake --build bld --config $CMAKE_BUILD_TYPE
-cmake --install bld --config $CMAKE_BUILD_TYPE
+cmake --build bld
+cmake --install bld
