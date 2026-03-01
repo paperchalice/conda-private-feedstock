@@ -6,39 +6,42 @@ recipe:
   name: ${{ name }}
   version: ${{ version }}
 
-cache:
-  source:
-    url: https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${{ version }}/libxml2-v${{ version }}.tar.bz2
-    sha256: d0e8dfcc349eb967496f601a881d5b5ee2dcc9202f4748fa381cf926ebee4f92
-  requirements:
-    build:
-      - cmake-no-system
-      - vs
-    host:
-      - libiconv-dev
-      - zlib-dev
-  build:
-    script: bld.ps1
+source:
+  url: https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${{ version }}/libxml2-v${{ version }}.tar.bz2
+  sha256: d0e8dfcc349eb967496f601a881d5b5ee2dcc9202f4748fa381cf926ebee4f92
 
 outputs:
+  - staging:
+      name: libxml2-split
+    requirements:
+      build:
+        - cmake-no-system
+        - vs
+        - libiconv-dev
+        - zlib-dev
+    build:
+      script: bld.ps1
+
   - package:
       name: libxml2-runtime
+    inherit:
+      from: libxml2-split
     build:
       files:
-        include:
-          - Library/bin/*.dll
+        - Library/bin/*.dll
     requirements:
       run:
         - libiconv-runtime
         - zlib-runtime
   - package:
       name: libxml2-dev
+    inherit:
+      from: libxml2-split
     build:
       files:
-        include:
-          - Library/include
-          - Library/lib
-          - Library/share
+        - Library/include
+        - Library/lib
+        - Library/share
     requirements:
       run:
         - libiconv-dev
@@ -48,13 +51,21 @@ outputs:
         - libxml2-runtime
   - package:
       name: libxml2-tools
+    inherit:
+      from: libxml2-split
     build:
       files:
-        include:
-          - Library/bin/*.exe
+        - Library/bin/*.exe
     requirements:
       run:
         - libxml2-runtime
+  - package:
+      name: libxml2-full
+    requirements:
+      run:
+        - libxml2-dev
+        - libxml2-runtime
+        - libxml2-tools
 
 about:
   homepage: http://xmlsoft.org/
