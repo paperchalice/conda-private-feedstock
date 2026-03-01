@@ -1,0 +1,61 @@
+context:
+  name: libunistring
+  version: "1.4.2"
+
+recipe:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+    url: https://ftp.gnu.org/gnu/libunistring/libunistring-${{ version }}.tar.xz
+    sha256: 5b46e74377ed7409c5b75e7a96f95377b095623b689d8522620927964a41499c
+
+outputs:
+  - staging:
+      name: libunistring-split
+    requirements:
+      build:
+        - vs
+        - libiconv-dev
+        - m2-aux
+        - m2-autoconf
+        - m2-automake-wrapper
+        - m2-bash
+        - m2-findutils
+        - m2-grep
+        - m2-libtool
+        - m2-m4
+        - m2-make
+    build:
+      script: bld.ps1
+    
+  - package:
+      name: libunistring-runtime
+    inherit:
+      from: libunistring-split
+    build:
+      files:
+        - Library/bin/*.dll
+    requirements:
+      run:
+        - libiconv-runtime
+  - package:
+      name: libunistring-dev
+    inherit:
+      from: libunistring-split
+    build:
+      files:
+        - Library/include
+        - Library/lib
+        - Library/share
+    requirements:
+      run:
+        - libunistring-runtime
+        - libiconv-dev
+      run_exports:
+        - libunistring-runtime
+
+about:
+  homepage: https://www.gnu.org/software/libunistring
+  license: GPL-3.0-only OR LGPL-3.0-only
+  summary: This library provides functions for manipulating Unicode strings and for manipulating C strings according to the Unicode standard.
