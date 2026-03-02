@@ -16,7 +16,7 @@ outputs:
     requirements:
       build:
         - vs
-        # - gettext-tools
+        - paperchalice::gettext-tools
         - m2-aux
         - m2-autoconf
         - m2-automake-wrapper
@@ -26,6 +26,11 @@ outputs:
         - m2-m4
         - m2-make
         - m2-patch
+      host:
+        - libintl-dev
+      ignore_run_exports:
+        from_package:
+          - libintl-dev
     build:
       script: bld.ps1
   - package:
@@ -34,17 +39,19 @@ outputs:
       from: libiconv-split
     build:
       files:
-        - Library/bin/*.dll
+        include:
+          - Library/bin/iconv*.dll
   - package:
       name: libiconv-dev
     inherit:
       from: libiconv-split
     build:
       files:
-        - Library/include
-        - Library/lib
-        - Library/share/doc
-        - Library/share/man
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share/doc
+          - Library/share/man
     requirements:
       run:
         - libiconv-runtime
@@ -56,7 +63,8 @@ outputs:
       from: libiconv-split
     build:
       files:
-        - Library/bin/charset-1.dll
+        include:
+          - Library/bin/charset*.dll
   - package:
       name: libcharset-dev
     inherit:
@@ -78,11 +86,11 @@ outputs:
     requirements:
       run:
         - libiconv-runtime
-        # - libintl-runtime
+        - libintl-runtime
     build:
       files:
         - Library/bin/*.exe
-        # - Library/share/locale
+        - Library/share/locale
 
   - package:
       name: libiconv-full

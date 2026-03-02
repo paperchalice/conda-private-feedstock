@@ -1,12 +1,12 @@
 Enter-M2
 
 [string[]]$configure_args = @(
-    , "--prefix=$(cygpath $LIBRARY_PREFIX)"
+    , "--prefix=$($LIBRARY_PREFIX.Replace('\', '/'))"
     , '--enable-shared=yes'
     , '--enable-static=no'
     , '--enable-year2038'
     , '--enable-relocatable'
-    # , '--enable-nls'
+    , '--enable-nls'
     , '--build=x86_64-w64-mingw32'
 )
 
