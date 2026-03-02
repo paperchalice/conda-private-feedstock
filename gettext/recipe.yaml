@@ -29,6 +29,11 @@ outputs:
         - libxml2-dev
         - libiconv-dev
         - libunistring-dev
+      ignore_run_exports:
+        from_package:
+          - libxml2-dev
+          - libiconv-dev
+          - libunistring-dev
     build:
       script: bld.ps1
 

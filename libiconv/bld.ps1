@@ -6,10 +6,10 @@ Enter-M2
     , '--enable-static=no'
     , '--enable-year2038'
     , '--enable-relocatable'
-    # , '--enable-nls'
+    , '--enable-nls'
     , '--build=x86_64-w64-mingw32'
 )
-
+$Env:CFLAGS += ' -DENABLE_NLS=1'
 bash -c "./configure $($configure_args -join ' ')"
 bash -c 'make -j'
 bash -c 'make install'
