@@ -158,12 +158,11 @@ outputs:
     build:
       files:
         include:
-          - Library/bin/*.exe
-          - Library/bin/*.sh
-          - Library/bin/autopoint
-          - Library/bin/gettextize
+          - Library/bin
           - Library/libexec
           - Library/share/locale
+        exclude:
+          - Library/bin/*.dll
     requirements:
       run:
         - gettext-runtime
