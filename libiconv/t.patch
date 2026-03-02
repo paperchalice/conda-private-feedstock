@@ -1,0 +1,15 @@
+diff --git a/src/iconv.c b/src/iconv.c
+--- src/iconv.c
++++ src/iconv.c
+@@ -868,8 +868,11 @@
+ #endif
+ #if ENABLE_NLS
+   bindtextdomain("libiconv",relocate(LOCALEDIR));
+ #endif
++  puts(relocate(LOCALEDIR));
++  puts(_("conversion to %s unsupported"));
++
+   textdomain("libiconv");
+   /* No need to invoke the gnulib function stdopen() here, because
+      (1) the only file descriptor allocations done by this program are
+          fopen(...,"r"),

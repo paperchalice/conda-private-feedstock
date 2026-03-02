@@ -1,7 +1,7 @@
 Enter-M2
 
 [string[]]$configure_args = @(
-    , "--prefix=$(cygpath $LIBRARY_PREFIX)"
+    , "--prefix=$($LIBRARY_PREFIX.Replace('\', '/'))"
     , '--enable-shared=yes'
     , '--enable-static=no'
     , '--enable-year2038'
@@ -9,7 +9,7 @@ Enter-M2
     , '--enable-nls'
     , '--build=x86_64-w64-mingw32'
 )
-$Env:CFLAGS += ' -DENABLE_NLS=1'
+
 bash -c "./configure $($configure_args -join ' ')"
 bash -c 'make -j'
 bash -c 'make install'
