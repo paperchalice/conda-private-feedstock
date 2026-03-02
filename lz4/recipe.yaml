@@ -1,0 +1,61 @@
+context:
+  name: lz4
+  version: "1.10.0"
+
+recipe:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/${{ name }}/${{ name }}/archive/v${{ version }}.tar.gz
+  sha256: 537512904744b35e232912055ccf8ec66d768639ff3abe5788d90d792ec5f48b
+
+outputs:
+  - staging:
+      name: lz4-split
+    requirements:
+      build:
+        - vs
+        - cmake-no-system
+    build:
+      script: bld.ps1
+
+  - package:
+      name: lz4-runtime
+    inherit:
+      from: lz4-split
+    build:
+      files:
+        - Library/bin/*.dll
+  - package:
+      name: lz4-dev
+    inherit:
+      from: lz4-split
+    build:
+      files:
+        - Library/include
+        - Library/lib
+        - Library/share/man
+    requirements:
+      run:
+        - lz4-runtime
+      run_exports:
+        - lz4-runtime
+  - package:
+      name: lz4-tool
+    inherit:
+      from: lz4-split
+    requirements:
+      run:
+        - lz4-runtime
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+  - package:
+      name: lz4-full
+    requirements:
+      run:
+        - lz4-tool
+        - lz4-dev
+        - lz4-runtime
