@@ -1,0 +1,40 @@
+context:
+  version: "0.0.0"
+
+recipe:
+  name: prefix-stub-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/paperchalice/prefix-stub/archive/refs/heads/main.zip
+
+outputs:
+  - staging:
+      name: prefix-stub-split
+    requirements:
+      build:
+        - vs
+        - cmake-no-system
+    build:
+      script: bld.ps1
+  - package:
+      name: prefix-stub-runtime
+    inherit:
+      from: prefix-stub-split
+    build:
+      files:
+        - Library/bin/*.dll
+  - package:
+      name: prefix-stub-dev
+    inherit:
+      from: prefix-stub-split
+    build:
+      files:
+        - Library/include
+        - Library/lib
+        - Library/cps
+    requirements:
+      run:
+        - prefix-stub-runtime
+      run_exports:
+        - prefix-stub-runtime
