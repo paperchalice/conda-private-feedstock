@@ -1,0 +1,64 @@
+context:
+  version: "1.34.6"
+
+recipe:
+  name: c-ares
+  version: ${{ version }}
+
+source:
+  url: https://github.com/c-ares/c-ares/releases/download/v${{ version }}/c-ares-${{ version }}.tar.gz
+  sha256: 912dd7cc3b3e8a79c52fd7fb9c0f4ecf0aaa73e45efda880266a2d6e26b84ef5
+
+outputs:
+  - staging:
+      name: c-ares-split
+    requirements:
+      build:
+        - vs
+        - cmake
+    build:
+      script: bld.ps1
+
+  - package:
+      name: c-ares-runtime
+    inherit:
+      from: c-ares-split
+    build:
+      files:
+        - Library/bin/*.dll
+  - package:
+      name: c-ares-dev
+    inherit:
+      from: c-ares-split
+    build:
+      files:
+        - Library/include
+        - Library/lib
+        - Library/share
+    requirements:
+      run:
+        - c-ares-runtime
+      run_exports:
+        - c-ares-runtime
+  - package:
+      name: c-ares-tools
+    inherit:
+      from: c-ares-split
+    build:
+      files:
+        - Library/bin/*.exe
+    requirements:
+      run:
+        - c-ares-runtime
+  - package:
+      name: c-ares-full
+    requirements:
+      run:
+        - c-ares-dev
+        - c-ares-tools
+
+about:
+  license: MIT
+  license_file: LICENSE.md
+  summary: This is c-ares, an asynchronous resolver library
+  homepage: https://c-ares.haxx.se/
