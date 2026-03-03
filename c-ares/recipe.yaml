@@ -16,6 +16,8 @@ outputs:
       build:
         - vs
         - cmake
+    build:
+      script: bld.ps1
 
   - package:
       name: c-ares-runtime
