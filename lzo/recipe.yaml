@@ -1,0 +1,54 @@
+context:
+  version: "2.10"
+
+recipe:
+  name: lzo
+  version: ${{ version }}
+
+source:
+  url: http://www.oberhumer.com/opensource/lzo/download/lzo-${{ version }}.tar.gz
+  sha256: c0f892943208266f9b6543b3ae308fab6284c5c90e627931446fb49b4221a072
+
+outputs:
+  - staging:
+      name: lzo-split
+    requirements:
+      build:
+        - vs
+        - cmake-no-system
+        - pkgconf-tools
+    build:
+      script: bld.ps1
+
+  - package:
+      name: lzo-runtime
+    inherit:
+      from: lzo-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: lzo-dev
+    inherit:
+      from: lzo-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+    requirements:
+      run:
+        - lzo-runtime
+      run_exports:
+        - lzo-runtime
+
+about:
+  license: GPL-2.0-or-later
+  license_file: COPYING
+  summary: LZO is a portable lossless data compression library written in ANSI C.
+  description: |
+    LZO offers pretty fast compression and extremely fast decompression.
+    MiniLZO is a very lightweight subset of the LZO library.
+  homepage: http://www.oberhumer.com/opensource/lzo/
+
