@@ -1,0 +1,59 @@
+context:
+  version: "0.98.1"
+
+recipe:
+  name: libb2-meta
+  version: head
+
+source:
+  url: https://github.com/BLAKE2/libb2/archive/refs/heads/master.zip
+  patches:
+    - cpuid.patch
+
+outputs:
+  - staging:
+      name: libb2-split
+    requirements:
+      build:
+        - vs
+        - binutils
+        - m2-aux
+        - m2-autoconf
+        - m2-automake-wrapper
+        - m2-bash
+        - m2-grep
+        - m2-libtool
+        - m2-m4
+        - m2-make
+        - m2-patch
+        - m2-pkg-config
+    build:
+      script: bld.ps1
+
+  - package:
+      name: libb2-runtime
+    inherit:
+      from: libb2-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: libb2-dev
+    inherit:
+      from: libb2-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+    requirements:
+      run:
+        - libb2-runtime
+      run_exports:
+        - libb2-runtime
+
+about:
+  homepage: https://www.blake2.net/
+  license: CC0-1.0
+  summary: C library providing BLAKE2b, BLAKE2s, BLAKE2bp, BLAKE2sp
