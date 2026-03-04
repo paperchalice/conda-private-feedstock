@@ -1,8 +1,7 @@
-$Env:CFLAGS = ($Env:CFLAGS -replace '/', '-') + ' -O1'
-$MSYS2_PREFIX = $LIBRARY_PREFIX -replace '\\', '/' -replace 'C:', '/c/'
+Enter-M2
 
 bash -c './autogen.sh'
-bash -c "./configure --disable-static --prefix=$MSYS2_PREFIX"
+bash -c "./configure --disable-static --prefix=$(cygpath $LIBRARY_PREFIX)"
 bash -c 'make'
 bash -c 'make install'
 
