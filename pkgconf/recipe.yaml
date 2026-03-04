@@ -1,0 +1,69 @@
+context:
+  version: "2.5.1"
+
+recipe:
+  name: pkgconf-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/pkgconf/pkgconf/archive/pkgconf-${{ version }}.tar.gz
+  sha256: 79721badcad1987dead9c3609eb4877ab9b58821c06bdacb824f2c8897c11f2a
+
+outputs:
+  - staging:
+      name: pkgconf-split
+    requirements:
+      build:
+        - vs
+        - meson
+        - ninja
+    build:
+      script: bld.ps1
+
+  - package:
+      name: pkgconf-runtime
+    inherit:
+      from: pkgconf-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: pkgconf-dev
+    inherit:
+      from: pkgconf-split
+    build:
+      files:
+        include:
+          - Library
+        exclude:
+          - Library/bin
+    requirements:
+      run:
+        - pkgconf-runtime
+      run_exports:
+        - pkgconf-runtime
+  - package:
+      name: pkgconf-tools
+    inherit:
+      from: pkgconf-split
+    build:
+      files:
+        - Library/bin/*.exe
+    requirements:
+      run:
+        - pkgconf-runtime
+  - package:
+      name: pkgconf-full
+    requirements:
+      run:
+        - pkgconf-dev
+        - pkgconf-tools
+
+about:
+  license: MIT
+  license_file: COPYING
+  summary: package compiler and linker metadata toolkit
+  homepage: https://github.com/pkgconf/pkgconf
+  repository: https://github.com/pkgconf/pkgconf
+
