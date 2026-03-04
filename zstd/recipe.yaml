@@ -1,0 +1,74 @@
+context:
+  version: "1.5.7"
+
+recipe:
+  name: zstd-split
+  version: head
+
+source:
+  url: https://github.com/facebook/zstd/archive/v${{ version }}.tar.gz
+  sha256: 37d7284556b20954e56e1ca85b80226768902e2edabd3b649e9e72c0c9012ee3
+
+outputs:
+  - staging:
+      name: zstd-split
+    requirements:
+      build:
+        - vs
+        - cmake-no-system
+      host:
+        - lz4-dev
+        - xz-dev
+        - zlib-dev
+      ignore_run_exports:
+        from_package:
+          - lz4-dev
+          - xz-dev
+          - zlib-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: zstd-runtime
+    inherit:
+      from: zstd-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: zstd-dev
+    inherit:
+      from: zstd-split
+    requirements:
+      run:
+        - zstd-runtime
+      run_exports:
+        - zstd-runtime
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+  - package:
+      name: zstd-tools
+    inherit:
+      from: zstd-split
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+    requirements:
+      run:
+        - zstd-runtime
+        - xz-runtime
+        - lz4-runtime
+        - zlib-runtime
+  - package:
+      name: zstd-full
+    requirements:
+      run:
+        - zstd-dev
+        - zstd-tools
+        - zstd-runtime
+

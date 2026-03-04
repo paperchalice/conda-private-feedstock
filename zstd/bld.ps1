@@ -6,8 +6,8 @@ cmake -S build/cmake -B bld `
     -DZSTD_ZLIB_SUPPORT=ON `
     -DZSTD_LZMA_SUPPORT=ON `
     -DZSTD_LZ4_SUPPORT=ON
-cmake --build bld --config $CMAKE_BUILD_TYPE
-cmake --install bld --config $CMAKE_BUILD_TYPE
+cmake --build bld
+cmake --install bld
 
 $links = @('zstdcat', 'unzstd', 'zstdmt')
 foreach($l in $links) {
