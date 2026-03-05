@@ -37,6 +37,7 @@ outputs:
         include:
           - Library/include
           - Library/lib
+          - Library/share
     requirements:
       run:
         - lzo-runtime
