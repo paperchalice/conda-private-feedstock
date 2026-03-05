@@ -1,0 +1,60 @@
+context:
+  version: "1.2.0"
+
+recipe:
+  name: brotli-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/google/brotli/archive/v${{ version }}.tar.gz
+  sha256: 816c96e8e8f193b40151dad7e8ff37b1221d019dbcb9c35cd3fadbfe6477dfec
+
+outputs:
+  - staging:
+      name: brotli-split
+    requirements:
+      build:
+        - vs
+        - cmake-no-system
+    build:
+      script: bld.ps1
+
+  - package:
+      name: brotli-runtime
+    inherit: brotli-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: brotli-dev
+    inherit: brotli-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - brotli-runtime
+      run_exports:
+        - brotli-runtime
+  - package:
+      name: brotli-tools
+    inherit: brotli-split
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+    requirements:
+      run:
+        - brotli-runtime
+  - package:
+      name: brotli-full
+    requirements:
+      run:
+        - brotli-tools
+        - brotli-runtime
+        - brotli-dev
+
