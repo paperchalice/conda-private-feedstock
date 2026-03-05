@@ -1,0 +1,84 @@
+context:
+  version: "3.6.1"
+
+recipe:
+  name: openssl
+  version: ${{ version }}
+
+source:
+  url: https://github.com/openssl/openssl/releases/download/openssl-${{ version }}/openssl-${{ version }}.tar.gz
+  sha256: b1bfedcd5b289ff22aee87c9d600f515767ebf45f77168cb6d64f231f518a82e
+  patches:
+    - lib.patch
+    - reloc.patch
+
+outputs:
+  - staging:
+      name: openssl-split
+    requirements:
+      build:
+        - vs
+        - nasm
+        - perl
+      host:
+        - brotli-dev
+        - prefix-stub-dev
+        - zlib-dev
+        - zstd-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: openssl-runtime
+    inherit: openssl-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+          - Library/SSL
+          - Library/lib/engines-3
+          - Library/lib/ossl-modules
+    requirements:
+      run:
+        - brotli-runtime
+        - prefix-stub-runtime
+        - zlib-runtime
+        - zstd-runtime
+  - package:
+      name: openssl-dev
+    inherit: openssl-split
+    build:
+      files:
+        include:
+          - Library/lib
+          - Library/include
+          - Library/html
+    requirements:
+      run:
+        - openssl-runtime
+      run_exports:
+        - openssl-runtime
+  - package:
+      name: openssl-tools
+    inherit:
+      from: openssl-split
+      run_exports: false
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+          - Library/bin/*.pl
+    requirements:
+      run:
+        - openssl-runtime
+  - package:
+      name: openssl-full
+    requirements:
+      run:
+        - openssl-dev
+        - openssl-tools
+
+about:
+  license: Apache-2.0
+  summary: TLS/SSL and crypto library
+  homepage: https://www.openssl.org/
