@@ -1,0 +1,84 @@
+context:
+  version: "10.47"
+
+recipe:
+  name: pcre2
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${{ version }}/pcre2-${{ version }}.tar.bz2
+    sha256: 47fe8c99461250d42f89e6e8fdaeba9da057855d06eb7fc08d9ca03fd08d7bc7
+
+outputs:
+  - staging:
+      name: pcre2-split
+    requirements:
+      build:
+        - vs
+        - cmake-no-system
+      host:
+        - bzip2-dev
+        - zlib-dev
+      ignore_run_exports:
+        from_package:
+          - bzip2-dev
+          - zlib-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: pcre2-runtime
+    inherit: pcre2-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+    requirements:
+      run:
+        - bzip2-runtime
+        - zlib-runtime
+  - package:
+      name: pcre2-dev
+    inherit: pcre2-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      host:
+        - bzip2-dev
+        - zlib-dev
+      run_exports:
+        - pcre2-runtime
+  - package:
+      name: pcre2-tools
+    inherit: pcre2-split
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+    requirements:
+      run:
+        - pcre2-runtime
+  
+  - package:
+      name: pcre2-full
+    requirements:
+      run:
+        - pcre2-dev
+        - pcre2-tools
+
+about:
+  license: BSD-3-Clause
+  license_file: COPYING
+  summary: Regular expression pattern matching using Perl 5 syntax and semantics.
+  description: |
+    The PCRE library is a set of functions that implement regular expression pattern matching
+    using the same syntax and semantics as Perl 5. PCRE has its own native API, as well as a set of
+    wrapper functions that correspond to the POSIX regular expression API. The PCRE library is
+    free, even for building proprietary software.
+  homepage: http://www.pcre.org/
+  documentation: http://www.pcre.org/current/doc/html/
+
