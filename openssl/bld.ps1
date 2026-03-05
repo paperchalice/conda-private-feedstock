@@ -15,12 +15,12 @@ $opts = @(
     'no-unit-test',
     'shared'
 )
-$Env:CFLAGS += ' /O1'
-$Env:CXXFLAGS += ' /O1'
+$Env:CFLAGS += " -O1 -FS -DINSTALLDIR=`"\`"$($LIBRARY_PREFIX.Replace('\', '\\'))\`"`""
+$Env:CXXFLAGS += ' -O1 -FS'
 $Env:LDFLAGS += ' /DEBUG'
 perl .\Configure @opts
-nmake
-nmake install
+jom -j 8
+jom -j 8 install
 
 Remove-Item $LIBRARY_BIN\*.pdb
 New-Item $LIBRARY_LIB\pkgconfig -Force -ItemType Directory

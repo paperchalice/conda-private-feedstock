@@ -1,50 +1,7 @@
-diff --git a/Configurations/windows-makefile.tmpl b/Configurations/windows-makefile.tmpl
---- Configurations/windows-makefile.tmpl
-+++ Configurations/windows-makefile.tmpl
-@@ -214,8 +214,9 @@
-                           (file_name_is_absolute($config{openssldir}) ?
-                                canonpath($config{openssldir})
-                                : catdir($prefix, $config{openssldir}))
-                           : canonpath("$win_commonroot\\SSL");
-+                  our $openssldir_macro = substr $openssldir, length($prefix)+1;
-                   our ($openssldir_dev, $openssldir_dir, $openssldir_file) =
-                       splitpath($openssldir, 1);
-                   $openssldir_dev -}
- OPENSSLDIR_dir={- canonpath($openssldir_dir) -}
-@@ -229,12 +230,14 @@
-                   our $modulesdir_dev = $modulesprefix_dev;
-                   our $modulesdir_dir =
-                       catdir($modulesprefix_dir, "ossl-modules");
-                   our $modulesdir = catpath($modulesdir_dev, $modulesdir_dir);
-+                  our $modulesdir_macro = substr $modulesdir, length($prefix)+1;
-                   our $enginesdir_dev = $modulesprefix_dev;
-                   our $enginesdir_dir =
-                       catdir($modulesprefix_dir, "engines-$sover_dirname");
-                   our $enginesdir = catpath($enginesdir_dev, $enginesdir_dir);
-+                  our $enginesdir_macro = substr $enginesdir, length($prefix)+1;
-                   $modulesdir_dev -}
- MODULESDIR_dir={- canonpath($modulesdir_dir) -}
- ENGINESDIR_dev={- $enginesdir_dev -}
- ENGINESDIR_dir={- canonpath($enginesdir_dir) -}
-@@ -342,11 +345,11 @@
-                           @{$config{lib_cppflags}},
-                           @{$config{shared_cppflag}});
-                 join(' ', $lib_cppflags,
-                           (map { '-D'.quotify1($_) }
--                               "OPENSSLDIR=\"$openssldir\"",
--                               "ENGINESDIR=\"$enginesdir\"",
--                               "MODULESDIR=\"$modulesdir\""),
-+                               "OPENSSLDIR=\"$openssldir_macro\"",
-+                               "ENGINESDIR=\"$enginesdir_macro\"",
-+                               "MODULESDIR=\"$modulesdir_macro\""),
-                           '$(CNF_CPPFLAGS)', '$(CPPFLAGS)') -}
- LIB_CFLAGS={- join(' ', $target{lib_cflags} || (),
-                         $target{shared_cflag} || (),
-                         @{$config{lib_cflags}},
 diff --git a/Configurations/10-main.conf b/Configurations/10-main.conf
 --- Configurations/10-main.conf
 +++ Configurations/10-main.conf
-@@ -1595,9 +1595,9 @@
+@@ -1591,9 +1591,9 @@
          bin_lflags       => add("/subsystem:console /opt:ref"),
          ex_libs          => add(sub {
              my @ex_libs = ();
@@ -68,29 +25,18 @@ diff --git a/crypto/defaults.c b/crypto/defaults.c
  #include "internal/cryptlib.h"
  #include "internal/e_os.h"
  
-@@ -152,9 +153,9 @@
+@@ -139,9 +140,9 @@
      if (!RUN_ONCE(&defaults_setup_init, do_defaults_setup))
          return NULL;
      return (const char *)openssldirptr;
- # else
+ #else
 -    return OPENSSLDIR;
 +    return prefix_stub_relocate(OPENSSLDIR);
  #endif
  }
  
  /**
-@@ -168,9 +169,9 @@
-     if (!RUN_ONCE(&defaults_setup_init, do_defaults_setup))
-         return NULL;
-     return (const char *)enginesdirptr;
- #else
--    return ENGINESDIR;
-+    return prefix_stub_relocate(ENGINESDIR);
- #endif
- }
- 
- /**
-@@ -184,9 +185,9 @@
+@@ -155,9 +156,9 @@
      if (!RUN_ONCE(&defaults_setup_init, do_defaults_setup))
          return NULL;
      return (const char *)modulesdirptr;
@@ -101,6 +47,29 @@ diff --git a/crypto/defaults.c b/crypto/defaults.c
  }
  
  /**
+diff --git a/crypto/dllmain.c b/crypto/dllmain.c
+--- crypto/dllmain.c
++++ crypto/dllmain.c
+@@ -13,8 +13,9 @@
+ #if defined(_WIN32) || defined(__CYGWIN__)
+ #ifdef __CYGWIN__
+ /* pick DLL_[PROCESS|THREAD]_[ATTACH|DETACH] definitions */
+ #include <windows.h>
++#include <prefix-stub/relocate.h>
+ /*
+  * this has side-effect of _WIN32 getting defined, which otherwise is
+  * mutually exclusive with __CYGWIN__...
+  */
+@@ -29,8 +30,9 @@
+ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+ {
+     switch (fdwReason) {
+     case DLL_PROCESS_ATTACH:
++        prefix_stub_set_orig_prefix(INSTALLDIR);
+         break;
+     case DLL_THREAD_ATTACH:
+         break;
+     case DLL_THREAD_DETACH:
 diff --git a/crypto/ct/ct_log.c b/crypto/ct/ct_log.c
 --- crypto/ct/ct_log.c
 +++ crypto/ct/ct_log.c
@@ -109,8 +78,8 @@ diff --git a/crypto/ct/ct_log.c b/crypto/ct/ct_log.c
      const char *fpath = ossl_safe_getenv(CTLOG_FILE_EVP);
  
      if (fpath == NULL)
--      fpath = CTLOG_FILE;
-+      fpath = prefix_stub_relocate(CTLOG_FILE);
+-        fpath = CTLOG_FILE;
++        fpath = prefix_stub_relocate(CTLOG_FILE);
  
      return CTLOG_STORE_load_file(store, fpath);
  }
