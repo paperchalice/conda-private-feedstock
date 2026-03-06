@@ -1,0 +1,87 @@
+context:
+  version: "3.8.5"
+
+recipe:
+  name: libarchive
+  version: ${{ version }}
+
+source:
+  url: https://github.com/libarchive/libarchive/releases/download/v${{ version }}/libarchive-${{ version }}.tar.xz
+  sha256: d68068e74beee3a0ec0dd04aee9037d5757fcc651591a6dcf1b6d542fb15a703
+
+outputs:
+  - staging:
+      name: libarchive-split
+    requirements:
+      build:
+        - vs
+        - cmake-no-system
+        - pkgconf-tools
+      host:
+        - bzip2-dev
+        - libb2-dev
+        - libcharset-dev
+        - libiconv-dev
+        - xz-dev
+        - lz4-dev
+        - lzo-dev
+        - openssl-dev
+        - pcre2-dev
+        - zlib-dev
+        - zstd-dev
+      ignore_run_exports:
+        from_package:
+          - pcre2-dev
+          - lzo-dev
+          - libcharset-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: libarchive-runtime
+    inherit: libarchive-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: libarchive-dev
+    inherit: libarchive-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - libarchive-runtime
+      run_exports:
+        - libarchive-runtime
+  - package:
+      name: libarchive-tools
+    inherit:
+      from: libarchive-split
+      run_exports: false
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+    requirements:
+      run:
+        - libarchive-runtime
+        - pcre2-runtime
+
+  - package:
+      name: libarchive-full
+    requirements:
+      run:
+        - libarchive-dev
+        - libarchive-tools
+
+about:
+  license: Apache-2.0
+  summary: Multi-format archive and compression library
+  license_file: COPYING
+  homepage: http://www.libarchive.org/
+  repository: https://github.com/libarchive/libarchive
