@@ -1,0 +1,86 @@
+context:
+  version: "1.22.2"
+
+recipe:
+  name: krb5
+  version: ${{ version }}
+
+source:
+  url: https://kerberos.org/dist/krb5/${{ (version|split("."))[0:2]|join(".") }}/krb5-${{ version }}.tar.gz
+  sha256: 3243ffbc8ea4d4ac22ddc7dd2a1dc54c57874c40648b60ff97009763554eaf13
+  patches:
+    - tweak.patch
+
+outputs:
+  - staging:
+      name: krb5-split
+    requirements:
+      build:
+        - vs
+        - posix
+        - perl
+        - pkgconf-tools
+        - jom
+        - gettext-tools
+      host:
+        - libintl-dev
+        - openssl-dev
+        - prefix-stub-dev
+      ignore_run_exports:
+        from_package:
+          - libintl-dev
+          - openssl-dev
+          - prefix-stub-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: krb5-runtime
+    inherit: krb5-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+          - Library/bin/plugins
+    requirements:
+      run:
+        - openssl-runtime
+        - prefix-stub-runtime
+  - package:
+      name: krb5-dev
+    inherit: krb5-split
+    build:
+      files:
+        include:
+          - Library/bin/*.chm
+          - Library/include
+          - Library/lib
+    requirements:
+      run:
+        - krb5-runtime
+      run_exports:
+        - krb5-runtime
+  - package:
+      name: krb5-tools
+    inherit: krb5-split
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+    requirements:
+      run:
+        - krb5-runtime
+
+  - package:
+      name: krb5-full
+    requirements:
+      run:
+        - krb5-tools
+        - krb5-dev
+
+about:
+  license: MIT
+  license_file: doc/notice.rst
+  summary: A network authentication protocol.
+  homepage: http://web.mit.edu/kerberos/
+

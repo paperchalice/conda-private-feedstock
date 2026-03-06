@@ -1,0 +1,154 @@
+diff --git a/src/plugins/preauth/pkinit/pkinit_crypto_openssl.c b/src/plugins/preauth/pkinit/pkinit_crypto_openssl.c
+--- src/plugins/preauth/pkinit/pkinit_crypto_openssl.c
++++ src/plugins/preauth/pkinit/pkinit_crypto_openssl.c
+@@ -1774,9 +1774,9 @@
+         if (certctx == NULL)
+             goto cleanup;
+         X509_STORE_CTX_init(certctx, certstore, id_cryptoctx->my_cert,
+                             id_cryptoctx->intermediateCAs);
+-        X509_STORE_CTX_trusted_stack(certctx, id_cryptoctx->trustedCAs);
++        X509_STORE_CTX_set0_trusted_stack(certctx, id_cryptoctx->trustedCAs);
+         if (!X509_verify_cert(certctx)) {
+             retval = oerr_cert(context, 0, certctx,
+                                _("Failed to verify own certificate"));
+             goto cleanup;
+@@ -2117,9 +2117,9 @@
+         X509_STORE_CTX_set0_crls(cert_ctx, revoked);
+ 
+         /* add trusted CAs certificates for cert verification */
+         if (idctx->trustedCAs != NULL)
+-            X509_STORE_CTX_trusted_stack(cert_ctx, idctx->trustedCAs);
++            X509_STORE_CTX_set0_trusted_stack(cert_ctx, idctx->trustedCAs);
+         else {
+             pkiDebug("unable to find any trusted CAs\n");
+             goto cleanup;
+         }
+@@ -3093,10 +3093,9 @@
+ int
+ pkinit_openssl_init(void)
+ {
+     /* Initialize OpenSSL. */
+-    ERR_load_crypto_strings();
+-    OpenSSL_add_all_algorithms();
++    OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CRYPTO_STRINGS | OPENSSL_INIT_ADD_ALL_CIPHERS | OPENSSL_INIT_ADD_ALL_DIGESTS, NULL);
+     return 0;
+ }
+ 
+ static krb5_error_code
+diff --git a/src/config/win-pre.in b/src/config/win-pre.in
+--- src/config/win-pre.in
++++ src/config/win-pre.in
+@@ -116,14 +116,14 @@
+ #
+ CC=cl
+ 
+ PDB_OPTS=-Fd$(OUTPRE)\ -FD
+-CPPFLAGS=-I$(top_srcdir)\include -I$(top_srcdir)\include\krb5 $(DNSFLAGS) -DWIN32_LEAN_AND_MEAN -DKRB5_DEPRECATED=1 -DKRB5_PRIVATE -D_CRT_SECURE_NO_DEPRECATE $(KFWFLAGS) $(TIME_T_FLAGS) $(OSSLINCLUDE)
++CPPFLAGS=-I$(top_srcdir)\include -I$(top_srcdir)\include\krb5 $(DNSFLAGS) -DWIN32_LEAN_AND_MEAN -DKRB5_DEPRECATED=1 -DKRB5_PRIVATE -DENABLE_NLS -DBUILD_KRB5 -DINSTALLDIR="\"$(KRB_INSTALL_DIR)\"" -D_CRT_SECURE_NO_DEPRECATE $(KFWFLAGS) $(TIME_T_FLAGS) $(OSSLINCLUDE)
+ # Treat the following warnings as errors:
+ #  4020: too many actual parameters
+ #  4024: different types for formal and actual parameter
+ #  4047: different levels of indirection
+-CCOPTS=-nologo /EHsc /W3 /we4020 /we4024 /we4047 $(PDB_OPTS) $(DLL_FILE_DEF)
++CCOPTS=-nologo /EHsc /W3 /we4020 /we4024 /we4047 $(MY_CFLAGS) $(PDB_OPTS) $(DLL_FILE_DEF)
+ LOPTS=-nologo -incremental:no -manifest
+ 
+ CCLINKOPTION=
+ DEBUGOPT=/guard:cf /Zi
+@@ -150,9 +150,9 @@
+ !ifdef DEBUG_SYMBOL
+ CCOPTS=$(DEBUGOPT) $(CCOPTS)
+ LOPTS=$(LOPTS) -debug
+ !endif
+-CCOPTS=/Os /MD $(CCOPTS)
++CCOPTS=/O1 /MD $(CCOPTS)
+ LOPTS=$(LOPTS)
+ !ifdef DEBUG_SYMBOL
+ INSTALLDBGSYMS=copy
+ !else
+@@ -189,9 +189,9 @@
+ CCLIB=krbcc$(BITS)
+ SPAKELIB=spake$(BITS)
+ 
+ !ifdef OPENSSL_DIR
+-OSSLLIB="$(OPENSSL_DIR)\lib\libcrypto.lib"
++OSSLLIB="$(OPENSSL_DIR)\lib\crypto.lib"
+ OSSLINC="-I$(OPENSSL_DIR)\include"
+ PKINITLIB=pkinit$(BITS)
+ !else
+ OSSLLIB=
+diff --git a/src/lib/krb5/krb5_libinit.c b/src/lib/krb5/krb5_libinit.c
+--- src/lib/krb5/krb5_libinit.c
++++ src/lib/krb5/krb5_libinit.c
+@@ -5,14 +5,17 @@
+ #if defined(_WIN32) || defined(USE_CCAPI)
+ #include "stdcc.h"
+ #endif
+ 
++#include <prefix-stub/relocate.h>
+ #include "krb5_libinit.h"
+ #include "k5-platform.h"
+ #include "cc-int.h"
+ #include "kt-int.h"
+ #include "os-proto.h"
+ 
++#pragma comment(lib, "prefix-stub.lib")
++
+ /*
+  * Initialize the Kerberos v5 library.
+  */
+ 
+@@ -36,9 +39,10 @@
+     add_error_table(&et_kdb5_error_table);
+     add_error_table(&et_asn1_error_table);
+     add_error_table(&et_k524_error_table);
+ 
+-    bindtextdomain(KRB5_TEXTDOMAIN, LOCALEDIR);
++    prefix_stub_set_orig_prefix(INSTALLDIR);
++    bindtextdomain(KRB5_TEXTDOMAIN, prefix_stub_relocate(LOCALEDIR));
+ 
+ #ifndef LEAN_CLIENT
+     err = krb5int_kt_initialize();
+     if (err)
+diff --git a/src/util/et/error_message.c b/src/util/et/error_message.c
+--- src/util/et/error_message.c
++++ src/util/et/error_message.c
+@@ -23,8 +23,12 @@
+ #include "k5-platform.h"
+ #include "com_err.h"
+ #include "error_table.h"
+ 
++#include <prefix-stub/relocate.h>
++
++#pragma comment(lib, "prefix-stub.lib")
++
+ static struct et_list *et_list;
+ static k5_mutex_t et_list_lock = K5_MUTEX_PARTIAL_INITIALIZER;
+ static int terminated = 0;      /* for safety and finalization debugging */
+ 
+@@ -269,9 +273,9 @@
+ 
+     /* If there are two strings at the end of the table, they are a text domain
+      * and locale dir, and we are supposed to call bindtextdomain. */
+     if (et->msgs[et->n_msgs] != NULL && et->msgs[et->n_msgs + 1] != NULL)
+-        bindtextdomain(et->msgs[et->n_msgs], et->msgs[et->n_msgs + 1]);
++        bindtextdomain(et->msgs[et->n_msgs], prefix_stub_relocate(et->msgs[et->n_msgs + 1]));
+ 
+     k5_mutex_unlock(&et_list_lock);
+     return 0;
+ }
+diff --git a/src/include/k5-platform.h b/src/include/k5-platform.h
+--- src/include/k5-platform.h
++++ src/include/k5-platform.h
+@@ -1064,8 +1064,11 @@
+  * extraction to pot files but does not translate it.
+  */
+ #ifdef ENABLE_NLS
+ #include <libintl.h>
++#ifdef BUILD_KRB5
++#pragma comment(lib, "intl.lib")
++#endif
+ #define KRB5_TEXTDOMAIN "mit-krb5"
+ #define _(s) dgettext(KRB5_TEXTDOMAIN, s)
+ #else
+ #define _(s) s
