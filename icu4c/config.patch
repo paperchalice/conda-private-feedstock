@@ -1,0 +1,14 @@
+diff --git a/icu4c/source/common/unicode/uconfig.h b/icu4c/source/common/unicode/uconfig.h
+--- icu4c/source/common/unicode/uconfig.h
++++ icu4c/source/common/unicode/uconfig.h
+@@ -88,9 +88,9 @@
+  * Determines whether to disable renaming or not.
+  * @internal
+  */
+ #ifndef U_DISABLE_RENAMING
+-#define U_DISABLE_RENAMING 0
++#define U_DISABLE_RENAMING 1
+ #endif
+ 
+ /**
+  * \def U_NO_DEFAULT_INCLUDE_UTF_HEADERS

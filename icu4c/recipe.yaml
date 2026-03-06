@@ -1,0 +1,26 @@
+context:
+  version: "78.2"
+
+recipe:
+  name: icu4c
+  version: ${{ version }}
+
+source:
+  url: https://github.com/unicode-org/icu/releases/download/release-${{ version }}/icu4c-${{ version }}-sources.zip
+  sha256: af38c3d4904e47e1bc2dd7587922ee2aec312fefa677804582e3fecca3edb272
+  patches:
+    - config.patch
+
+outputs:
+  - staging:
+      name: icu4c-split
+    requirements:
+      build:
+        - vs
+    build:
+      script: bld.ps1
+
+  - package:
+      name: icu4c-dev
+    inherit: icu4c-split
+
