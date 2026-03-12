@@ -17,10 +17,53 @@ outputs:
     requirements:
       build:
         - vs
+        - m2-aux
+        - m2-autoconf
+        - m2-automake-wrapper
+        - m2-bash
+        - m2-findutils
+        - m2-grep
+        - m2-libtool
+        - m2-m4
+        - m2-make
+        - python
     build:
       script: bld.ps1
 
   - package:
+      name: icu4c-runtime
+    inherit: icu4c-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
       name: icu4c-dev
     inherit: icu4c-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - icu4c-runtime
+      run_exports:
+        - icu4c-runtime
+  - package:
+      name: icu4c-tools
+    inherit: icu4c-split
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+    requirements:
+      run:
+        - icu4c-runtime
 
+about:
+  license: Unicode-3.0
+  summary: International Components for Unicode
+  homepage: https://icu.unicode.org/
+  repository: https://github.com/unicode-org/icu
