@@ -1,0 +1,76 @@
+context:
+  version: "2.6"
+
+recipe:
+  name: rtmpdump
+  version: ${{ version }}
+
+source:
+  git: https://git.ffmpeg.org/rtmpdump.git
+  depth: 1
+  tag: v${{ version }}
+  patches:
+    - cmake-adpation.patch
+    - pkgconfig-adjust.patch
+
+outputs:
+  - staging:
+      name: rtmpdump-split
+    requirements:
+      build:
+        - vs
+        - cmake
+      host:
+        - getopt-dev
+        - zlib-dev
+      ignore_run_exports:
+        from_package:
+          - getopt-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: rtmpdump-runtime
+    inherit: rtmpdump-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: rtmpdump-tools
+    inherit: rtmpdump-split
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+    requirements:
+      run:
+        - getopt-runtime
+        - rtmpdump-runtime
+        - zlib-runtime
+  - package:
+      name: rtmpdump-dev
+    inherit: rtmpdump-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - rtmpdump-runtime
+      run_exports:
+        - rtmpdump-runtime
+  
+  - package:
+      name: rtmpdump-full
+    requirements:
+      run:
+        - rtmpdump-tools
+        - rtmpdump-dev
+
+about:
+  license: GPL-2.0-only
+  summary: rtmpdump is a toolkit for RTMP streams
+  homepage: https://rtmpdump.mplayerhq.hu/
