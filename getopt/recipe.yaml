@@ -40,3 +40,7 @@ outputs:
       run_exports:
         - getopt-runtime
 
+about:
+  license: LGPL-3.0-or-later
+  summary: Full getopt port for unicode and multibyte windows applications
+  homepage: https://github.com/ludvikjerabek/getopt-win
