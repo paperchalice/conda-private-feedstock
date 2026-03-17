@@ -7,5 +7,5 @@ $cmake_args = @(
 )
 
 cmake -S . -B build @cmake_args
-cmake --build build --config $CMAKE_BUILD_TYPE
-cmake --install build --config $CMAKE_BUILD_TYPE
+cmake --build build
+cmake --install build
