@@ -1,0 +1,64 @@
+context:
+  version: "1.68.0"
+
+recipe:
+  name: nghttp2-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/nghttp2/nghttp2/releases/download/v${{ version }}/nghttp2-${{ version }}.tar.xz
+  sha256: 5511d3128850e01b5b26ec92bf39df15381c767a63441438b25ad6235def902c
+
+outputs:
+  - staging:
+      name: nghttp2-split
+    requirements:
+      build:
+        - vs
+        - cmake
+      # host:
+      #   - brotli-dev
+      #   - c-ares-dev
+      #   - jassen-dev
+      #   - libev-dev
+      #   - libevent-dev
+      #   - libxml2-dev
+      #   - mruby
+    build:
+      script: bld.ps1
+
+  - package:
+      name: nghttp2-runtime
+    inherit: nghttp2-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: nghttp2-dev
+    inherit: nghttp2-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - nghttp2-runtime
+      run_exports:
+        - nghttp2-runtime
+  # - package:
+  #     name: nghttp2-tools
+  #   inherit: nghttp2-split
+  #   build:
+  #     files:
+  #       include:
+  #         - Library/bin/*.exe
+
+about:
+  license: MIT
+  summary: HTTP/2 C Library and tools
+  license_file: COPYING
+  homepage: https://nghttp2.org/
+  repository: https://github.com/nghttp2/nghttp2
