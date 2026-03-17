@@ -1,0 +1,52 @@
+context:
+  version: "0.38.0"
+
+recipe:
+  name: cpp-httplib-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/yhirose/cpp-httplib/archive/refs/tags/v${{ version }}.tar.gz
+
+outputs:
+  - staging:
+      name: cpp-httplib-split
+    requirements:
+      build:
+        - vs
+        - cmake-no-system
+      host:
+        - brotli-dev
+        - zlib-dev
+        - openssl-dev
+        - zstd-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: cpp-httplib-runtime
+    inherit: cpp-httplib-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: cpp-httplib-dev
+    inherit: cpp-httplib-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - cpp-httplib-runtime
+      run_exports:
+        - cpp-httplib-runtime
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: A C++ header-only HTTP/HTTPS server and client library
+  homepage: https://yhirose.github.io/cpp-httplib/
