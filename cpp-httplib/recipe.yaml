@@ -41,7 +41,11 @@ outputs:
           - Library/share
     requirements:
       run:
+        - brotli-dev
         - cpp-httplib-runtime
+        - openssl-dev
+        - zlib-dev
+        - zstd-dev
       run_exports:
         - cpp-httplib-runtime
 
