@@ -1,0 +1,51 @@
+context:
+  version: "1.21.0"
+
+recipe:
+  name: ngtcp2-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/ngtcp2/ngtcp2/releases/download/v${{ version }}/ngtcp2-${{ version }}.tar.xz
+  sha256: 2d1c07e6aa509c017516c08307b0b707cd165a17275ab5f1caff9aaa0e3b6c7d
+
+outputs:
+  - staging:
+      name: ngtcp2-split
+    requirements:
+      build:
+        - vs
+        - cmake
+      host:
+        - openssl-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: ngtcp2-runtime
+    inherit: ngtcp2-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: ngtcp2-dev
+    inherit: ngtcp2-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - ngtcp2-runtime
+      run_exports:
+        - ngtcp2-runtime
+
+about:
+  license: MIT
+  summary: ngtcp2 project is an effort to implement IETF QUIC protocol
+  license_file: COPYING
+  homepage: https://nghttp2.org/ngtcp2/
+  repository: https://github.com/ngtcp2/ngtcp2
