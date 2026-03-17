@@ -39,6 +39,7 @@ target_sources(
         librtmp/http.h
         librtmp/log.h
         librtmp/rtmp_sys.h
+        librtmp/rtmp.h
   PUBLIC
     FILE_SET generated_headers
       TYPE HEADERS
