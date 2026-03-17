@@ -1,0 +1,71 @@
+context:
+  version: "0.21.5"
+
+recipe:
+  name: libpsl-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/rockdaboot/libpsl/releases/download/${{ version }}/libpsl-${{ version }}.tar.gz
+  sha256: 1dcc9ceae8b128f3c0b3f654decd0e1e891afc6ff81098f227ef260449dae208
+  patches:
+    - icu-win.patch
+
+outputs:
+  - staging:
+      name: libpsl-split
+    requirements:
+      build:
+        - vs
+        - ninja
+        - meson
+        - pkgconf-tools
+    build:
+      script: bld.ps1
+
+  - package:
+      name: libpsl-runtime
+    inherit: libpsl-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: libpsl-dev
+    inherit: libpsl-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - libpsl-runtime
+      run_exports:
+        - libpsl-runtime
+  - package:
+      name: libpsl-tools
+    inherit: libpsl-split
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+          - Library/bin/psl-make-dafsa
+    requirements:
+      run:
+        - libpsl-runtime
+
+  - package:
+      name: libpsl-full
+    requirements:
+      run:
+        - libpsl-tools
+        - libpsl-dev
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: A C library to handle the Public Suffix List
+  homepage: https://github.com/rockdaboot/libpsl
+

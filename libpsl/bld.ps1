@@ -1,3 +1,5 @@
+$Env:CFLAGS = $null
+
 meson setup --prefix=$LIBRARY_PREFIX `
   --buildtype=minsize `
   build
