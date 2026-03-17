@@ -1,0 +1,104 @@
+diff --git a/llvm/CMakeLists.txt b/llvm/CMakeLists.txt
+index 420774b629b8b..6dbe47600cb2f 100644
+--- a/llvm/CMakeLists.txt
++++ b/llvm/CMakeLists.txt
+@@ -614,6 +614,11 @@ option(LLVM_ENABLE_THREADS "Use threads if available." ON)
+ 
+ set(LLVM_ENABLE_ICU "OFF" CACHE STRING "Use ICU for text encoding conversion support if available. Can be ON, OFF, or FORCE_ON")
+ 
++# After Windows 10 1903, icu.lib is available.
++if(WIN32 AND CMAKE_SYSTEM_VERSION VERSION_GREATER_EQUAL "10.0.18362")
++  cmake_dependent_option(LLVM_ENABLE_WINDOWS_ICU "Use Windows vendored ICU if possible" OFF LLVM_ENABLE_ICU OFF)
++endif()
++
+ set(LLVM_ENABLE_ICONV "OFF" CACHE STRING "Use iconv for text encoding conversion support if available. Can be ON, OFF, or FORCE_ON")
+ 
+ set(LLVM_ENABLE_ZLIB "ON" CACHE STRING "Use zlib for compression/decompression if available. Can be ON, OFF, or FORCE_ON")
+diff --git a/llvm/cmake/config-ix.cmake b/llvm/cmake/config-ix.cmake
+index a12eaf76d15df..7a5631b1ae3b5 100644
+--- a/llvm/cmake/config-ix.cmake
++++ b/llvm/cmake/config-ix.cmake
+@@ -313,15 +313,24 @@ endif()
+ if(LLVM_ENABLE_ICU AND NOT(LLVM_ENABLE_ICONV STREQUAL FORCE_ON))
+   set(LIBRARY_SUFFIXES ${CMAKE_FIND_LIBRARY_SUFFIXES})
+   set(CMAKE_FIND_LIBRARY_SUFFIXES "${CMAKE_SHARED_LIBRARY_SUFFIX}")
+-  if (LLVM_ENABLE_ICU STREQUAL FORCE_ON)
+-    find_package(ICU REQUIRED COMPONENTS uc i18n)
+-    if (NOT ICU_FOUND)
+-      message(FATAL_ERROR "Failed to configure ICU, but LLVM_ENABLE_ICU is FORCE_ON")
++  set(HAVE_WINDOWS_ICU OFF)
++  if(LLVM_ENABLE_WINDOWS_ICU AND WIN32 AND CMAKE_SYSTEM_VERSION VERSION_GREATER_EQUAL "10.0.18362")
++    message(STATUS "Use Windows vendored ICU")
++    set(HAVE_WINDOWS_ICU ON)
++  endif()
++  if(NOT HAVE_WINDOWS_ICU)
++    if (LLVM_ENABLE_ICU STREQUAL FORCE_ON)
++      find_package(ICU REQUIRED COMPONENTS uc i18n)
++      if (NOT ICU_FOUND)
++        message(FATAL_ERROR "Failed to configure ICU, but LLVM_ENABLE_ICU is FORCE_ON")
++      endif()
++    else()
++      find_package(ICU COMPONENTS uc i18n)
+     endif()
++    set(HAVE_ICU ${ICU_FOUND})
+   else()
+-    find_package(ICU COMPONENTS uc i18n)
++    set(HAVE_ICU ON)
+   endif()
+-  set(HAVE_ICU ${ICU_FOUND})
+   set(CMAKE_FIND_LIBRARY_SUFFIXES ${LIBRARY_SUFFIXES})
+ endif()
+ 
+diff --git a/llvm/include/llvm/Config/config.h.cmake b/llvm/include/llvm/Config/config.h.cmake
+index ce83de8e4cba9..94fde52de11b3 100644
+--- a/llvm/include/llvm/Config/config.h.cmake
++++ b/llvm/include/llvm/Config/config.h.cmake
+@@ -242,6 +242,9 @@
+ /* Define if ICU library is available */
+ #cmakedefine01 HAVE_ICU
+ 
++/* Define if Windows vendored ICU is available */
++#cmakedefine01 HAVE_WINDOWS_ICU
++
+ /* Define if iconv library is available */
+ #cmakedefine01 HAVE_ICONV
+ 
+diff --git a/llvm/lib/Support/CMakeLists.txt b/llvm/lib/Support/CMakeLists.txt
+index 380be042df69d..a2c68233fd253 100644
+--- a/llvm/lib/Support/CMakeLists.txt
++++ b/llvm/lib/Support/CMakeLists.txt
+@@ -42,6 +42,9 @@ if( WIN32 )
+   # advapi32 required for CryptAcquireContextW in lib/Support/Windows/Path.inc.
+   # ntdll required for RtlGetLastNtStatus in lib/Support/ErrorHandling.cpp.
+   set(system_libs ${system_libs} psapi shell32 ole32 uuid advapi32 ws2_32 ntdll)
++  if( HAVE_WINDOWS_ICU )
++    list(APPEND system_libs icu)
++  endif()
+ elseif( CMAKE_HOST_UNIX )
+   if( HAVE_LIBRT )
+     set(system_libs ${system_libs} rt)
+@@ -333,7 +336,7 @@ add_llvm_component_library(LLVMSupport
+   )
+ 
+ # Link ICU library if it is an external library.
+-if(ICU_FOUND)
++if(ICU_FOUND AND NOT HAVE_WINDOWS_ICU)
+   target_link_libraries(LLVMSupport
+   PRIVATE
+   ${ICU_LIBRARIES}
+diff --git a/llvm/lib/Support/TextEncoding.cpp b/llvm/lib/Support/TextEncoding.cpp
+index 453af6f7287bc..d36f02c1300b9 100644
+--- a/llvm/lib/Support/TextEncoding.cpp
++++ b/llvm/lib/Support/TextEncoding.cpp
+@@ -20,7 +20,11 @@
+ #include <system_error>
+ 
+ #if HAVE_ICU
++#if HAVE_WINDOWS_ICU
++#include <icu.h>
++#else
+ #include <unicode/ucnv.h>
++#endif
+ #elif HAVE_ICONV
+ #include <iconv.h>
+ #endif
