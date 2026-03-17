@@ -70,6 +70,7 @@ outputs:
     requirements:
       run:
         - libarchive-runtime
+        - lzo-runtime
         - pcre2-runtime
 
   - package:
