@@ -1,0 +1,55 @@
+context:
+  version: "3.5.2"
+
+recipe:
+  name: libffi-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/libffi/libffi/releases/download/v${{ version }}/libffi-${{ version }}.tar.gz
+  sha256: f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc
+
+outputs:
+  - staging:
+      name: libffi-split
+    requirements:
+      build:
+        - vs
+        - m2-aux
+        - m2-autoconf
+        - m2-automake-wrapper
+        - m2-bash
+        - m2-grep
+        - m2-libtool
+        - m2-m4
+        - m2-make
+        - m2-patch
+    build:
+      script: bld.ps1
+
+  - package:
+      name: libffi-runtime
+    inherit: libffi-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: libffi-dev
+    inherit: libffi-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run_exports:
+        - libffi-runtime
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: A Portable Foreign Function Interface Library
+  homepage: https://sourceware.org/libffi/
+  repository: https://github.com/libffi/libffi
