@@ -44,6 +44,8 @@ outputs:
           - Library/lib
           - Library/share
     requirements:
+      run:
+        - libffi-runtime
       run_exports:
         - libffi-runtime
 

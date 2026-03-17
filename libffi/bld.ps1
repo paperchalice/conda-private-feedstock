@@ -16,3 +16,5 @@ $Env:Path += ";$PWD"
 bash -c "./configure $($configure_args -join ' ')"
 bash -c 'make -j'
 bash -c 'make install'
+
+Rename-Item -Path "$LIBRARY_LIB\ffi.dll.lib" -NewName "ffi.lib"
