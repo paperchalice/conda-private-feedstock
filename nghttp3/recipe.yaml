@@ -1,0 +1,49 @@
+context:
+  version: "1.15.0"
+
+recipe:
+  name: nghttp3-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/ngtcp2/nghttp3/releases/download/v${{ version }}/nghttp3-${{ version }}.tar.xz
+  sha256: 6da0cd06b428d32a54c58137838505d9dc0371a900bb8070a46b29e1ceaf2e0f
+
+outputs:
+  - staging:
+      name: nghttp3-split
+    requirements:
+      build:
+        - vs
+        - cmake
+    build:
+      script: bld.ps1
+
+  - package:
+      name: nghttp3-runtime
+    inherit: nghttp3-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: nghttp3-dev
+    inherit: nghttp3-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - nghttp3-runtime
+      run_exports:
+        - nghttp3-runtime
+
+about:
+  license: MIT
+  summary: HTTP/3 library written in C
+  license_file: COPYING
+  homepage: https://nghttp2.org/nghttp3/
+  repository: https://github.com/ngtcp2/nghttp3
