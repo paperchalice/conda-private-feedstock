@@ -1,0 +1,52 @@
+context:
+  version: "0.12.0"
+
+recipe:
+  name: libssh-split
+  version: ${{ version }}
+
+source:
+  url: https://www.libssh.org/files/${{ (version|split("."))[0:2]|join(".") }}/libssh-${{ version }}.tar.xz
+  sha256: 1a6af424d8327e5eedef4e5fe7f5b924226dd617ac9f3de80f217d82a36a7121
+
+outputs:
+  - staging:
+      name: libssh-split
+    requirements:
+      build:
+        - vs
+        - cmake-no-system
+        - krb5-tools
+      host:
+        - krb5-dev
+        - openssl-dev
+        - zlib-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: libssh-runtime
+    inherit:
+      from: libssh-split
+      run_exports: false
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+    requirements:
+      run:
+        - krb5-runtime
+        - openssl-runtime
+        - zlib-runtime
+  - package:
+      name: libssh-dev
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+    requirements:
+      run:
+        - libssh-runtime
+      run_exports:
+        - libssh-runtime
