@@ -8,6 +8,8 @@ recipe:
 source:
   url: https://github.com/c-ares/c-ares/releases/download/v${{ version }}/c-ares-${{ version }}.tar.gz
   sha256: 912dd7cc3b3e8a79c52fd7fb9c0f4ecf0aaa73e45efda880266a2d6e26b84ef5
+  patches:
+    - win.patch
 
 outputs:
   - staging:
@@ -21,15 +23,13 @@ outputs:
 
   - package:
       name: c-ares-runtime
-    inherit:
-      from: c-ares-split
+    inherit: c-ares-split
     build:
       files:
         - Library/bin/*.dll
   - package:
       name: c-ares-dev
-    inherit:
-      from: c-ares-split
+    inherit: c-ares-split
     build:
       files:
         - Library/include
@@ -42,8 +42,7 @@ outputs:
         - c-ares-runtime
   - package:
       name: c-ares-tools
-    inherit:
-      from: c-ares-split
+    inherit:  c-ares-split
     build:
       files:
         - Library/bin/*.exe

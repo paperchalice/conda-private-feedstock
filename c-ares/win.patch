@@ -1,0 +1,32 @@
+From 8ba37af8e3fbcaad93f028cd9b36d06ff6d39543 Mon Sep 17 00:00:00 2001
+From: dankmeme01 <42031238+dankmeme01@users.noreply.github.com>
+Date: Mon, 16 Feb 2026 16:24:13 +0100
+Subject: [PATCH] Fix incorrect check for empty wide string (#1064)
+
+Fixes #1056
+
+The commit
+https://github.com/c-ares/c-ares/commit/1d1b3d4a808dff9359cacb4539ac1b775876dcb6
+refactored the function to use wide strings, but didn't touch this
+check. Because an empty wide string would now be size 2 and not 1, the
+empty string would go on and cause the DNS domain list to be replaced
+with nothing.
+
+Signed-off-by: @dankmeme01
+---
+ src/lib/ares_sysconfig_win.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/lib/ares_sysconfig_win.c b/src/lib/ares_sysconfig_win.c
+index 35f4bd8e72..94a3817de3 100644
+--- a/src/lib/ares_sysconfig_win.c
++++ b/src/lib/ares_sysconfig_win.c
+@@ -106,7 +106,7 @@ static ares_bool_t get_REG_SZ(HKEY hKey, const WCHAR *leafKeyName, char **outptr
+ 
+   /* Get the value for real */
+   res = RegQueryValueExW(hKey, leafKeyName, 0, NULL, (BYTE *)val, &size);
+-  if (res != ERROR_SUCCESS || size == 1) {
++  if (res != ERROR_SUCCESS || size == sizeof(WCHAR)) {
+     ares_free(val);
+     return ARES_FALSE;
+   }
