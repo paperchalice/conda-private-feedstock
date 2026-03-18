@@ -22,12 +22,9 @@ $cmake_args = @(
     '-DSPHINX_OUTPUT_MAN=ON',
     '-DSPHINX_OUTPUT_HTML=ON'
 )
-$ErrorActionPreference = 'Continue'
+
 cmake -S llvm -B build @cmake_args
 cmake --build build
-Get-ChildItem .\build\bin
-dumpbin /dependents .\build\bin\llvm-nm.exe
-Get-ChildItem $LIBRARY_BIN
 cmake --install build
 
 New-Item $LIBRARY_SHARE\vim\vimfiles -ItemType Directory

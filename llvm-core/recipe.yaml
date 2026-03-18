@@ -43,6 +43,11 @@ outputs:
   - package:
       name: llvm-core-dev
     inherit: llvm-core-split
+    requirements:
+      run:
+        - llvm-core-runtime
+      run_exports:
+        - llvm-core-runtime
     build:
       files:
         include:
@@ -51,10 +56,21 @@ outputs:
           - Library/share
   - package:
       name: llvm-core-tools
+    inherit: llvm-core-split
+    requirements:
+      run:
+        - llvm-core-runtime
     build:
       files:
         include:
           - Library/bin/*.exe
+  
+  - package:
+      name: llvm-core-full
+    requirements:
+      run:
+        - llvm-core-tools
+        - llvm-core-dev
 
 about:
   license: Apache-2.0 WITH LLVM-exception
