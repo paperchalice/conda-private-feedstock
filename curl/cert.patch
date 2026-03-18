@@ -1,19 +1,18 @@
 diff --git a/src/tool_doswin.c b/src/tool_doswin.c
 --- src/tool_doswin.c
 +++ src/tool_doswin.c
-@@ -22,8 +22,11 @@
+@@ -22,8 +22,10 @@
   *
   ***************************************************************************/
  #include "tool_setup.h"
  
 +#include <prefix-stub/relocate.h>
-+#pragma comment(lib, "prefix-stub.lib")
 +
  #if defined(_WIN32) || defined(MSDOS)
  
  #include "curlx/basename.h" /* for curlx_basename() */
  #include "curlx/version_win32.h" /* for curlx_verify_windows_version() */
-@@ -562,8 +565,14 @@
+@@ -562,8 +564,14 @@
  
    buf[0] = TEXT('\0');
  
@@ -31,17 +30,17 @@ diff --git a/src/tool_doswin.c b/src/tool_doswin.c
 diff --git a/src/tool_operate.c b/src/tool_operate.c
 --- src/tool_operate.c
 +++ src/tool_operate.c
-@@ -2133,8 +2133,10 @@
+@@ -2131,9 +2131,9 @@
+         goto fail;
+       }
      }
  #elif !defined(CURL_WINDOWS_UWP) && !defined(CURL_DISABLE_CA_SEARCH)
-     result = FindWin32CACert(config, TEXT("curl-ca-bundle.crt"));
+-    result = FindWin32CACert(config, TEXT("curl-ca-bundle.crt"));
++    result = FindWin32CACert(config, TEXT("cacert.pem"));
      if(result)
-+      result = FindWin32CACert(config, TEXT("cacert.pem"));
-+    if(result)
        goto fail;
  #endif
    }
- #endif
 diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
 --- lib/CMakeLists.txt
 +++ lib/CMakeLists.txt
