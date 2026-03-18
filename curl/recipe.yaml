@@ -57,6 +57,8 @@ outputs:
           - Library/lib
           - Library/share
     requirements:
+      run:
+        - curl-runtime
       run_exports:
         - curl-runtime
   - package:
