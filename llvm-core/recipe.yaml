@@ -1,0 +1,79 @@
+context:
+  version: "22.1.1"
+
+recipe:
+  name: llvm-core-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/llvm/llvm-project/releases/download/llvmorg-${{ version }}/llvm-project-${{ version }}.src.tar.xz
+  sha256: 9c6f37f6f5f68d38f435d25f770fc48c62d92b2412205767a16dac2c942f0c95
+  patches:
+    - icu.patch
+    - export.patch
+
+
+outputs:
+  - staging:
+      name: llvm-core-split
+    requirements:
+      build:
+        - vs
+        - cmake
+        - pkgconf-tools
+        - sphinx
+      host:
+        - brotli-dev
+        - cpp-httplib-dev
+        - curl-dev
+        - libffi-dev
+        - libxml2-dev
+        - zlib-dev
+        - zstd-dev
+    build:
+      script: bld.ps1
+
+  - package:
+      name: llvm-core-runtime
+    inherit: llvm-core-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+  - package:
+      name: llvm-core-dev
+    inherit: llvm-core-split
+    requirements:
+      run:
+        - llvm-core-runtime
+      run_exports:
+        - llvm-core-runtime
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+  - package:
+      name: llvm-core-tools
+    inherit: llvm-core-split
+    requirements:
+      run:
+        - llvm-core-runtime
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+  
+  - package:
+      name: llvm-core-full
+    requirements:
+      run:
+        - llvm-core-tools
+        - llvm-core-dev
+
+about:
+  license: Apache-2.0 WITH LLVM-exception
+  summary: Development headers and libraries for LLVM
+  homepage: http://llvm.org/
+  repository: https://github.com/llvm/llvm-project
