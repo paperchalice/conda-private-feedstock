@@ -25,6 +25,7 @@ $cmake_args = @(
 cmake -S llvm -B build @cmake_args
 cmake --build build
 cmake --install build
+Remove-Item -Recurse -Force build
 
 New-Item $LIBRARY_SHARE\vim\vimfiles -ItemType Directory
 foreach ($d in @('ftdetect', 'ftplugin', 'indent', 'syntax')) {
