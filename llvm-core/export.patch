@@ -43,16 +43,3 @@ index f5472b9122af5..c85141bddf0a9 100644
  IntervalList
  mergeAdjacentIntervals(ArrayRef<IntegerInclusiveInterval> Intervals);
  
-diff --git a/llvm/tools/llvm-exegesis/CMakeLists.txt b/llvm/tools/llvm-exegesis/CMakeLists.txt
---- llvm/tools/llvm-exegesis/CMakeLists.txt
-+++ llvm/tools/llvm-exegesis/CMakeLists.txt
-@@ -18,9 +18,8 @@
-   list(APPEND LLVM_LINK_COMPONENTS "${t}Info")
- endforeach()
- 
- add_llvm_tool(llvm-exegesis
--  DISABLE_LLVM_LINK_LLVM_DYLIB
-   llvm-exegesis.cpp
- 
-   DEPENDS
-   intrinsics_gen
