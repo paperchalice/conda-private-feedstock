@@ -20,7 +20,7 @@ $Env:CXXFLAGS += ' -O1 -FS'
 $Env:LDFLAGS += ' /DEBUG'
 perl .\Configure @opts
 jom -j 8
-jom -j 8 install
+jom -j 1 install
 
 Remove-Item $LIBRARY_BIN\*.pdb
 New-Item $LIBRARY_LIB\pkgconfig -Force -ItemType Directory

@@ -66,10 +66,10 @@ diff --git a/crypto/dllmain.c b/crypto/dllmain.c
      switch (fdwReason) {
      case DLL_PROCESS_ATTACH:
 +        prefix_stub_set_orig_prefix(INSTALLDIR);
+         OPENSSL_cpuid_setup();
          break;
      case DLL_THREAD_ATTACH:
          break;
-     case DLL_THREAD_DETACH:
 diff --git a/crypto/ct/ct_log.c b/crypto/ct/ct_log.c
 --- crypto/ct/ct_log.c
 +++ crypto/ct/ct_log.c
