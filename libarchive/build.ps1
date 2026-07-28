@@ -1,7 +1,5 @@
-# remove BUILD_SHARED_LIBS=ON in next release
 cmake -S . -B bld `
     -DCMAKE_INSTALL_LIBDIR=lib `
-    -DBUILD_SHARED_LIBS=ON `
     -DENABLE_TEST=OFF `
     -DENABLE_LZO=ON `
     -DENABLE_TAR_SHARED=ON `
