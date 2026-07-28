@@ -1,5 +1,5 @@
 context:
-  version: "3.8.5"
+  version: "3.8.8"
 
 recipe:
   name: libarchive
@@ -7,7 +7,7 @@ recipe:
 
 source:
   url: https://github.com/libarchive/libarchive/releases/download/v${{ version }}/libarchive-${{ version }}.tar.xz
-  sha256: d68068e74beee3a0ec0dd04aee9037d5757fcc651591a6dcf1b6d542fb15a703
+  sha256: 3873a88801da067d0528a989af06877710529d50ee8fe6f3970cbb4302efb918
 
 outputs:
   - staging:
@@ -34,8 +34,6 @@ outputs:
           - pcre2-dev
           - lzo-dev
           - libcharset-dev
-    build:
-      script: bld.ps1
 
   - package:
       name: libarchive-runtime
