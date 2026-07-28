@@ -15,4 +15,3 @@ bash -c 'make -j'
 bash -c 'make install'
 
 Get-ChildItem $LIBRARY_LIB\*.dll.lib | Rename-Item -NewName { $_.Name -replace '\.dll.lib','.lib' }
-

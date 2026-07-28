@@ -1,6 +1,6 @@
 context:
   name: libiconv
-  version: "1.18"
+  version: "1.19"
 
 recipe:
   name: ${{ name }}
@@ -8,7 +8,7 @@ recipe:
 
 source:
   url: http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${{ version }}.tar.gz
-  sha256: 3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8
+  sha256: 88dd96a8c0464eca144fc791ae60cd31cd8ee78321e67397e25fc095c4a19aa6
 
 outputs:
   - staging:
@@ -31,8 +31,6 @@ outputs:
       ignore_run_exports:
         from_package:
           - libintl-dev
-    build:
-      script: bld.ps1
   - package:
       name: libiconv-runtime
     inherit:
