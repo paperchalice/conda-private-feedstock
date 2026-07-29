@@ -1,5 +1,5 @@
 context:
-  version: "1.21.0"
+  version: "1.25.0"
 
 recipe:
   name: ngtcp2-split
@@ -7,7 +7,7 @@ recipe:
 
 source:
   url: https://github.com/ngtcp2/ngtcp2/releases/download/v${{ version }}/ngtcp2-${{ version }}.tar.xz
-  sha256: 2d1c07e6aa509c017516c08307b0b707cd165a17275ab5f1caff9aaa0e3b6c7d
+  sha256: 2a34d2484ba17847a5d11965704e9dd0fac4c6d8efc75ffe1ec7de66d8c6b6fb
 
 outputs:
   - staging:
@@ -18,8 +18,6 @@ outputs:
         - cmake
       host:
         - openssl-dev
-    build:
-      script: bld.ps1
 
   - package:
       name: ngtcp2-runtime
