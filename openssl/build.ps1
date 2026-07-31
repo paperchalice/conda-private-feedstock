@@ -3,6 +3,7 @@ $opts = @(
     "--prefix=$LIBRARY_PREFIX",
     "--openssldir=SSL",
     '--release',
+    'enable-fips',
     'enable-brotli',
     'enable-zlib',
     'enable-zstd',
