@@ -5,8 +5,36 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  determine-changed-recipes:
+    runs-on: ubuntu-latest
+    name: Get changed-files
+    outputs:
+      changed-recipes: ${{ steps.get-recipes.outputs.recipes }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v47.0.6
+        with:
+          files: |
+            !.github/**
+            !etc/**
+      - name: List all changed recipes
+        id: get-recipes
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          dirs=()
+          for file in ${ALL_CHANGED_FILES}; do
+            dir=$(dirname $file)
+            dirs+=("${dir}")
+          done
+          recipes=($(printf "%s\n" "${dirs[@]}" | sort -u))
+          recipes=$(IFS=,; echo "${recipes[*]}")
+          echo "recipes=${recipes}" >> "$GITHUB_OUTPUT"
   call-build:
     uses: ./.github/workflows/build.yaml
+    needs: determine-changed-recipes
     with:
-      pkg_name: ${{ github.event.pull_request.title }}
+      pkg_name: ${{needs.determine-changed-recipes.outputs.changed-recipes}}
     secrets: inherit
