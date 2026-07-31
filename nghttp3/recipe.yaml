@@ -1,5 +1,5 @@
 context:
-  version: "1.16.0"
+  version: "1.18.0"
 
 recipe:
   name: nghttp3-split
@@ -7,7 +7,7 @@ recipe:
 
 source:
   url: https://github.com/ngtcp2/nghttp3/releases/download/v${{ version }}/nghttp3-${{ version }}.tar.xz
-  sha256: 6da0cd06b428d32a54c58137838505d9dc0371a900bb8070a46b29e1ceaf2e0f
+  sha256: aad782c23d3f01bd4bb52c8bac7a553b631ef8115fd1612703df6183449fef19
 
 outputs:
   - staging:
@@ -16,8 +16,6 @@ outputs:
       build:
         - vs
         - cmake
-    build:
-      script: bld.ps1
 
   - package:
       name: nghttp3-runtime

@@ -1,5 +1,5 @@
 context:
-  version: "1.69.0"
+  version: "1.70.0"
 
 recipe:
   name: nghttp2-split
@@ -7,7 +7,7 @@ recipe:
 
 source:
   url: https://github.com/nghttp2/nghttp2/releases/download/v${{ version }}/nghttp2-${{ version }}.tar.xz
-  sha256: 5511d3128850e01b5b26ec92bf39df15381c767a63441438b25ad6235def902c
+  sha256: e05cb1388eaca3830aded4ccf20044b6e1ac1a61411dcca11b0437c4285c8bc2
 
 outputs:
   - staging:
@@ -24,8 +24,6 @@ outputs:
       #   - libevent-dev
       #   - libxml2-dev
       #   - mruby
-    build:
-      script: bld.ps1
 
   - package:
       name: nghttp2-runtime
