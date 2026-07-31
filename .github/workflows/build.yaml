@@ -39,11 +39,14 @@ jobs:
           winget install --disable-interactivity --accept-source-agreements --accept-package-agreements UPX.UPX
           Write-Output "$Env:LOCALAPPDATA\Microsoft\WinGet\Links" >> $Env:GITHUB_PATH
 
-      - name: Build package with rattler-build
+      - name: Build package ${{ inputs.pkg_name }} with rattler-build
         run: |
-          rattler-build build -r "${{ inputs.pkg_name }}" `
-            --experimental --config-file .\config.toml `
-            --package-format conda:max --allow-symlinks-on-windows
+          $recipes = "${{ inputs.pkg_name }}" -split ','
+          foreach($recipe in $recipes) {
+            rattler-build build -r $recipe `
+              --experimental --config-file .\config.toml `
+              --package-format conda:max --allow-symlinks-on-windows
+          }
 
       - name: Upload to Anaconda
         env:
