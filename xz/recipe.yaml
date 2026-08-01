@@ -1,13 +1,13 @@
 context:
-  version: "5.8.2"
+  version: "5.8.3"
 
 recipe:
   name: xz-split
   version: ${{ version }}
 
 source:
-  url: https://github.com/tukaani-project/xz/releases/download/v${{ version }}/xz-${{ version }}.tar.gz
-  sha256: ce09c50a5962786b83e5da389c90dd2c15ecd0980a258dd01f70f9e7ce58a8f1
+  url: https://github.com/tukaani-project/xz/releases/download/v${{ version }}/xz-${{ version }}.tar.xz
+  sha256: fff1ffcf2b0da84d308a14de513a1aa23d4e9aa3464d17e64b9714bfdd0bbfb6
   patches:
     - prefix.patch
 
@@ -26,8 +26,6 @@ outputs:
         from_package:
           - libintl-dev
           - prefix-stub-dev
-    build:
-      script: bld.ps1
 
   - package:
       name: xz-runtime

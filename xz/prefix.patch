@@ -17,7 +17,7 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
      # installed as part of the "xz" target.
      if(XZ_NLS)
 -        target_link_libraries(lzmainfo PRIVATE Intl::Intl)
-+        target_link_libraries(lzmainfo PRIVATE Intl::Intl me::prefix-stub)
++        target_link_libraries(lzmainfo PRIVATE Intl::Intl prefix-stub::prefix-stub)
  
          target_compile_definitions(lzmainfo PRIVATE
                  ENABLE_NLS
@@ -34,7 +34,7 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
  
      if(XZ_NLS)
 -        target_link_libraries(xz PRIVATE Intl::Intl)
-+        target_link_libraries(xz PRIVATE Intl::Intl me::prefix-stub)
++        target_link_libraries(xz PRIVATE Intl::Intl prefix-stub::prefix-stub)
  
          target_compile_definitions(xz PRIVATE
                  ENABLE_NLS
