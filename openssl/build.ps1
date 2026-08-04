@@ -9,7 +9,7 @@ $opts = @(
     'enable-zstd',
     '--with-zlib-lib=z.lib',
     '--with-zstd-lib=zstd.lib'
-    'no-legacy',
+    # 'no-legacy',
     'no-tls-deprecated-ec',
     'no-deprecated',
     'no-tests',
