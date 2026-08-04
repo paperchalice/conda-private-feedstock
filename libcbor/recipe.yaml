@@ -1,0 +1,48 @@
+context:
+  version: "0.14.0"
+
+recipe:
+  name: libcbor-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/PJK/libcbor/archive/refs/tags/v${{ version }}.tar.gz
+  sha256: a8c1516e741562cf95aa4479c64916c3d4d2623e24fdc35e414e2320e7300aae
+
+outputs:
+  - staging:
+      name: libcbor-split
+    requirements:
+      build:
+        - vs
+        - cmake
+
+  - package:
+      name: libcbor-runtime
+    inherit: libcbor-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+
+  - package:
+      name: libcbor-dev
+    inherit: libcbor-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - libcbor-runtime
+      run_exports:
+        - libcbor-runtime
+
+about:
+  license: MIT
+  license_file: LICENSE.md
+  summary: CBOR protocol implementation for C
+  homepage: https://github.com/PJK/libcbor
+  repository: https://github.com/PJK/libcbor
