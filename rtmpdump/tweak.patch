@@ -40,14 +40,14 @@ index 0000000..42bb970
 +    USE_OPENSSL
 +    OPENSSL_API_COMPAT=0x10100000L
 +)
-+generate_export_header(rtmp EXPORT_FILE_NAME librtmp/rtmp_export.h)
++generate_export_header(rtmp EXPORT_FILE_NAME ${CMAKE_CURRENT_LIST_DIR}/librtmp/rtmp_export.h)
 +target_sources(
 +  rtmp
 +  PUBLIC
 +    FILE_SET HEADERS
-+    BASE_DIRS
-+      $<TARGET_PROPERTY:rtmp,BINARY_DIR>
-+      ${CMAKE_CURRENT_LIST_DIR}
++    # BASE_DIRS
++      # $<TARGET_PROPERTY:rtmp,BINARY_DIR>
++      # ${CMAKE_CURRENT_LIST_DIR}
 +      FILES
 +        librtmp/amf.h
 +        librtmp/bytes.h
@@ -58,7 +58,7 @@ index 0000000..42bb970
 +        librtmp/log.h
 +        librtmp/rtmp_sys.h
 +        librtmp/rtmp.h
-+        ${CMAKE_CURRENT_BINARY_DIR}/librtmp/rtmp_export.h
++        librtmp/rtmp_export.h
 +)
 +
 +add_compile_definitions(RTMPDUMP_VERSION=\"v${PROJECT_VERSION}\")
