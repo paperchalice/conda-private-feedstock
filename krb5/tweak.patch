@@ -1,3 +1,15 @@
+diff --git a/src/include/win-mac.h b/src/include/win-mac.h
+index b2a4601..ba9cbcf 100644
+--- src/include/win-mac.h
++++ src/include/win-mac.h
+@@ -17,6 +17,7 @@
+ #define ID_READ_PWD_PROMPT  10001
+ #define ID_READ_PWD_PROMPT2 10002
+ #define ID_READ_PWD_PWD     10003
++#define WIN32_LEAN_AND_MEAN
+ 
+ #ifdef RES_ONLY
+ 
 diff --git a/src/config/win-pre.in b/src/config/win-pre.in
 --- src/config/win-pre.in
 +++ src/config/win-pre.in
