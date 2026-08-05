@@ -67,6 +67,7 @@ outputs:
       files:
         include:
           - Library/bin/*.exe
+          - Library/share
     requirements:
       run:
         - krb5-runtime
