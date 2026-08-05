@@ -47,7 +47,7 @@ index 0000000..42bb970
 +    FILE_SET HEADERS
 +    BASE_DIRS
 +      $<TARGET_PROPERTY:rtmp,BINARY_DIR>
-+      ${CMAKE_CURRENT_LIST_DIR}/librtmp
++      ${CMAKE_CURRENT_LIST_DIR}
 +      FILES
 +        librtmp/amf.h
 +        librtmp/bytes.h
