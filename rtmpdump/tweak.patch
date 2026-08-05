@@ -1,9 +1,9 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000..42bb970
+index 0000000..5ae492b
 --- /dev/null
 +++ b/CMakeLists.txt
-@@ -0,0 +1,106 @@
+@@ -0,0 +1,103 @@
 +cmake_minimum_required(VERSION 4.1)
 +
 +project(rtmpdump VERSION 2.6 LANGUAGES C)
@@ -45,9 +45,6 @@ index 0000000..42bb970
 +  rtmp
 +  PUBLIC
 +    FILE_SET HEADERS
-+    # BASE_DIRS
-+      # $<TARGET_PROPERTY:rtmp,BINARY_DIR>
-+      # ${CMAKE_CURRENT_LIST_DIR}
 +      FILES
 +        librtmp/amf.h
 +        librtmp/bytes.h
