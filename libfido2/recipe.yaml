@@ -1,0 +1,64 @@
+context:
+  version: "1.17.0"
+
+recipe:
+  name: libfido2-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/Yubico/libfido2/archive/refs/tags/${{ version }}.tar.gz
+  sha256: ace062d14a482ff9325410ff63d06c8b5fe87e79ebc18dda07add2bc0188c77f
+
+outputs:
+  - staging:
+      name: libfido2-split
+    requirements:
+      build:
+        - vs
+        - cmake
+      host:
+        - libcbor-dev
+        - openssl-dev
+        - zlib-dev
+
+  - package:
+      name: libfido2-runtime
+    inherit: libfido2-split
+    build:
+      files:
+        include:
+          - Library/bin/*.dll
+
+  - package:
+      name: libfido2-dev
+    inherit: libfido2-split
+    build:
+      files:
+        include:
+          - Library/include
+          - Library/lib
+          - Library/share
+    requirements:
+      run:
+        - libfido2-runtime
+      run_exports:
+        - libfido2-runtime
+
+  - package:
+      name: libfido2-tools
+    inherit:
+      from: libfido2-split
+    requirements:
+      run:
+        - libfido2-runtime
+    build:
+      files:
+        include:
+          - Library/bin/*.exe
+
+about:
+  license: BSD-2-Clause
+  license_file: LICENSE
+  summary: Provides library functionality for FIDO2, including communication with a device over USB or NFC.
+  homepage: https://developers.yubico.com/libfido2/
+  repository: https://github.com/Yubico/libfido2

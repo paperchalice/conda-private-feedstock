@@ -1,0 +1,17 @@
+$cmake_args = @(
+    '-DBUILD_SHARED_LIBS=ON',
+    '-DBUILD_STATIC_LIBS=OFF',
+    '-DBUILD_TESTS=OFF',
+    '-DBUILD_EXAMPLES=OFF',
+    "-DCBOR_INCLUDE_DIRS=$LIBRARY_INC",
+    "-DCBOR_LIBRARY_DIRS=$LIBRARY_LIB",
+    "-DCRYPTO_INCLUDE_DIRS=$LIBRARY_INC",
+    "-DCRYPTO_LIBRARY_DIRS=$LIBRARY_LIB",
+    "-DZLIB_INCLUDE_DIRS=$LIBRARY_INC",
+    "-DZLIB_LIBRARY_DIRS=$LIBRARY_LIB",
+    '-DZLIB_LIBRARIES=z'
+)
+
+cmake -S . -B bld @cmake_args
+cmake --build bld
+cmake --install bld
