@@ -6,9 +6,9 @@ recipe:
   version: ${{ version }}
 
 source:
-  git: https://git.ffmpeg.org/rtmpdump.git
+  git: https://github.com/mirror/rtmpdump.git
   depth: 1
-  tag: v${{ version }}
+  rev: 6f6bb1353fc84f4cc37138baa99f586750028a01
   patches:
     - tweak.patch
 
