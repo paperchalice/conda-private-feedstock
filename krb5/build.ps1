@@ -1,6 +1,6 @@
 Set-Location src
 $Env:OPENSSL_DIR = $LIBRARY_PREFIX
-$Env:OPENSSL_VERSION = 3
+$Env:OPENSSL_VERSION = 4
 $Env:Path += ";$Env:WindowsSdkVerBinPath\x86"
 $Env:KRB_INSTALL_DIR=$LIBRARY_PREFIX
 $Env:MY_CFLAGS = $CFLAGS
