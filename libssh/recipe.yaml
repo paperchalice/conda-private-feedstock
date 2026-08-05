@@ -1,5 +1,5 @@
 context:
-  version: "0.12.0"
+  version: "0.12.2"
 
 recipe:
   name: libssh-split
@@ -7,7 +7,7 @@ recipe:
 
 source:
   url: https://www.libssh.org/files/${{ (version|split("."))[0:2]|join(".") }}/libssh-${{ version }}.tar.xz
-  sha256: 1a6af424d8327e5eedef4e5fe7f5b924226dd617ac9f3de80f217d82a36a7121
+  sha256: 49560f677d96e3706a904ac2de1116e25f3680937d51e5c92198fcba4a1c1e9f
 
 outputs:
   - staging:
@@ -21,8 +21,6 @@ outputs:
         - krb5-dev
         - openssl-dev
         - zlib-dev
-    build:
-      script: bld.ps1
 
   - package:
       name: libssh-runtime
