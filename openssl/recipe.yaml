@@ -34,8 +34,7 @@ outputs:
         include:
           - Library/bin/*.dll
           - Library/SSL
-          - Library/lib/engines-3
-          - Library/lib/ossl-modules
+          - Library/lib/ossl-modules/*.dll
     requirements:
       run:
         - brotli-runtime
@@ -51,6 +50,8 @@ outputs:
           - Library/lib
           - Library/include
           - Library/html
+        exclude:
+          - Library/lib/ossl-modules
     requirements:
       run:
         - openssl-runtime
