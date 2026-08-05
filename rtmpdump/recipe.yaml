@@ -6,12 +6,11 @@ recipe:
   version: ${{ version }}
 
 source:
-  git: https://git.ffmpeg.org/rtmpdump.git
+  git: https://github.com/mirror/rtmpdump.git
   depth: 1
-  tag: v${{ version }}
+  rev: 6f6bb1353fc84f4cc37138baa99f586750028a01
   patches:
-    - cmake-adpation.patch
-    - pkgconfig-adjust.patch
+    - tweak.patch
 
 outputs:
   - staging:
@@ -22,12 +21,11 @@ outputs:
         - cmake
       host:
         - getopt-dev
+        - openssl-dev
         - zlib-dev
       ignore_run_exports:
         from_package:
           - getopt-dev
-    build:
-      script: bld.ps1
 
   - package:
       name: rtmpdump-runtime
@@ -47,7 +45,6 @@ outputs:
       run:
         - getopt-runtime
         - rtmpdump-runtime
-        - zlib-runtime
   - package:
       name: rtmpdump-dev
     inherit: rtmpdump-split
