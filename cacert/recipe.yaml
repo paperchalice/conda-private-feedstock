@@ -1,4 +1,4 @@
-recipe:
+package:
   name: cacert
   version: latest
 
@@ -9,6 +9,6 @@ build:
   noarch: generic
 
 about:
-  home: https://curl.se/docs/caextract.html
+  homepage: https://curl.se/docs/caextract.html
   license: ISC
   summary: Certificates for use with other packages.
