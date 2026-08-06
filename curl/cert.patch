@@ -26,22 +26,7 @@ diff --git a/src/tool_doswin.c b/src/tool_doswin.c
    if(res_len > 0) {
      curlx_free(config->cacert);
      config->cacert = curlx_convert_tchar_to_UTF8(buf);
-     if(!config->cacert)
-diff --git a/src/tool_operate.c b/src/tool_operate.c
---- src/tool_operate.c
-+++ src/tool_operate.c
-@@ -2131,9 +2131,9 @@
-         goto fail;
-       }
-     }
- #elif !defined(CURL_WINDOWS_UWP) && !defined(CURL_DISABLE_CA_SEARCH)
--    result = FindWin32CACert(config, TEXT("curl-ca-bundle.crt"));
-+    result = FindWin32CACert(config, TEXT("cacert.pem"));
-     if(result)
-       goto fail;
- #endif
-   }
-diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
+     if(!config->cacert)diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
 --- lib/CMakeLists.txt
 +++ lib/CMakeLists.txt
 @@ -65,9 +65,9 @@
