@@ -52,7 +52,7 @@ jobs:
         env:
           ANACONDA_API_KEY: ${{ secrets.token }}
         run: |
-          $BUILT_PACKAGE=$(Get-ChildItem ./output/win-64/*.conda)
+          $BUILT_PACKAGE=$(Get-ChildItem -Path ./output/win-64/*.conda, ./output/noarch/*.conda)
           foreach ($i in $BUILT_PACKAGE) {
             $name = $i.Name
             $pkg = ($name -split '-')[0..(($name -split '-').Count - 3)] -join '-'
