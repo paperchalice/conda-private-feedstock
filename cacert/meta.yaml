@@ -1,4 +1,4 @@
-package:
+recipe:
   name: cacert
   version: latest
 
@@ -7,7 +7,6 @@ source:
 
 build:
   noarch: generic
-
 
 about:
   home: https://curl.se/docs/caextract.html
