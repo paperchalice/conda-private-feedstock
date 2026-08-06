@@ -1,5 +1,5 @@
 context:
-  version: "8.19.0"
+  version: "8.21.0"
 
 recipe:
   name: curl-split
@@ -7,7 +7,7 @@ recipe:
 
 source:
   url: http://curl.haxx.se/download/curl-${{ version }}.tar.xz
-  sha256: 4eb41489790d19e190d7ac7e18e82857cdd68af8f4e66b292ced562d333f11df
+  sha256: aa1b66a70eace83dc624508745646c08ae561de512ab403adffb93ac87fc72e6
   patches:
     - cert.patch
 
@@ -33,12 +33,9 @@ outputs:
         - openssl-dev
         - prefix-stub-runtime
         - prefix-stub-dev
-        - rtmpdump-dev
       ignore_run_exports:
         from_package:
           - prefix-stub-dev
-    build:
-      script: bld.ps1
 
   - package:
       name: curl-runtime
