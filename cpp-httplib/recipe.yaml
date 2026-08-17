@@ -1,5 +1,5 @@
 context:
-  version: "0.38.0"
+  version: "0.53.1"
 
 recipe:
   name: cpp-httplib-split
@@ -20,8 +20,6 @@ outputs:
         - zlib-dev
         - openssl-dev
         - zstd-dev
-    build:
-      script: bld.ps1
 
   - package:
       name: cpp-httplib-runtime
