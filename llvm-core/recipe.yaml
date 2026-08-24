@@ -1,5 +1,5 @@
 context:
-  version: "23.1.0-rc3"
+  version: "23.1.0"
 
 recipe:
   name: llvm-core-split
@@ -7,7 +7,7 @@ recipe:
 
 source:
   url: https://github.com/llvm/llvm-project/releases/download/llvmorg-${{ version }}/llvm-project-${{ version }}.src.tar.xz
-  sha256: 15796d21e2c5818895edf06a46d7748972b0cb799a499112045b056972f9984b
+  sha256: ab1f0e3ec52448c33e8782eaf0422504b87c7b016b22514653ee0d8fcee479ff
   patches:
     - zstd.patch
 
