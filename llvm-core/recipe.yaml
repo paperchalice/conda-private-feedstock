@@ -1,5 +1,5 @@
 context:
-  version: "22.1.1"
+  version: "23.1.0-rc3"
 
 recipe:
   name: llvm-core-split
@@ -7,11 +7,9 @@ recipe:
 
 source:
   url: https://github.com/llvm/llvm-project/releases/download/llvmorg-${{ version }}/llvm-project-${{ version }}.src.tar.xz
-  sha256: 9c6f37f6f5f68d38f435d25f770fc48c62d92b2412205767a16dac2c942f0c95
+  sha256: 15796d21e2c5818895edf06a46d7748972b0cb799a499112045b056972f9984b
   patches:
-    - icu.patch
-    - export.patch
-
+    - zstd.patch
 
 outputs:
   - staging:
@@ -30,8 +28,6 @@ outputs:
         - libxml2-dev
         - zlib-dev
         - zstd-dev
-    build:
-      script: bld.ps1
 
   - package:
       name: llvm-core-runtime
