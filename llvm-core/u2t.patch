@@ -1,0 +1,142 @@
+diff --git a/llvm/tools/obj2yaml/CMakeLists.txt b/llvm/tools/obj2yaml/CMakeLists.txt
+--- llvm/tools/obj2yaml/CMakeLists.txt
++++ llvm/tools/obj2yaml/CMakeLists.txt
+@@ -7,9 +7,9 @@
+   ProfileData
+   Support
+   )
+ 
+-add_llvm_utility(obj2yaml
++add_llvm_tool(obj2yaml
+   archive2yaml.cpp
+   obj2yaml.cpp
+   coff2yaml.cpp
+   dwarf2yaml.cpp
+diff --git a/llvm/tools/yaml2obj/CMakeLists.txt b/llvm/tools/yaml2obj/CMakeLists.txt
+--- llvm/tools/yaml2obj/CMakeLists.txt
++++ llvm/tools/yaml2obj/CMakeLists.txt
+@@ -4,7 +4,7 @@
+   ProfileData
+   Support
+   )
+ 
+-add_llvm_utility(yaml2obj
++add_llvm_tool(yaml2obj
+   yaml2obj.cpp
+   )
+diff --git a/llvm/utils/count/CMakeLists.txt b/llvm/utils/count/CMakeLists.txt
+--- llvm/utils/count/CMakeLists.txt
++++ llvm/utils/count/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ set(LLVM_LINK_COMPONENTS
+   support
+ )
+ 
+-add_llvm_utility(count
++add_llvm_tool(count
+   count.c
+   )
+diff --git a/llvm/tools/llvm-config/CMakeLists.txt b/llvm/tools/llvm-config/CMakeLists.txt
+--- llvm/tools/llvm-config/CMakeLists.txt
++++ llvm/tools/llvm-config/CMakeLists.txt
+@@ -13,9 +13,8 @@
+   # entire thing is overkill. Avoiding that especially saves on build time when cross
+   # compiling LLVM and building both cross and native `llvm-config`s. We don't
+   # want to build an entire native libLLVM.so in addition to the cross one just
+   # for the native `llvm-config`!
+-  DISABLE_LLVM_LINK_LLVM_DYLIB
+   )
+ 
+ # Compute the substitution values for various items.
+ get_property(SUPPORT_SYSTEM_LIBS TARGET LLVMSupport PROPERTY LLVM_SYSTEM_LIBS)
+diff --git a/llvm/tools/llvm-jitlink/llvm-jitlink-executor/CMakeLists.txt b/llvm/tools/llvm-jitlink/llvm-jitlink-executor/CMakeLists.txt
+--- llvm/tools/llvm-jitlink/llvm-jitlink-executor/CMakeLists.txt
++++ llvm/tools/llvm-jitlink/llvm-jitlink-executor/CMakeLists.txt
+@@ -4,9 +4,9 @@
+   OrcTargetProcess
+   Support
+   )
+ 
+-add_llvm_utility(llvm-jitlink-executor
++add_llvm_tool(llvm-jitlink-executor
+   llvm-jitlink-executor.cpp
+ 
+   DEPENDS
+   intrinsics_gen
+diff --git a/llvm/tools/lli/ChildTarget/CMakeLists.txt b/llvm/tools/lli/ChildTarget/CMakeLists.txt
+--- llvm/tools/lli/ChildTarget/CMakeLists.txt
++++ llvm/tools/lli/ChildTarget/CMakeLists.txt
+@@ -4,9 +4,9 @@
+   OrcTargetProcess
+   Support
+   )
+ 
+-add_llvm_utility(lli-child-target
++add_llvm_tool(lli-child-target
+   ChildTarget.cpp
+ 
+   DEPENDS
+   intrinsics_gen
+diff --git a/llvm/utils/not/CMakeLists.txt b/llvm/utils/not/CMakeLists.txt
+--- llvm/utils/not/CMakeLists.txt
++++ llvm/utils/not/CMakeLists.txt
+@@ -1,5 +1,6 @@
+-add_llvm_utility(not
++set(LLVM_LINK_COMPONENTS
++  Support
++  )
++add_llvm_tool(not
+   not.cpp
+   )
+-
+-target_link_libraries(not PRIVATE LLVMSupport)
+diff --git a/llvm/utils/KillTheDoctor/CMakeLists.txt b/llvm/utils/KillTheDoctor/CMakeLists.txt
+--- llvm/utils/KillTheDoctor/CMakeLists.txt
++++ llvm/utils/KillTheDoctor/CMakeLists.txt
+@@ -1,9 +1,11 @@
+-add_llvm_utility(KillTheDoctor
++set(LLVM_LINK_COMPONENTS
++  Support
++  )
++add_llvm_tool(KillTheDoctor
+   KillTheDoctor.cpp
+   )
+ 
+ target_link_libraries(KillTheDoctor
+   PRIVATE
+-  LLVMSupport
+   psapi
+   )
+diff --git a/llvm/utils/yaml-bench/CMakeLists.txt b/llvm/utils/yaml-bench/CMakeLists.txt
+--- llvm/utils/yaml-bench/CMakeLists.txt
++++ llvm/utils/yaml-bench/CMakeLists.txt
+@@ -1,5 +1,6 @@
++set(LLVM_LINK_COMPONENTS
++  Support
++  )
+ add_llvm_utility(yaml-bench
+   YAMLBench.cpp
+   )
+-
+-target_link_libraries(yaml-bench PRIVATE LLVMSupport)
+diff --git a/llvm/utils/UnicodeData/CMakeLists.txt b/llvm/utils/UnicodeData/CMakeLists.txt
+--- llvm/utils/UnicodeData/CMakeLists.txt
++++ llvm/utils/UnicodeData/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ set(LLVM_LINK_COMPONENTS Support)
+ 
+-add_llvm_utility(UnicodeNameMappingGenerator
++add_llvm_tool(UnicodeNameMappingGenerator
+     UnicodeNameMappingGenerator.cpp
+ )
+diff --git a/llvm/utils/llvm-test-mustache-spec/CMakeLists.txt b/llvm/utils/llvm-test-mustache-spec/CMakeLists.txt
+--- llvm/utils/llvm-test-mustache-spec/CMakeLists.txt
++++ llvm/utils/llvm-test-mustache-spec/CMakeLists.txt
+@@ -1,5 +1,4 @@
+-add_llvm_utility(llvm-test-mustache-spec
++set(LLVM_LINK_COMPONENTS Support)
++add_llvm_tool(llvm-test-mustache-spec
+   llvm-test-mustache-spec.cpp
+ )
+-
+-target_link_libraries(llvm-test-mustache-spec PRIVATE LLVMSupport)
