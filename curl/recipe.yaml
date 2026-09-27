@@ -1,5 +1,5 @@
 context:
-  version: "8.21.0"
+  version: "8.22.0"
 
 recipe:
   name: curl-split
@@ -7,7 +7,7 @@ recipe:
 
 source:
   url: http://curl.haxx.se/download/curl-${{ version }}.tar.xz
-  sha256: aa1b66a70eace83dc624508745646c08ae561de512ab403adffb93ac87fc72e6
+  sha256: f7ef3ae8a22e521f289803fe93543eb64c329b58aa73a9e224dfd915a2a5f4f7
   patches:
     - cert.patch
 
