@@ -1,6 +1,7 @@
 $cmake_args = @(
     '-DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON',
     '-DLLVM_BUILD_LLVM_DYLIB=ON',
+    # '-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=all'
     '-DLLVM_BUILD_LLVM_DYLIB_VIS=ON',
     '-DLLVM_LINK_LLVM_DYLIB=ON',
     '-DLLVM_USE_SYMLINKS=ON',
@@ -24,7 +25,7 @@ $cmake_args = @(
 )
 
 cmake -S llvm -B build @cmake_args
-cmake --build build
+cmake --build build --target llvm-exegesis
 cmake --install build
 Remove-Item -Recurse -Force build
 
