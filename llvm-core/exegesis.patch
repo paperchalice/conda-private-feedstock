@@ -1,0 +1,289 @@
+diff --git a/llvm/lib/Target/AArch64/AArch64RegisterInfo.h b/llvm/lib/Target/AArch64/AArch64RegisterInfo.h
+index b31104aac655..df7eef4843e0 100644
+--- a/llvm/lib/Target/AArch64/AArch64RegisterInfo.h
++++ b/llvm/lib/Target/AArch64/AArch64RegisterInfo.h
+@@ -13,6 +13,8 @@
+ #ifndef LLVM_LIB_TARGET_AARCH64_AARCH64REGISTERINFO_H
+ #define LLVM_LIB_TARGET_AARCH64_AARCH64REGISTERINFO_H
+ 
++#include "llvm/Support/Compiler.h"
++
+ #define GET_REGINFO_HEADER
+ #include "AArch64GenRegisterInfo.inc"
+ 
+@@ -24,7 +26,7 @@ class MCRegisterClass;
+ using TargetRegisterClass = MCRegisterClass;
+ class Triple;
+ 
+-class AArch64RegisterInfo final : public AArch64GenRegisterInfo {
++class LLVM_ABI AArch64RegisterInfo final : public AArch64GenRegisterInfo {
+   const Triple &TT;
+ 
+ public:
+diff --git a/llvm/lib/Target/Mips/MipsRegisterInfo.h b/llvm/lib/Target/Mips/MipsRegisterInfo.h
+index 9e6ef66163bd..9a47e950937d 100644
+--- a/llvm/lib/Target/Mips/MipsRegisterInfo.h
++++ b/llvm/lib/Target/Mips/MipsRegisterInfo.h
+@@ -25,7 +25,7 @@ namespace llvm {
+ class MCRegisterClass;
+ using TargetRegisterClass = MCRegisterClass;
+ 
+-class MipsRegisterInfo : public MipsGenRegisterInfo {
++class LLVM_ABI MipsRegisterInfo : public MipsGenRegisterInfo {
+ private:
+   const bool ArePtrs64bit;
+ 
+diff --git a/llvm/lib/Target/PowerPC/PPCRegisterInfo.h b/llvm/lib/Target/PowerPC/PPCRegisterInfo.h
+index 560690208f70..83f50e6ee778 100644
+--- a/llvm/lib/Target/PowerPC/PPCRegisterInfo.h
++++ b/llvm/lib/Target/PowerPC/PPCRegisterInfo.h
+@@ -16,6 +16,7 @@
+ 
+ #include "MCTargetDesc/PPCMCTargetDesc.h"
+ #include "llvm/ADT/DenseMap.h"
++#include "llvm/Support/Compiler.h"
+ 
+ #define GET_REGINFO_HEADER
+ #include "PPCGenRegisterInfo.inc"
+@@ -54,7 +55,7 @@ inline static unsigned getCRFromCRBit(unsigned SrcReg) {
+   return Reg;
+ }
+ 
+-class PPCRegisterInfo : public PPCGenRegisterInfo {
++class LLVM_ABI PPCRegisterInfo : public PPCGenRegisterInfo {
+   DenseMap<unsigned, unsigned> ImmToIdxMap;
+   const PPCTargetMachine &TM;
+ 
+diff --git a/llvm/lib/Target/RISCV/RISCVRegisterInfo.h b/llvm/lib/Target/RISCV/RISCVRegisterInfo.h
+index 625c19b3a02f..6727576a2f86 100644
+--- a/llvm/lib/Target/RISCV/RISCVRegisterInfo.h
++++ b/llvm/lib/Target/RISCV/RISCVRegisterInfo.h
+@@ -61,7 +61,7 @@ static inline unsigned getNF(uint8_t TSFlags) {
+ }
+ } // namespace RISCVRI
+ 
+-struct RISCVRegisterInfo : public RISCVGenRegisterInfo {
++struct LLVM_ABI RISCVRegisterInfo : public RISCVGenRegisterInfo {
+ 
+   RISCVRegisterInfo(unsigned HwMode);
+ 
+diff --git a/llvm/lib/Target/X86/X86RegisterInfo.h b/llvm/lib/Target/X86/X86RegisterInfo.h
+index e646591663ac..37758f950d91 100644
+--- a/llvm/lib/Target/X86/X86RegisterInfo.h
++++ b/llvm/lib/Target/X86/X86RegisterInfo.h
+@@ -22,7 +22,7 @@
+ namespace llvm {
+   class Triple;
+ 
+-class X86RegisterInfo final : public X86GenRegisterInfo {
++class LLVM_ABI X86RegisterInfo final : public X86GenRegisterInfo {
+ private:
+   /// Is64Bit - Is the target 64-bits.
+   ///
+diff --git a/llvm/tools/llvm-exegesis/CMakeLists.txt b/llvm/tools/llvm-exegesis/CMakeLists.txt
+index 49cb7e176c6d..c36bfc7084fa 100644
+--- a/llvm/tools/llvm-exegesis/CMakeLists.txt
++++ b/llvm/tools/llvm-exegesis/CMakeLists.txt
+@@ -19,7 +19,6 @@ foreach(t ${LLVM_EXEGESIS_TARGETS})
+ endforeach()
+ 
+ add_llvm_tool(llvm-exegesis
+-  DISABLE_LLVM_LINK_LLVM_DYLIB
+   llvm-exegesis.cpp
+ 
+   DEPENDS
+diff --git a/llvm/tools/llvm-exegesis/lib/CMakeLists.txt b/llvm/tools/llvm-exegesis/lib/CMakeLists.txt
+index d95c37ff5426..972ee7ef6fed 100644
+--- a/llvm/tools/llvm-exegesis/lib/CMakeLists.txt
++++ b/llvm/tools/llvm-exegesis/lib/CMakeLists.txt
+@@ -50,7 +50,7 @@ if(HAVE_LIBRT)
+ endif()
+ 
+ add_llvm_library(LLVMExegesis
+-  DISABLE_LLVM_LINK_LLVM_DYLIB
++  # DISABLE_LLVM_LINK_LLVM_DYLIB
+   STATIC
+   Analysis.cpp
+   Assembler.cpp
+diff --git a/llvm/tools/llvm-exegesis/lib/AArch64/CMakeLists.txt b/llvm/tools/llvm-exegesis/lib/AArch64/CMakeLists.txt
+--- a/llvm/tools/llvm-exegesis/lib/AArch64/CMakeLists.txt
++++ b/llvm/tools/llvm-exegesis/lib/AArch64/CMakeLists.txt
+@@ -13,9 +13,9 @@
+   Support
+   )
+ 
+ add_llvm_library(LLVMExegesisAArch64
+-  DISABLE_LLVM_LINK_LLVM_DYLIB
++  # DISABLE_LLVM_LINK_LLVM_DYLIB
+   STATIC
+   Target.cpp
+ 
+   DEPENDS
+diff --git a/llvm/tools/llvm-exegesis/lib/Mips/CMakeLists.txt b/llvm/tools/llvm-exegesis/lib/Mips/CMakeLists.txt
+--- a/llvm/tools/llvm-exegesis/lib/Mips/CMakeLists.txt
++++ b/llvm/tools/llvm-exegesis/lib/Mips/CMakeLists.txt
+@@ -13,9 +13,9 @@
+   TargetParser
+   )
+ 
+ add_llvm_library(LLVMExegesisMips
+-  DISABLE_LLVM_LINK_LLVM_DYLIB
++  # DISABLE_LLVM_LINK_LLVM_DYLIB
+   STATIC
+   Target.cpp
+ 
+   DEPENDS
+diff --git a/llvm/tools/llvm-exegesis/lib/PowerPC/CMakeLists.txt b/llvm/tools/llvm-exegesis/lib/PowerPC/CMakeLists.txt
+--- a/llvm/tools/llvm-exegesis/lib/PowerPC/CMakeLists.txt
++++ b/llvm/tools/llvm-exegesis/lib/PowerPC/CMakeLists.txt
+@@ -13,9 +13,9 @@
+   TargetParser
+   )
+ 
+ add_llvm_library(LLVMExegesisPowerPC
+-  DISABLE_LLVM_LINK_LLVM_DYLIB
++  # DISABLE_LLVM_LINK_LLVM_DYLIB
+   STATIC
+   Target.cpp
+ 
+   DEPENDS
+diff --git a/llvm/tools/llvm-exegesis/lib/RISCV/CMakeLists.txt b/llvm/tools/llvm-exegesis/lib/RISCV/CMakeLists.txt
+--- a/llvm/tools/llvm-exegesis/lib/RISCV/CMakeLists.txt
++++ b/llvm/tools/llvm-exegesis/lib/RISCV/CMakeLists.txt
+@@ -13,9 +13,9 @@
+   TargetParser
+   )
+ 
+ add_llvm_library(LLVMExegesisRISCV
+-  DISABLE_LLVM_LINK_LLVM_DYLIB
++  # DISABLE_LLVM_LINK_LLVM_DYLIB
+   STATIC
+   RISCVExegesisPreprocessing.cpp
+   RISCVExegesisPostprocessing.cpp
+   Target.cpp
+diff --git a/llvm/tools/llvm-exegesis/lib/X86/CMakeLists.txt b/llvm/tools/llvm-exegesis/lib/X86/CMakeLists.txt
+--- a/llvm/tools/llvm-exegesis/lib/X86/CMakeLists.txt
++++ b/llvm/tools/llvm-exegesis/lib/X86/CMakeLists.txt
+@@ -14,9 +14,9 @@
+   X86
+   )
+ 
+ add_llvm_library(LLVMExegesisX86
+-  DISABLE_LLVM_LINK_LLVM_DYLIB
++  # DISABLE_LLVM_LINK_LLVM_DYLIB
+   STATIC
+   Target.cpp
+   X86Counter.cpp
+ 
+diff --git a/llvm/lib/Target/AArch64/AArch64.h b/llvm/lib/Target/AArch64/AArch64.h
+index bcf40a02e3cf..fe854940a256 100644
+--- a/llvm/lib/Target/AArch64/AArch64.h
++++ b/llvm/lib/Target/AArch64/AArch64.h
+@@ -55,7 +55,7 @@ FunctionPass *createAArch64AdvSIMDScalar();
+ FunctionPass *createAArch64ISelDag(AArch64TargetMachine &TM,
+                                    CodeGenOptLevel OptLevel);
+ FunctionPass *createAArch64StorePairSuppressPass();
+-FunctionPass *createAArch64ExpandPseudoLegacyPass();
++LLVM_ABI FunctionPass *createAArch64ExpandPseudoLegacyPass();
+ FunctionPass *createAArch64SLSHardeningLegacyPass();
+ FunctionPass *createAArch64SpeculationHardeningPass();
+ FunctionPass *createAArch64LoadStoreOptLegacyPass();
+diff --git a/llvm/lib/Target/RISCV/MCTargetDesc/RISCVMatInt.h b/llvm/lib/Target/RISCV/MCTargetDesc/RISCVMatInt.h
+index 5df8edb2ee85..42f2b14822e1 100644
+--- a/llvm/lib/Target/RISCV/MCTargetDesc/RISCVMatInt.h
++++ b/llvm/lib/Target/RISCV/MCTargetDesc/RISCVMatInt.h
+@@ -50,7 +50,7 @@ using InstSeq = SmallVector<Inst, 8>;
+ InstSeq generateInstSeq(int64_t Val, const MCSubtargetInfo &STI);
+ 
+ // Helper to generate the generateInstSeq instruction sequence using MCInsts
+-void generateMCInstSeq(int64_t Val, const MCSubtargetInfo &STI,
++LLVM_ABI void generateMCInstSeq(int64_t Val, const MCSubtargetInfo &STI,
+                        MCRegister DestReg, SmallVectorImpl<MCInst> &Insts);
+ 
+ // Helper to generate an instruction sequence that can materialize the given
+diff --git a/llvm/lib/Target/RISCV/RISCVInstrInfo.h b/llvm/lib/Target/RISCV/RISCVInstrInfo.h
+index c75335ba7d14..569bf32bc861 100644
+--- a/llvm/lib/Target/RISCV/RISCVInstrInfo.h
++++ b/llvm/lib/Target/RISCV/RISCVInstrInfo.h
+@@ -400,7 +400,7 @@ std::optional<unsigned> getVectorLowDemandedScalarBits(unsigned Opcode,
+                                                        unsigned Log2SEW);
+ 
+ // Returns the MC opcode of RVV pseudo instruction.
+-unsigned getRVVMCOpcode(unsigned RVVPseudoOpcode);
++LLVM_ABI unsigned getRVVMCOpcode(unsigned RVVPseudoOpcode);
+ 
+ // For a (non-pseudo) RVV instruction \p Desc and the given \p Log2SEW, returns
+ // the log2 EEW of the destination operand.
+diff --git a/llvm/lib/Target/X86/X86.h b/llvm/lib/Target/X86/X86.h
+index eef4de389a7d..11b10469797c 100644
+--- a/llvm/lib/Target/X86/X86.h
++++ b/llvm/lib/Target/X86/X86.h
+@@ -73,7 +73,7 @@ public:
+                         MachineFunctionAnalysisManager &MFAM);
+ };
+ 
+-FunctionPass *createX86FPStackifierLegacyPass();
++LLVM_ABI FunctionPass *createX86FPStackifierLegacyPass();
+ 
+ /// This pass inserts AVX vzeroupper instructions before each call to avoid
+ /// transition penalty between functions encoded with AVX and SSE.
+diff --git a/llvm/utils/TableGen/RegisterInfoEmitter.cpp b/llvm/utils/TableGen/RegisterInfoEmitter.cpp
+index 6c64330c1f37..d36c47c5d81f 100644
+--- a/llvm/utils/TableGen/RegisterInfoEmitter.cpp
++++ b/llvm/utils/TableGen/RegisterInfoEmitter.cpp
+@@ -1199,7 +1199,7 @@ void RegisterInfoEmitter::runMCDesc(raw_ostream &OS, raw_ostream &MainOS,
+       << Totals.SuperClassIdx << ">";
+   OS << "using " << TargetName
+      << "RegisterClassStorage = " << MCRegisterClassStorageType << ";\n";
+-  OS << "extern const " << MCRegisterClassStorageType << " " << TargetName
++  OS << "extern LLVM_ABI const " << MCRegisterClassStorageType << " " << TargetName
+      << "MCRegisterClassStorage = {\n"
+      << "  {\n";
+ 
+@@ -1401,7 +1401,7 @@ void RegisterInfoEmitter::runTargetHeader(raw_ostream &OS, raw_ostream &MainOS,
+ 
+   OS << "class " << TargetName << "FrameLowering;\n\n";
+ 
+-  OS << "extern const " << MCRegisterClassStorageType << " " << TargetName
++  OS << "extern LLVM_ABI const " << MCRegisterClassStorageType << " " << TargetName
+      << "MCRegisterClassStorage;\n\n";
+ 
+   OS << "struct " << ClassName << " : public TargetRegisterInfo {\n"
+diff --git a/llvm/utils/TableGen/SearchableTableEmitter.cpp b/llvm/utils/TableGen/SearchableTableEmitter.cpp
+index 65aa86e33fba..f28674d15e1c 100644
+--- a/llvm/utils/TableGen/SearchableTableEmitter.cpp
++++ b/llvm/utils/TableGen/SearchableTableEmitter.cpp
+@@ -597,6 +597,7 @@ void SearchableTableEmitter::emitGenericTable(const GenericTable &Table,
+   emitIfdef((Twine("GET_") + Table.PreprocessorGuard + "_DECL").str(), OS);
+ 
+   // Emit the declarations for the functions that will perform lookup.
++  OS << "LLVM_ABI ";
+   if (Table.PrimaryKey) {
+     emitLookupDeclaration(Table, *Table.PrimaryKey, OS);
+     OS << ";\n";
+diff --git a/llvm/lib/Target/RISCV/RISCV.h b/llvm/lib/Target/RISCV/RISCV.h
+--- a/llvm/lib/Target/RISCV/RISCV.h
++++ b/llvm/lib/Target/RISCV/RISCV.h
+@@ -79,18 +79,18 @@
+ 
+ FunctionPass *createRISCVExpandAtomicPseudoPass();
+ void initializeRISCVExpandAtomicPseudoPass(PassRegistry &);
+ 
+-FunctionPass *createRISCVInsertVSETVLIPass();
++LLVM_ABI FunctionPass *createRISCVInsertVSETVLIPass();
+ void initializeRISCVInsertVSETVLIPass(PassRegistry &);
+ extern char &RISCVInsertVSETVLIID;
+ 
+-FunctionPass *createRISCVPostRAExpandPseudoPass();
++LLVM_ABI FunctionPass *createRISCVPostRAExpandPseudoPass();
+ void initializeRISCVPostRAExpandPseudoPass(PassRegistry &);
+-FunctionPass *createRISCVInsertReadWriteCSRPass();
++LLVM_ABI FunctionPass *createRISCVInsertReadWriteCSRPass();
+ void initializeRISCVInsertReadWriteCSRPass(PassRegistry &);
+ 
+-FunctionPass *createRISCVInsertWriteVXRMPass();
++LLVM_ABI FunctionPass *createRISCVInsertWriteVXRMPass();
+ void initializeRISCVInsertWriteVXRMPass(PassRegistry &);
+ 
+ FunctionPass *createRISCVRedundantCopyEliminationPass();
+ void initializeRISCVRedundantCopyEliminationPass(PassRegistry &);
