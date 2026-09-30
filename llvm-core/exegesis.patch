@@ -228,9 +228,18 @@ index eef4de389a7d..11b10469797c 100644
  /// This pass inserts AVX vzeroupper instructions before each call to avoid
  /// transition penalty between functions encoded with AVX and SSE.
 diff --git a/llvm/utils/TableGen/RegisterInfoEmitter.cpp b/llvm/utils/TableGen/RegisterInfoEmitter.cpp
-index 6c64330c1f37..42a59abfb326 100644
+index 6c64330c1f37..d36c47c5d81f 100644
 --- a/llvm/utils/TableGen/RegisterInfoEmitter.cpp
 +++ b/llvm/utils/TableGen/RegisterInfoEmitter.cpp
+@@ -1199,7 +1199,7 @@ void RegisterInfoEmitter::runMCDesc(raw_ostream &OS, raw_ostream &MainOS,
+       << Totals.SuperClassIdx << ">";
+   OS << "using " << TargetName
+      << "RegisterClassStorage = " << MCRegisterClassStorageType << ";\n";
+-  OS << "extern const " << MCRegisterClassStorageType << " " << TargetName
++  OS << "extern LLVM_ABI const " << MCRegisterClassStorageType << " " << TargetName
+      << "MCRegisterClassStorage = {\n"
+      << "  {\n";
+ 
 @@ -1401,7 +1401,7 @@ void RegisterInfoEmitter::runTargetHeader(raw_ostream &OS, raw_ostream &MainOS,
  
    OS << "class " << TargetName << "FrameLowering;\n\n";
