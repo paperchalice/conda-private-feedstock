@@ -25,7 +25,7 @@ $cmake_args = @(
 )
 
 cmake -S llvm -B build @cmake_args
-cmake --build build --target llvm-exegesis
+cmake --build build
 cmake --install build
 Remove-Item -Recurse -Force build
 
